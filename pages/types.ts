@@ -9,3 +9,15 @@ export interface Cliente {
   razon_social: string
   cuit: number
 }
+
+export interface Project {
+  id: number
+  name: string
+  description: string
+  state: string
+  startDate: number
+  endDate: number
+  estimatedHours: number
+  projectLeader: string 
+  client: string
+}

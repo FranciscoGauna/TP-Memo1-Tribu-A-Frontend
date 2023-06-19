@@ -10,6 +10,10 @@ export default function Layout({ children }: { children: any }) {
       title: "Homepage",
     },
     {
+      href: "/proyectos",
+      title: "Proyectos",
+    },
+    {
       href: "/clientes",
       title: "Clientes",
     },
