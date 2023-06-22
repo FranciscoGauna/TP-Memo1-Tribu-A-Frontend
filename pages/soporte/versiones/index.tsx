@@ -2,15 +2,16 @@ import {useEffect, useState} from "react";
 import VersionGridRow from "@/components/versionGridRow";
 import {useRouter} from "next/router";
 
+import {Version} from "@/pages/types";
 function HeaderItem({ title }: { title: string }) {
     return <th className="px-6 py-3 text-sm text-left text-gray-500 border-b border-gray-200 bg-gray-50">{title}</th>
 }
 
 export default function Versiones() {
-    const [list, setList] = useState([])
+    const [list, setList] = useState<Version[]>([])
     const router = useRouter();
     const { codigoProducto } = router.query;
-    const { nombreProducto } = router.query;
+    const nombreProducto = router.query.nombreProducto as string || '';
 
     useEffect(() => {
         if (codigoProducto) {

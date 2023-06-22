@@ -12,10 +12,6 @@ export default function Layout({ children }: { children: any }) {
     {
       href: "/soporte",
       title: "Soporte",
-    },
-    {
-      href: "/usuarios",
-      title: "Usuarios",
     }
   ]
 

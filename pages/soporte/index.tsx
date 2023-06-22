@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
+import {Producto} from "@/pages/types";
 export default function Soporte() {
-    const [list, setList] = useState([]);
+    const [list, setList] = useState<Producto[]>([]);
     const router = useRouter();
 
     useEffect(() => {

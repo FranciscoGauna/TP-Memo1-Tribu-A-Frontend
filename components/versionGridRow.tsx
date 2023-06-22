@@ -1,8 +1,18 @@
 import {useEffect, useState} from "react";
-import {router} from "next/router";
+import {useRouter} from "next/router";
 
-export default function VersionGridRow({ version , nombreProducto }) {
+interface Version {
+    codigo : number;
+    descripcion : string;
+    codigoProducto : number;
+}
+
+export default function VersionGridRow({ version , nombreProducto }: {
+    version: Version;
+    nombreProducto: string;
+}) {
     const [cantTickets, setCantTickets] = useState(0);
+    const router = useRouter();
 
     useEffect(() => {
         fetch(`http://localhost:8080/versiones/${version.codigo}/tickets`)

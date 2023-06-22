@@ -1,16 +1,17 @@
 import {useEffect, useState} from "react";
 import {useRouter} from "next/router";
 import {getTimeRemaining} from "@/utils/timeUtils";
-interface Cliente {
-    id: number;
-    razonSocial: string;
-    cuit: number;
-}
+import {Cliente, Ticket} from "@/pages/types";
+
 function buscarCliente(list : Cliente[], idCliente: number){
     const cliente = list.find((cliente) => cliente.id == idCliente);
     return cliente ? cliente.razonSocial : "Desconocido";
 }
-export default function TicketGridRow({ ticket , nombreProducto , descripcionVersion }) {
+export default function TicketGridRow({ ticket , nombreProducto , descripcionVersion }: {
+    ticket: Ticket;
+    nombreProducto: string;
+    descripcionVersion: string;
+}) {
     const [list, setList] = useState([]);
     const router = useRouter();
 
@@ -27,7 +28,10 @@ export default function TicketGridRow({ ticket , nombreProducto , descripcionVer
     useEffect(() => {
         const intervalId = setInterval(() => {
             const timeRemaining = getTimeRemaining(ticket.fechaLimite);
-            document.getElementById('timeRemaining').innerHTML = timeRemaining;
+            const element = document.getElementById('timeRemaining');
+            if (element) {
+                element.innerHTML = timeRemaining;
+            }
         }, 1000);
 
         return () => clearInterval(intervalId);

@@ -1,4 +1,4 @@
-import { Usuario } from "@/pages/types"
+import {Usuario} from "@/pages/types"
 
 export interface ISidebarItem {
   href: string
@@ -11,3 +11,4 @@ export interface ModalProps {
   setModalOpen: (x: boolean) => void
   list: Usuario[]
 }
+
