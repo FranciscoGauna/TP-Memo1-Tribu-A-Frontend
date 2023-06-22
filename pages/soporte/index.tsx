@@ -15,7 +15,7 @@ export default function Soporte() {
             })
     }, []);
 
-    const handleVerVersiones = (codigoProducto, nombreProducto) => {
+    const handleVerVersiones = (codigoProducto : number, nombreProducto : string) => {
         router.push(`/soporte/versiones?codigoProducto=${codigoProducto}&nombreProducto=${nombreProducto}`);
     };
 

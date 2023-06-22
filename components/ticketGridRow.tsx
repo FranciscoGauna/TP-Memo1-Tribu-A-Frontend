@@ -1,7 +1,12 @@
 import {useEffect, useState} from "react";
 import {useRouter} from "next/router";
 import {getTimeRemaining} from "@/utils/timeUtils";
-function buscarCliente(list, idCliente){
+interface Cliente {
+    id: number;
+    razonSocial: string;
+    cuit: number;
+}
+function buscarCliente(list : Cliente[], idCliente: number){
     const cliente = list.find((cliente) => cliente.id == idCliente);
     return cliente ? cliente.razonSocial : "Desconocido";
 }
@@ -28,7 +33,7 @@ export default function TicketGridRow({ ticket , nombreProducto , descripcionVer
         return () => clearInterval(intervalId);
     }, [ticket.fechaLimite]);
 
-    const handleVerTicket = (idTicket) => {
+    const handleVerTicket = (idTicket : string) => {
         router.push(`/soporte/versiones/tickets/ticket?idTicket=${idTicket}&nombreProducto=${nombreProducto}&descripcionVersion=${descripcionVersion}`);
     };
 

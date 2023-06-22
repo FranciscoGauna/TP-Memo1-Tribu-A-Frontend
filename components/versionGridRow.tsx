@@ -14,7 +14,7 @@ export default function VersionGridRow({ version , nombreProducto }) {
                 setCantTickets(ticketsCount);
             });
     }, [version.codigo]);
-    const handleVerTickets = (codigoVersion, descripcionVersion) => {
+    const handleVerTickets = (codigoVersion : number, descripcionVersion : string) => {
         router.push(`/soporte/versiones/tickets?codigoVersion=${codigoVersion}&nombreProducto=${nombreProducto}&descripcionVersion=${descripcionVersion}`);
     };
 
