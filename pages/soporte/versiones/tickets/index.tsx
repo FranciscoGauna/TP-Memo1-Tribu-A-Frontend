@@ -60,7 +60,7 @@ export default function Tickets() {
 
                                 <tbody>
                                 {list.map((ticket) => (
-                                    <TicketGridRow ticket={ticket} nombreProducto={nombreProducto} descripcionVersion={descripcionVersion} />
+                                    <TicketGridRow key={ticket.codigo} ticket={ticket} nombreProducto={nombreProducto} descripcionVersion={descripcionVersion} />
                                 ))}
                                 </tbody>
                             </table>

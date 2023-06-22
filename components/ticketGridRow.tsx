@@ -26,7 +26,7 @@ export default function TicketGridRow({ ticket , nombreProducto , descripcionVer
         }, 1000);
 
         return () => clearInterval(intervalId);
-    }, []);
+    }, [ticket.fechaLimite]);
 
     const handleVerTicket = (idTicket) => {
         router.push(`/soporte/versiones/tickets/ticket?idTicket=${idTicket}&nombreProducto=${nombreProducto}&descripcionVersion=${descripcionVersion}`);

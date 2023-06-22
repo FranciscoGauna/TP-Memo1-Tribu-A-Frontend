@@ -45,7 +45,7 @@ export default function Versiones() {
 
                                 <tbody>
                                 {list.map((version) => (
-                                    <VersionGridRow version={version} nombreProducto={nombreProducto} />
+                                    <VersionGridRow key={version.codigo} version={version} nombreProducto={nombreProducto} />
                                 ))}
                                 </tbody>
                             </table>

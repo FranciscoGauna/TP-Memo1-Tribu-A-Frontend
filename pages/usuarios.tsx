@@ -43,7 +43,7 @@ export default function Usuarios() {
 
                 <tbody>
                   {list.map((usuario) => (
-                    <UserGridRow usuario={usuario} />
+                    <UserGridRow key={usuario.id} usuario={usuario} />
                   ))}
                 </tbody>
               </table>
