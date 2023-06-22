@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import {getTimeRemaining} from "@/utils/timeUtils";
-import VersionGridRow from "@/components/versionGridRow";
-function buscarCliente(list, idCliente){
+import {Ticket, Cliente} from "@/pages/types";
+function buscarCliente(list : Cliente[], idCliente: number){
     const cliente = list.find((cliente) => cliente.id == idCliente);
     return cliente ? cliente.razonSocial : "Desconocido";
 }
@@ -10,8 +10,8 @@ function HeaderItem({ title }: { title: string }) {
     return <th className="px-6 py-3 text-sm text-left text-gray-500 border-b border-gray-200 bg-gray-50">{title}</th>
 }
 export default function Ticket() {
-    const [ticket, setTicket] = useState([]);
-    const [list, setList] = useState([]);
+    const [ticket, setTicket] = useState<Ticket | null>();
+    const [list, setList] = useState<Cliente[]>([]);
     const router = useRouter();
     const { idTicket } = router.query;
     const { nombreProducto } = router.query;
@@ -37,9 +37,12 @@ export default function Ticket() {
 
     useEffect(() => {
         const intervalId = setInterval(() => {
-            if (ticket.fechaLimite) {
+            if (ticket?.fechaLimite) {
                 const timeRemaining = getTimeRemaining(ticket.fechaLimite);
-                document.getElementById('timeRemaining').innerHTML = timeRemaining;
+                const element = document.getElementById('timeRemaining');
+                if (element) {
+                    element.innerHTML = timeRemaining;
+                }
             }
         }, 1000);
 
@@ -59,23 +62,31 @@ export default function Ticket() {
                 </div>
                 <div className="rounded-lg p-6 shadow-md space-y-4" style={{ backgroundColor: "#F5F5F5" }}>
                     <div>
-                        <h3 className="text-xl font-bold decoration-gray-400 mb-5">Ticket {ticket.codigo}</h3>
+                        <h3 className="text-xl font-bold decoration-gray-400 mb-5">Ticket {ticket?.codigo}</h3>
                         <div className="flex space-x-4">
                             <div>
-                                <span className="font-bold">Estado:</span> <span className="rounded-full bg-gray-300 px-2 py-1">{ticket.estado}</span>
+                                <span className="font-bold">Estado:</span> <span className="rounded-full bg-gray-300 px-2 py-1">{ticket?.estado}</span>
                             </div>
                             <div>
-                                <span className="font-bold">Severidad:</span> <span className="rounded-full bg-gray-300 px-2 py-1">{ticket.severidad}</span>
+                                <span className="font-bold">Severidad:</span> <span className="rounded-full bg-gray-300 px-2 py-1">{ticket?.severidad}</span>
                             </div>
                             <div>
-                                <span className="font-bold">Prioridad:</span> <span className="rounded-full bg-gray-300 px-2 py-1">{ticket.prioridad}</span>
+                                <span className="font-bold">Prioridad:</span> <span className="rounded-full bg-gray-300 px-2 py-1">{ticket?.prioridad}</span>
                             </div>
                         </div>
                     </div>
                     <div className="flex space-x-4">
-                        <div><span className="font-bold">Cliente: </span>{buscarCliente(list, ticket.cliente)}</div>
-                        <div><span className="font-bold">Fecha de creación: </span>{new Date(ticket.fechaCreacion).toLocaleString()}</div>
-                        <div><span className="font-bold">Fecha límite: </span>{new Date(ticket.fechaLimite).toLocaleString()}</div>
+                        <div>
+                            <span className="font-bold">Cliente: </span>{buscarCliente(list, ticket?.cliente ?? 0)}
+                        </div>
+                        <div>
+                            <span className="font-bold">Fecha de creación: </span>
+                            {ticket?.fechaCreacion ? new Date(ticket.fechaCreacion).toLocaleString() : ""}
+                        </div>
+                        <div>
+                            <span className="font-bold">Fecha límite: </span>
+                            {ticket?.fechaLimite ? new Date(ticket.fechaLimite).toLocaleString() : ""}
+                        </div>
                     </div>
                     <div className={"flex items-center justify-between"}>
                         <div className={"flex flex-grow"}>
@@ -87,7 +98,7 @@ export default function Ticket() {
                             <div className="flex space-x-4 items-center flex-grow">
                                 <span className="font-bold">Descripción: </span>
                                 <div className="border rounded-lg p-5 flex-grow" style={{ backgroundColor: "#FFFFFF", margin: "0 2rem"}}>
-                                    {ticket.description}
+                                    {ticket?.description}
                                 </div>
                             </div>
                         </div>

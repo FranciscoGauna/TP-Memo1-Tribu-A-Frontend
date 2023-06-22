@@ -1,4 +1,4 @@
-export function getTimeRemaining(dateString) {
+export function getTimeRemaining(dateString : string) {
     const targetDate = new Date(dateString);
     const currentDate = new Date();
 
