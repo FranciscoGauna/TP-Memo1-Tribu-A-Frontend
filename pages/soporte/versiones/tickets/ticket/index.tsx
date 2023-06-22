@@ -42,6 +42,9 @@ export default function Ticket() {
                 const element = document.getElementById('timeRemaining');
                 if (element) {
                     element.innerHTML = timeRemaining;
+                    element.style.backgroundColor = timeRemaining.includes("red")
+                        ? "lightpink"
+                        : "inherit";
                 }
             }
         }, 1000);
@@ -92,7 +95,8 @@ export default function Ticket() {
                         <div className={"flex flex-grow"}>
                             <div>
                                 <div className="text-xl flex items-center justify-center mr-5 border-2 rounded-full px-4 py-4">
-                                    Tiempo restante:&nbsp;<span id="timeRemaining" className="rounded-full bg-gray-300 px-4 py-1" style={{ color: 'inherit' }} />
+                                    Tiempo restante:&nbsp;&nbsp;
+                                    <span id="timeRemaining" className="rounded-full bg-gray-300 px-4 py-1" style={{ color: 'inherit' }} />
                                 </div>
                             </div>
                             <div className="flex space-x-4 items-center flex-grow">
