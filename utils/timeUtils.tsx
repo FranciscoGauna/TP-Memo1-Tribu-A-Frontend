@@ -1,4 +1,4 @@
-export function getTimeRemaining(dateString : string) {
+export function getTimeRemaining(dateString: string) {
     const targetDate = new Date(dateString);
     const currentDate = new Date();
 
@@ -17,5 +17,8 @@ export function getTimeRemaining(dateString : string) {
 
     const textColor = timeDiff < 0 ? 'red' : 'inherit';
 
-    return `<span style="color: ${textColor}; font-weight: ${textColor === 'red' ? 'bold' : 'normal'}">${formattedTime}</span>`;
+    return {
+        formattedTime,
+        textColor,
+    };
 }

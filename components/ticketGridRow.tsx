@@ -13,6 +13,7 @@ export default function TicketGridRow({ ticket , nombreProducto , descripcionVer
     descripcionVersion: string;
 }) {
     const [list, setList] = useState([]);
+    const [timeRemaining, setTimeRemaining] = useState(getTimeRemaining(ticket.fechaLimite));
     const router = useRouter();
 
     useEffect(() => {
@@ -27,13 +28,9 @@ export default function TicketGridRow({ ticket , nombreProducto , descripcionVer
 
     useEffect(() => {
         const intervalId = setInterval(() => {
-            const timeRemaining = getTimeRemaining(ticket.fechaLimite);
-            const element = document.getElementById('timeRemaining');
-            if (element) {
-                element.innerHTML = timeRemaining;
-            }
+            const remainingTime = getTimeRemaining(ticket.fechaLimite);
+            setTimeRemaining(remainingTime);
         }, 1000);
-
         return () => clearInterval(intervalId);
     }, [ticket.fechaLimite]);
 
@@ -43,8 +40,13 @@ export default function TicketGridRow({ ticket , nombreProducto , descripcionVer
 
     return (
         <tr key={`${ticket.codigo}`}>
+
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <div className="flex items-center">{ticket.codigo}</div>
+            </td>
+
+            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                <div className="flex items-center">{ticket.titulo}</div>
             </td>
 
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
@@ -57,7 +59,9 @@ export default function TicketGridRow({ ticket , nombreProducto , descripcionVer
 
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <div className="flex items-center">
-                    <span id="timeRemaining" style={{ color: 'inherit' }} />
+                  <span className="font-bold" style={{ color: timeRemaining.textColor }}>
+                    {timeRemaining.formattedTime}
+                  </span>
                 </div>
             </td>
 

@@ -12,6 +12,10 @@ function HeaderItem({ title }: { title: string }) {
 export default function Ticket() {
     const [ticket, setTicket] = useState<Ticket | null>();
     const [list, setList] = useState<Cliente[]>([]);
+    const [remainingTime, setTimeRemaining] = useState({
+        formattedTime: "Cargando...",
+        textColor: "inherit",
+    });
     const router = useRouter();
     const { idTicket } = router.query;
     const { nombreProducto } = router.query;
@@ -38,17 +42,16 @@ export default function Ticket() {
     useEffect(() => {
         const intervalId = setInterval(() => {
             if (ticket?.fechaLimite) {
-                const timeRemaining = getTimeRemaining(ticket.fechaLimite);
+                const remainingTime = getTimeRemaining(ticket.fechaLimite);
+                setTimeRemaining(remainingTime);;
                 const element = document.getElementById('timeRemaining');
                 if (element) {
-                    element.innerHTML = timeRemaining;
-                    element.style.backgroundColor = timeRemaining.includes("red")
+                    element.style.backgroundColor = remainingTime.textColor.includes('red')
                         ? "lightpink"
                         : "inherit";
                 }
             }
         }, 1000);
-
         return () => clearInterval(intervalId);
     }, [ticket]);
 
@@ -65,7 +68,7 @@ export default function Ticket() {
                 </div>
                 <div className="rounded-lg p-6 shadow-md space-y-4" style={{ backgroundColor: "#F5F5F5" }}>
                     <div>
-                        <h3 className="text-xl font-bold decoration-gray-400 mb-5">Ticket {ticket?.codigo}</h3>
+                        <h3 className="text-xl font-bold decoration-gray-400 mb-5">Ticket {ticket?.codigo} - {ticket?.titulo}</h3>
                         <div className="flex space-x-4">
                             <div>
                                 <span className="font-bold">Estado:</span> <span className="rounded-full bg-gray-300 px-2 py-1">{ticket?.estado}</span>
@@ -95,13 +98,15 @@ export default function Ticket() {
                         <div className={"flex flex-grow"}>
                             <div>
                                 <div className="text-xl flex items-center justify-center mr-5 border-2 rounded-full px-4 py-4">
-                                    Tiempo restante:&nbsp;&nbsp;
-                                    <span id="timeRemaining" className="rounded-full bg-gray-300 px-4 py-1" style={{ color: 'inherit' }} />
+                                    Tiempo restante:&nbsp;
+                                    <span className="rounded-full bg-gray-300 px-4 py-1 font-bold whitespace-nowrap" style={{ color: remainingTime.textColor }}>
+                                    {remainingTime.formattedTime}
+                                    </span>
                                 </div>
                             </div>
                             <div className="flex space-x-4 items-center flex-grow">
                                 <span className="font-bold">Descripción: </span>
-                                <div className="border rounded-lg p-5 flex-grow" style={{ backgroundColor: "#FFFFFF", margin: "0 2rem"}}>
+                                <div className="border rounded-lg p-5 flex-grow overflow-auto" style={{ backgroundColor: "#FFFFFF", margin: "0 2rem"}}>
                                     {ticket?.description}
                                 </div>
                             </div>
