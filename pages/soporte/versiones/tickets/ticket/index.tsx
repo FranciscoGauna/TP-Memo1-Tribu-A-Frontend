@@ -23,7 +23,7 @@ export default function Ticket() {
 
     useEffect(() => {
         if(idTicket){
-            fetch(`http://localhost:8080/tickets/${idTicket}`)
+            fetch(`https://tp-memo1-tribu-a-soporte.onrender.com/tickets/${idTicket}`)
                 .then((res) => res.json())
                 .then((data) => {
                     setTicket(data);
@@ -32,7 +32,7 @@ export default function Ticket() {
     }, [idTicket]);
 
     useEffect(() => {
-        fetch('http://localhost:8080/clientes')
+        fetch('https://tp-memo1-tribu-a-soporte.onrender.com/clientes')
             .then((res) => res.json())
             .then((data) => {
                 setList(data);

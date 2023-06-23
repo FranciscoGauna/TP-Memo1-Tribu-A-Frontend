@@ -7,7 +7,7 @@ export default function Soporte() {
     const router = useRouter();
 
     useEffect(() => {
-        fetch("http://localhost:8080/productos")
+        fetch("https://tp-memo1-tribu-a-soporte.onrender.com/productos")
             .then((res) => {
                 return res.json()
             })

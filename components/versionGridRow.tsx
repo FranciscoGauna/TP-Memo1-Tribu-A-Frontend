@@ -15,7 +15,7 @@ export default function VersionGridRow({ version , nombreProducto }: {
     const router = useRouter();
 
     useEffect(() => {
-        fetch(`http://localhost:8080/versiones/${version.codigo}/tickets`)
+        fetch(`https://tp-memo1-tribu-a-soporte.onrender.com/versiones/${version.codigo}/tickets`)
             .then((res) => {
                 return res.json()
             })

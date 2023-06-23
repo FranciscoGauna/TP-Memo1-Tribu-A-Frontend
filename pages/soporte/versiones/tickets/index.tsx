@@ -17,7 +17,7 @@ export default function Tickets() {
 
     useEffect(() => {
         if (codigoVersion) {
-            fetch(`http://localhost:8080/versiones/${codigoVersion}/tickets`)
+            fetch(`https://tp-memo1-tribu-a-soporte.onrender.com/versiones/${codigoVersion}/tickets`)
                 .then((res) => {
                     return res.json()
                 })

@@ -17,7 +17,7 @@ export default function TicketGridRow({ ticket , nombreProducto , descripcionVer
     const router = useRouter();
 
     useEffect(() => {
-        fetch("http://localhost:8080/clientes")
+        fetch("https://tp-memo1-tribu-a-soporte.onrender.com/clientes")
             .then((res) => {
                 return res.json()
             })

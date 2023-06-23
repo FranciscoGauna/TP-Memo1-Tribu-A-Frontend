@@ -15,7 +15,7 @@ export default function Versiones() {
 
     useEffect(() => {
         if (codigoProducto) {
-            fetch(`http://localhost:8080/productos/${codigoProducto}/versiones`)
+            fetch(`https://tp-memo1-tribu-a-soporte.onrender.com/productos/${codigoProducto}/versiones`)
                 .then((res) => {
                     return res.json()
                 })
