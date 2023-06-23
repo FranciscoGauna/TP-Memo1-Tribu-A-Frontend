@@ -44,8 +44,8 @@ export default function Proyectos() {
                                 </thead>
 
                                 <tbody>
-                                {list.map((project) => (
-                                    <ProjectGridRow project={project} />
+                                {list.map((project, index) => (
+                                    <ProjectGridRow project={project} key={index}/>
                                 ))}
                                 </tbody>
                             </table>

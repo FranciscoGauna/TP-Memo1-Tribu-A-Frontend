@@ -30,7 +30,7 @@ export default function ProjectGridRow({ project }) {
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                 <div className="flex items-center">
-                    <button style={{backgroundColor: 'red'}}>Ver proyecto</button>
+                    <button style={{backgroundColor: '#FBF784', borderRadius: 5, fontSize: 18}} onClick={() => window.open(`http://localhost:3000/proyectos/${project.id}`, "_self")}>Ver proyecto</button>
                 </div>
             </td>
         </tr>
