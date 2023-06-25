@@ -1,4 +1,4 @@
-import { CargaHoraria, Recurso, RecursosState } from "@/interfaces/recursos";
+import { CargaHoraria, Proyecto, Recurso, RecursosState } from "@/interfaces/recursos";
 
 type RecursosAction =
     |{type:'getRecursos',payload: Recurso[]}
@@ -7,6 +7,7 @@ type RecursosAction =
     |{type:'createCargaHoraria',payload:CargaHoraria}
     |{type:'editCargaHoraria',payload:CargaHoraria}
     |{type:'deleteCargaHoraria',payload:{id:string}}
+    |{type:'getProyectosConTareas',payload:Proyecto[]}
 
 
 export const RecursosReducer = (state: RecursosState,action: RecursosAction) =>{
@@ -58,6 +59,11 @@ export const RecursosReducer = (state: RecursosState,action: RecursosAction) =>{
                         return a;
                     } 
                 })
+            }
+        case 'getProyectosConTareas':
+            return{
+                ...state,
+                proyectos: action.payload
             }
         default:
             return state;

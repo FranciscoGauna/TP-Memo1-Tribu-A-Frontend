@@ -1,9 +1,10 @@
 import Select from "react-select"
 
 import { useEffect, useState,useContext } from "react"
-import { CargaHoraria, OpcionSelector, Recurso } from "@/interfaces/recursos";
+import { CargaHoraria, OpcionSelector, Proyecto, Recurso } from "@/interfaces/recursos";
 import { RecursosContext } from "@/context/recursos/recursoContext";
 import { OpcionModal } from "./opcionModal";
+import { OpcionFecha } from "./opcionFecha";
 
 export default function ModalCreate (
   {setopenModalCreate}:{setopenModalCreate: Function}
@@ -11,34 +12,76 @@ export default function ModalCreate (
   ){
     
     const {recursosState,createCargaHoraria} = useContext(RecursosContext)
-    const{recursos,cargaHorariaActual} = recursosState
-    const [proyecto,setProyecto] = useState([]);
-    const [tarea, setTarea] = useState([]);
+    const{recursos,proyectos} = recursosState
 
-    const [opcionLegajo, setOpcionLegajo] = useState<string>("")
+    const [opcionesSelectorTareas, setopcionesSelectorTareas] = useState<Array<OpcionSelector>>([])
+   
+
+    const [opcionLegajo, setOpcionLegajo] = useState<string>("0")
     const [opcionProyecto, setOpcionProyecto] = useState<string>("")
     const [opcionTarea, setOpcionTarea] = useState<string>("")
+    const [opcionFecha,setOpcionFecha] = useState<string>("")
+    const [opcionHoras,setOpcionHoras] = useState<string>("0")
 
     const opcionesDeRecursosParaSelect:OpcionSelector[] = recursos.map((elemento:Recurso) =>{
         return { 
-          value:elemento.legajo,
+          value:`${elemento.legajo}`,
           label:`${elemento.nombre} ${elemento.apellido}`,
           color:'#FFFFFF'
         }
     })
+
+    const opcionesDeProyectosParaSelect:OpcionSelector[] = proyectos.map((elemento:Proyecto) =>{
+      return { 
+        value:`${elemento.uid}`,
+        label:`${elemento.name}`,
+        color:'#FFFFFF'
+      }
+    })
+
+    const opcionesDeTareasParaSelect = ():OpcionSelector[] =>{
+      const proyectoSeleccionado: Proyecto[] = proyectos.filter((a) =>{
+        if(a.uid === opcionProyecto){
+          return a
+        }
+      })
+      console.log(proyectoSeleccionado)
+      return proyectoSeleccionado[0].tasks.map((tarea) =>{
+        return {
+          value: `${tarea.id}`,
+          label:`${tarea.name}`,
+          color:'#FFFFFF'
+        }
+      })
+    }
     
+    const verificarCreacionDeCargaHoraria = (cargaHoraria:CargaHoraria) =>{
+      return (cargaHoraria.descripcion !== "" &&
+              cargaHoraria.horas !== 0 &&
+              cargaHoraria.fecha !== "" &&
+              cargaHoraria.tareaId !== "" &&
+              cargaHoraria.proyectoId !== "" &&
+              cargaHoraria.legajo  !== 0
+      )
+    }
 
     const handleCargar = () =>{
       const cargaHorariaAAgregar :CargaHoraria = {
         
-        legajo: opcionLegajo,
+        legajo: Number(opcionLegajo),
         proyectoId: opcionProyecto,
         tareaId: opcionTarea,
-        fecha: "2023-06-22",
-        horas: 12,
-        descripcion: "probando la carga horaria"
+        fecha: opcionFecha,
+        horas: Number(opcionHoras),
+        descripcion: "probando la carga horaria con fecha y horas"
       }
-      createCargaHoraria(cargaHorariaAAgregar)
+      if(verificarCreacionDeCargaHoraria(cargaHorariaAAgregar)){
+        console.log("campos listos")
+        createCargaHoraria(cargaHorariaAAgregar)
+      }else{
+        console.log("algun campo falta completar, pendiente de mostrar alerta")
+        
+      }
       console.log(cargaHorariaAAgregar)
       setopenModalCreate(false)
     }
@@ -55,18 +98,38 @@ export default function ModalCreate (
       { value: '3', label: 'Eliminacion',color:"#FFFFFF" }
     ]
 
+    const opcionesDeHoras = [
+      { value: '1', label: '1',color:"#FFFFFF" },
+      { value: '2', label: '2',color:"#FFFFFF" },
+      { value: '3', label: '3',color:"#FFFFFF" },
+      { value: '4', label: '4',color:"#FFFFFF" },
+      { value: '5', label: '5',color:"#FFFFFF" },
+      { value: '6', label: '6',color:"#FFFFFF" },
+      { value: '7', label: '7',color:"#FFFFFF" },
+      { value: '8', label: '8',color:"#FFFFFF" },
+    ]
+
     const opcionPorDefecto = {
         value: '', label:'Seleccione una opcion', color:'#FFFFFF'
     }
-    
 
+    useEffect(() =>{
+      if(!opcionProyecto){
+        console.log("aun no seleccione un proyecto")
+      }else{
+        console.log("seleccione el proyecto ")
+        console.log(opcionProyecto)
+        console.log("seteo las opciones de tareas")
+        
+        setopcionesSelectorTareas(opcionesDeTareasParaSelect())
+        
+      }
+      /*
+       si tengo una tarea seleccionada y luego cambio el proyecto entonces debo limpiar el selector de tareas
 
-    //funcion para enviar los datos
-
-    // const enviarCargaHoraria = () =>{
+      */
       
-    // }
-
+    },[opcionProyecto])
 
     return (
         <>
@@ -87,21 +150,31 @@ export default function ModalCreate (
                             <OpcionModal 
                               titulo="Legajo y nombre completo" 
                               opciones={opcionesDeRecursosParaSelect} 
-                              opcionDefecto={opcionPorDefecto}
+                              
                               setopcionSeleccionada={setOpcionLegajo}
                               />
                             <OpcionModal 
                               titulo="Proyecto" 
-                              opciones={opcionesDeProyecto} 
-                              opcionDefecto={opcionPorDefecto}
+                              opciones={opcionesDeProyectosParaSelect} 
+                              
                               setopcionSeleccionada={setOpcionProyecto}
                               />
                             <OpcionModal 
                               titulo="Tarea" 
-                              opciones={opcionesDeTareas} 
-                              opcionDefecto={opcionPorDefecto}
+                              opciones={opcionesSelectorTareas} 
+                              
                               setopcionSeleccionada={setOpcionTarea}
+                              opcionesProyecto={opcionProyecto}
                               />
+                            <OpcionFecha 
+                              setOpcionFecha={setOpcionFecha}
+                            />
+                            <OpcionModal
+                              titulo="Horas Trabajadas" 
+                              opciones={opcionesDeHoras} 
+                              
+                              setopcionSeleccionada={setOpcionHoras}
+                            />
                             {/* <OpcionCrearCarga titulo="Fecha de creación"/>
                             <OpcionCrearCarga titulo="Horas trabajadas"/> */}
                           </div>

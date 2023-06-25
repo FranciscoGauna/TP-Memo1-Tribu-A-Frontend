@@ -1,18 +1,65 @@
 import { RecursosContext } from '@/context/recursos/recursoContext'
-import {useEffect,useContext} from 'react'
+import { Proyecto } from '@/interfaces/recursos'
+import {useEffect,useContext,useState} from 'react'
 
 export default function ModalDelete ({setopenModalDelete, idCargaHoraria }:{setopenModalDelete:Function,idCargaHoraria:string}){
     
     const {getCargaHorariaPorId,recursosState,deleteCargaHoraria} = useContext(RecursosContext)
-    const {cargaHorariaActual} = recursosState
-        useEffect(() => {
-          getCargaHorariaPorId(idCargaHoraria)
-        }, [])
+    const {cargaHorariaActual,proyectos, recursos} = recursosState
+    
+    
     
     const handleDelete = ()=>{
       deleteCargaHoraria(idCargaHoraria)
       setopenModalDelete(false)
     }
+
+    const [nombreProyecto,setNombreProyecto]=useState("")
+    const [nombreTarea,setNombreTarea]=useState("")
+    const [nombreCompleto,setNombreCompleto]=useState("")
+    
+  
+  useEffect(() => {
+    getCargaHorariaPorId(idCargaHoraria)
+  }, [])
+
+  useEffect(()=>{
+    
+    if(!!proyectos){
+      
+       const obtenerProyecto:Proyecto= proyectos.filter((p) =>{
+        if(p.uid === cargaHorariaActual.proyectoId){
+          return p
+        }
+      })[0]
+      if(!!obtenerProyecto){
+        
+      
+        setNombreProyecto(obtenerProyecto.name)
+        const obtenerNombreDeTarea = obtenerProyecto.tasks.filter((t)=>{
+          if(t.id === cargaHorariaActual.tareaId){
+            return t
+          }
+        })[0].name
+       
+        setNombreTarea(obtenerNombreDeTarea)
+      }
+    }
+  },[proyectos,cargaHorariaActual])
+
+  useEffect(() =>{
+    if(!!recursos && !!cargaHorariaActual.legajo){
+      console.log(cargaHorariaActual)
+      const recurso= recursos.filter(r =>{
+        if( r.legajo ===cargaHorariaActual.legajo){
+          return r
+        }
+      })[0]
+      console.log(recurso)
+      const nombreCompleto = `${recurso.nombre} ${recurso.apellido}`
+      setNombreCompleto(nombreCompleto)
+    }
+  },[recursos,cargaHorariaActual])
 
     return (
         <>
@@ -31,11 +78,11 @@ export default function ModalDelete ({setopenModalDelete, idCargaHoraria }:{seto
                           <h3 className="text-base font-semibold leading-6 text-gray-900" id="modal-title">Eliminacion de carga horaira</h3>
                           <h4>¿Seguro que quiere eliminar esta carga horaria?</h4>
                             <ul>
-                                <li>{cargaHorariaActual.legajo}</li>
-                                <li>{cargaHorariaActual.proyectoId}</li>
-                                <li>{cargaHorariaActual.tareaId}</li>
-                                <li>{cargaHorariaActual.fecha}</li>
-                                <li>{cargaHorariaActual.horas}</li>
+                                <li>Legajo y nombre completo:{cargaHorariaActual.legajo} - {nombreCompleto}</li>
+                                <li>Proyecto: {nombreProyecto}</li>
+                                <li>Tarea: {nombreTarea}</li>
+                                <li>Fecha de creacion: {cargaHorariaActual.fecha}</li>
+                                <li>Horas Trabajadas: {cargaHorariaActual.horas}</li>
                             </ul>
                         </div>
                       </div>

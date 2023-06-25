@@ -1,13 +1,41 @@
 
 import { RecursosContext } from "@/context/recursos/recursoContext";
-import { CargaHoraria, Recurso } from "@/interfaces/recursos";
+import { CargaHoraria, Proyecto, Recurso } from "@/interfaces/recursos";
 import {useContext, useEffect, useState} from "react";
 
 export default function CargaHorariaGridRow( 
   {cargaHoraria,recurso,setopenModalDelete,setopenModalEdit,setCargaHorariaActualId}:
   { cargaHoraria:CargaHoraria,recurso:Recurso,setopenModalDelete:Function ,setopenModalEdit:Function,setCargaHorariaActualId:Function} ) {
 
-  const {getCargaHorariaPorId} = useContext(RecursosContext)
+  const {recursosState} = useContext(RecursosContext)
+  const {proyectos} = recursosState
+
+  const [nombreProyecto,setNombreProyecto]=useState("")
+  const [nombreTarea,setNombreTarea]=useState("")
+  
+  useEffect(()=>{
+    
+    if(!!proyectos){
+      
+       const obtenerProyecto:Proyecto= proyectos.filter((p) =>{
+        if(p.uid === cargaHoraria.proyectoId){
+          return p
+        }
+      })[0]
+      if(!!obtenerProyecto){
+        
+      
+        setNombreProyecto(obtenerProyecto.name)
+        const obtenerNombreDeTarea = obtenerProyecto.tasks.filter((t)=>{
+          if(t.id === cargaHoraria.tareaId){
+            return t
+          }
+        })[0].name
+       
+        setNombreTarea(obtenerNombreDeTarea)
+      }
+    }
+  },[proyectos])
 
   return (
     <>
@@ -25,16 +53,16 @@ export default function CargaHorariaGridRow(
       </td>
       
       <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-        <div className="w-full h-10 text-sm text-center aling-middle leading-5 
-        text-white bg-blue-500 rounded-xl contenido">{cargaHoraria.proyectoId}</div>
+        <div className="w-full h-10 px-1 py-1 text-sm text-center flex items-center leading-5 
+        text-white bg-blue-500 rounded-xl contenido">{ nombreProyecto}</div>
       </td>
       <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-        <div className="w-full h-10 text-sm text-center flex items-center justify-center leading-5 
-        text-white bg-blue-500 rounded-xl contenido">{cargaHoraria.tareaId}</div>
+        <div className="w-full h-10 px-1 py-1 text-sm text-center flex items-center justify-center leading-5 
+        text-white bg-blue-500 rounded-xl contenido">{ nombreTarea}</div>
       </td>
       
       <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-        <div className="text-sm text-center leading-5 text-gray-900">13/06/2023</div>
+        <div className="text-sm text-center leading-5 text-gray-900">{cargaHoraria.fecha}</div>
       </td>
       <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
         <div className="text-sm text-center leading-5 text-gray-900">{cargaHoraria.horas} hs</div>

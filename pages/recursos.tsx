@@ -73,7 +73,7 @@ export default function Recursos() {
                   {cargasHorarias.map((cargaHoraria) =>(
                     <CargaHorariaGridRow key={cargaHoraria.id} 
                         cargaHoraria={cargaHoraria} 
-                        recurso={recursos[Number(cargaHoraria.legajo) - 1]} 
+                        recurso={(recursos[cargaHoraria.legajo -1]) ? recursos[cargaHoraria.legajo -1] : recursos[0]} 
                         setopenModalDelete={setopenModalDelete}
                         setopenModalEdit ={setopenModalEdit}
                         setCargaHorariaActualId={setCargaHorariaActualId}

@@ -12,19 +12,23 @@ export default function ModalEdicion ({setopenModalEdit, idCargaHoraria}:{setope
     const [opcionesLegajo, setopcionesLegajo] = useState<Array<OpcionSelector>>([{} as OpcionSelector])
     const [opcionesProyectos, setopcionesProyectos] = useState<Array<OpcionSelector>>()
     const [opcionesTareas, setopcionesTareas] = useState<Array<OpcionSelector>>()
+
+
     const [opcionLegajoDefecto, setopcionLegajoDefecto] = useState<OpcionSelector>({} as OpcionSelector)
+    const [opcionLegajoSeleccionada,setopcionLegajoSeleccionada] = useState<number>(0)
+
 
     const [isLoading,setIsLoading] = useState(true)
 
     const opcionesDeRecursosParaSelect:OpcionSelector[] = recursos.map((elemento:Recurso) =>{
       return { 
-        value:elemento.legajo,
+        value:`${elemento.legajo}`,
         label:`${elemento.nombre} ${elemento.apellido}`,
         color:'#FFFFFF'
       }
     })
     
-    const opcion = opcionesDeRecursosParaSelect.find(a => (a.value === cargaHorariaActual.legajo))
+    const opcion = opcionesDeRecursosParaSelect.find(a => (Number(a.value) === cargaHorariaActual.legajo))
       
     const opcionDefecto:OpcionSelector = (opcion) ? opcion : {} as OpcionSelector
     
@@ -101,7 +105,7 @@ export default function ModalEdicion ({setopenModalEdit, idCargaHoraria}:{setope
                           
                             {( (!isLoading) && (cargaHorariaActual.id === idCargaHoraria) ) && 
                             (<>
-                              <OpcionModal titulo="Legajo y Nombre Completo" opciones={opcionesLegajo} opcionDefecto={opcionLegajoDefecto}/>
+                              <OpcionModal titulo="Legajo y Nombre Completo" opciones={opcionesLegajo} setopcionSeleccionada={setopcionLegajoSeleccionada}/>
                               {/* <OpcionModal titulo="Proyecto" opciones={opcionesDeProyectos}/>
                               <OpcionModal titulo="Tarea" opciones={opcionesDeTareas}/> */}
                             </>)}
