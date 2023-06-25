@@ -8,7 +8,7 @@ export default function CargaHorariaGridRow(
   { cargaHoraria:CargaHoraria,recurso:Recurso,setopenModalDelete:Function ,setopenModalEdit:Function,setCargaHorariaActualId:Function} ) {
 
   const {recursosState} = useContext(RecursosContext)
-  const {proyectos} = recursosState
+  const {proyectos,cargasHorarias} = recursosState
 
   const [nombreProyecto,setNombreProyecto]=useState("")
   const [nombreTarea,setNombreTarea]=useState("")
@@ -35,7 +35,7 @@ export default function CargaHorariaGridRow(
         setNombreTarea(obtenerNombreDeTarea)
       }
     }
-  },[proyectos])
+  },[proyectos,cargasHorarias])
 
   return (
     <>

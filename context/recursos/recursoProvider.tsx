@@ -1,6 +1,6 @@
 import {useReducer} from 'react'
 import {RecursosContext} from './recursoContext'
-import { CargaHoraria, RecursosState } from '@/interfaces/recursos'
+import { CargaHoraria, ParametrosDeFiltrado, RecursosState } from '@/interfaces/recursos'
 import { RecursosReducer } from './recursoReducer'
 
 const initial_state :RecursosState = {
@@ -148,7 +148,7 @@ export const RecursosProvider  = ({children}:props) =>{
     };
 
     const getCargasHorarias =  async() =>{
-        await fetch("http://localhost:5036/api/v1/carga-horaria") 
+        await fetch("https://fiuba-memo1-recursos-core.azurewebsites.net/api/v1/carga-horaria") 
         .then((res) => {
             console.log("res", res)
             return res.json()
@@ -235,6 +235,33 @@ export const RecursosProvider  = ({children}:props) =>{
           })     
     }
 
+    const getCargasHorariasSegun= async( parametros:ParametrosDeFiltrado) =>{
+        const {recursoid,proyectoid} = parametros
+        const rutaRecurso = (!!recursoid) ?`?legajo=${recursoid}`: ""
+        const rutaProyecto = ()=>{
+          if(!!recursoid && !!proyectoid){
+            return `&proyecto=${proyectoid}`
+          }else if(!recursoid && !!proyectoid){
+            return `?proyecto=${proyectoid}`
+          }else{
+            return ""
+          }
+        }
+        const rutaPrincipal = `https://fiuba-memo1-recursos-core.azurewebsites.net/api/v1/carga-horaria`
+        const rutaFinal=rutaPrincipal + rutaRecurso + rutaProyecto()
+        
+        await fetch(rutaFinal) 
+        .then((res) => {
+            console.log("res", res)
+            return res.json()
+          })
+          .then((data) => {
+            console.log("data", data)
+            dispatch({type:"getCargasHorarias",payload:data})
+            
+          })
+    }
+
     // const getProyectosConTareas = () =>{
 
     // }
@@ -247,7 +274,8 @@ export const RecursosProvider  = ({children}:props) =>{
             getCargaHorariaPorId,
             createCargaHoraria,
             editCargaHoraria,
-            deleteCargaHoraria
+            deleteCargaHoraria,
+            getCargasHorariasSegun
         }}>
             {children}
         </RecursosContext.Provider>

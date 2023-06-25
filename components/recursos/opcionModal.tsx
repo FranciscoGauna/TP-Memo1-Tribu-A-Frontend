@@ -1,24 +1,24 @@
 
 import { OpcionSelector } from "@/interfaces/recursos"
-import { useRef,useEffect } from "react"
-import StateManagedSelect, { GroupBase } from "react-select"
+import { useRef,useEffect,useState } from "react"
 import Select from "react-select"
 
 interface ModalProps {
     titulo:string
     opciones:OpcionSelector[]
-    
+    opcionDefecto?:OpcionSelector
     setopcionSeleccionada: Function
     opcionesProyecto?: string
     
 }
 
-export const OpcionModal = ({titulo, opciones,setopcionSeleccionada,opcionesProyecto}:ModalProps) => {
+export const OpcionModal = ({titulo, opciones,setopcionSeleccionada,opcionDefecto,opcionesProyecto}:ModalProps) => {
     
+    const [tengoOpcionDefecto,settengoOpcionDefecto] = useState(!!opcionDefecto)
     
         const handleSelectChange = (event:any) =>{
             if(!event){
-                console.log("no tengo valor")
+                
                 setopcionSeleccionada("")
                 return
             }
@@ -30,12 +30,18 @@ export const OpcionModal = ({titulo, opciones,setopcionSeleccionada,opcionesProy
             if(selectRef){
                 selectRef.current.clearValue();
             }
-           
+        
         };
+
+        
         useEffect(() => {
-          
-            handleClear()
+          if(!tengoOpcionDefecto){
             
+                handleClear()
+           
+            
+          }  
+          settengoOpcionDefecto(false)
 
         }, [opcionesProyecto])
         
@@ -47,7 +53,7 @@ export const OpcionModal = ({titulo, opciones,setopcionSeleccionada,opcionesProy
                                 ref={selectRef}
                                 className="w-full "
                                 
-                                //defaultValue={opcionDefecto}
+                                defaultValue={opcionDefecto}
                                 noOptionsMessage= {()=>{ return "Primero seleccione un proyecto"}}
                                 styles={{
                                     control: (baseStyles, state) => ({

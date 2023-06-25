@@ -124,10 +124,6 @@ export default function ModalCreate (
         setopcionesSelectorTareas(opcionesDeTareasParaSelect())
         
       }
-      /*
-       si tengo una tarea seleccionada y luego cambio el proyecto entonces debo limpiar el selector de tareas
-
-      */
       
     },[opcionProyecto])
 

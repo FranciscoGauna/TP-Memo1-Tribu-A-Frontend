@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect} from "react";
 import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
@@ -7,9 +7,32 @@ import { registerLocale, setDefaultLocale } from  "react-datepicker";
 import es from 'date-fns/locale/es';
 registerLocale('es', es)
 
+interface OpcionFechaProps{
+    setOpcionFecha: Function
+    fechaPorDefecto?: string
+}
 
-export const OpcionFecha = ({setOpcionFecha}: {setOpcionFecha:Function}) => {
+export const OpcionFecha = ({setOpcionFecha, fechaPorDefecto}: OpcionFechaProps) => {
   const [startDate, setStartDate] = useState<Date>();
+
+  const establecerFecha = () =>{
+    if(!!fechaPorDefecto){
+        const [year, month,day] = fechaPorDefecto.split('-')
+        setStartDate(new Date(Number(year),Number(month) - 1,Number(day)))
+        
+    }
+    
+  }
+
+  useEffect(() => {
+    if(!!fechaPorDefecto){
+        
+        establecerFecha()
+    }
+    
+
+  }, [])
+  
   return (
     <>
         <p className="text-sm text-gray-500 py-4">Fecha de creacion</p>

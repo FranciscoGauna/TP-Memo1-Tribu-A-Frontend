@@ -49,7 +49,8 @@ export const RecursosReducer = (state: RecursosState,action: RecursosAction) =>{
                         return a;
                     } 
                     
-                })
+                }),
+                cargaHorariaActual: action.payload
             }
         case 'deleteCargaHoraria':
             return{

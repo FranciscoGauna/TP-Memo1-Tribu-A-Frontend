@@ -1,5 +1,5 @@
 import {createContext} from "react"
-import { CargaHoraria, RecursosState } from "@/interfaces/recursos"
+import { CargaHoraria, ParametrosDeFiltrado, RecursosState } from "@/interfaces/recursos"
 
 export type RecursosContextProps = {
     recursosState: RecursosState
@@ -9,6 +9,7 @@ export type RecursosContextProps = {
     createCargaHoraria: (cargaHoraria:CargaHoraria) =>{}
     editCargaHoraria: (cargaHoraria: CargaHoraria) =>{}
     deleteCargaHoraria: (id:string) =>{}
+    getCargasHorariasSegun: (parametros : ParametrosDeFiltrado) =>{}
 }
 
 export const RecursosContext = createContext<RecursosContextProps>({} as RecursosContextProps)

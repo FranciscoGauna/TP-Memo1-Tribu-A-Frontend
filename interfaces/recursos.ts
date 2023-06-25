@@ -39,6 +39,11 @@ export interface CargaHoraria{
 
   }
 
+  export interface ParametrosDeFiltrado {
+    recursoid:string
+    proyectoid:string
+  }
+
   export interface RecursosState {
     cargasHorarias: CargaHoraria[]
     cargaHorariaActual: CargaHoraria  

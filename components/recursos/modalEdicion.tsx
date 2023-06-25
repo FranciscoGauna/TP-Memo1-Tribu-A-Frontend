@@ -1,22 +1,34 @@
 import { RecursosContext } from "@/context/recursos/recursoContext"
-import { CargaHoraria, OpcionSelector, Recurso } from "@/interfaces/recursos"
+import { CargaHoraria, OpcionSelector, Proyecto, Recurso } from "@/interfaces/recursos"
 import { useContext, useEffect,useState } from "react"
 import { OpcionModal } from "./opcionModal"
+import { OpcionFecha } from "./opcionFecha"
 
 
-export default function ModalEdicion ({setopenModalEdit, idCargaHoraria}:{setopenModalEdit: Function,idCargaHoraria:string }){
+export default function ModalEdicion ({setopenModalEdit, idCargaHoraria,setIdCargaHoraria}:
+  {setopenModalEdit: Function,idCargaHoraria:string,setIdCargaHoraria:Function }){
     
   
-    const {recursosState, getCargaHorariaPorId} = useContext(RecursosContext)
-    const {cargaHorariaActual,cargasHorarias,recursos} = recursosState
+    const {recursosState, getCargaHorariaPorId,editCargaHoraria} = useContext(RecursosContext)
+    const {cargaHorariaActual,recursos,proyectos,cargasHorarias} = recursosState
     const [opcionesLegajo, setopcionesLegajo] = useState<Array<OpcionSelector>>([{} as OpcionSelector])
     const [opcionesProyectos, setopcionesProyectos] = useState<Array<OpcionSelector>>()
     const [opcionesTareas, setopcionesTareas] = useState<Array<OpcionSelector>>()
 
 
     const [opcionLegajoDefecto, setopcionLegajoDefecto] = useState<OpcionSelector>({} as OpcionSelector)
-    const [opcionLegajoSeleccionada,setopcionLegajoSeleccionada] = useState<number>(0)
+    const [opcionProyectoDefecto, setopcionProyectoDefecto] = useState<OpcionSelector>({} as OpcionSelector)
+    const [opcionTareaDefecto, setopcionTareaDefecto] = useState<OpcionSelector>({} as OpcionSelector)
+    const [opcionFechaDefecto, setopcionFechaDefecto] = useState<string>("2023-01-01")
+    const [opcionHorasDefecto, setopcionHorasDefecto] = useState<OpcionSelector>({} as OpcionSelector)
 
+    const [opcionesSelectorTareas, setopcionesSelectorTareas] = useState<Array<OpcionSelector>>([])
+
+    const [opcionLegajo, setOpcionLegajo] = useState<string>("0")
+    const [opcionProyecto, setOpcionProyecto] = useState<string>("")
+    const [opcionTarea, setOpcionTarea] = useState<string>("")
+    const [opcionFecha,setOpcionFecha] = useState<string>("")
+    const [opcionHoras,setOpcionHoras] = useState<string>("0")
 
     const [isLoading,setIsLoading] = useState(true)
 
@@ -28,32 +40,110 @@ export default function ModalEdicion ({setopenModalEdit, idCargaHoraria}:{setope
       }
     })
     
-    const opcion = opcionesDeRecursosParaSelect.find(a => (Number(a.value) === cargaHorariaActual.legajo))
+    const opcionesDeProyectosParaSelect:OpcionSelector[] = proyectos.map((elemento:Proyecto) =>{
+      return { 
+        value:`${elemento.uid}`,
+        label:`${elemento.name}`,
+        color:'#FFFFFF'
+      }
+    })
+
+    const opcionesDeTareasParaSelect = ():OpcionSelector[] =>{
+      const proyectoSeleccionado: Proyecto[] = proyectos.filter((a) =>{
+        if(a.uid === opcionProyecto){
+          return a
+        }
+      })
+      console.log(proyectoSeleccionado)
+      return proyectoSeleccionado[0].tasks.map((tarea) =>{
+        return {
+          value: `${tarea.id}`,
+          label:`${tarea.name}`,
+          color:'#FFFFFF'
+        }
+      })
+    }
+
+    const opcionesDeHoras = [
+      { value: '1', label: '1',color:"#FFFFFF" },
+      { value: '2', label: '2',color:"#FFFFFF" },
+      { value: '3', label: '3',color:"#FFFFFF" },
+      { value: '4', label: '4',color:"#FFFFFF" },
+      { value: '5', label: '5',color:"#FFFFFF" },
+      { value: '6', label: '6',color:"#FFFFFF" },
+      { value: '7', label: '7',color:"#FFFFFF" },
+      { value: '8', label: '8',color:"#FFFFFF" },
+    ]
+    
+    
+    
+    const establecerLasOpcionesPorDefecto = () =>{
       
-    const opcionDefecto:OpcionSelector = (opcion) ? opcion : {} as OpcionSelector
-    
-    
-    
-    const establecerLasOpciones = () =>{
+      const oLegajo = opcionesDeRecursosParaSelect.filter(o =>{
+        if (Number(o.value) === cargaHorariaActual.legajo){
+          return o
+        }
+      })[0]
+      setopcionLegajoDefecto(oLegajo)
+      setOpcionLegajo(oLegajo.value)
+
+      const oProyecto = opcionesDeProyectosParaSelect.filter(o =>{
+        if(o.value === cargaHorariaActual.proyectoId){
+          return o
+        }
+      })[0] 
+      setopcionProyectoDefecto(oProyecto)
+      setOpcionProyecto(oProyecto.value)
+
+      const oHora = opcionesDeHoras.filter(o =>{
+        if(o.value === cargaHorariaActual.horas.toString()){
+          return o
+        }
+      })[0]
+      setopcionHorasDefecto(oHora)
+      setOpcionHoras(oHora.value)
       
+
+      // // caso tarea por defecto
+      // // busco el proyecto
+      const proyecto = proyectos.filter(p =>{
+        if(cargaHorariaActual.proyectoId === p.uid){
+          return p
+        }
+      })[0]
+      // // busco la tarea por id
+      
+      const tarea = proyecto.tasks.filter(t =>{
+        if(cargaHorariaActual.tareaId === t.id){
+          return t
+        }
+      })[0]
+      
+      // // transformo a un OpcionSelector
+      const oTarea:OpcionSelector = {label: tarea.name,value:tarea.id,color:"#FFFFFFF"}
+
+      setopcionTareaDefecto(oTarea)
+      setOpcionTarea(oTarea.value)
+
+      setopcionFechaDefecto(cargaHorariaActual.fecha)
+      setOpcionFecha(cargaHorariaActual.fecha)
+    
+    }
+
+    const establecerLasOpcionesParaCadaSelector = () =>{
       setopcionesLegajo (opcionesDeRecursosParaSelect)
-      setopcionLegajoDefecto(opcionDefecto)
+      setopcionesProyectos(opcionesDeProyectosParaSelect)
       
     }
 
    
     useEffect(() =>{
-      
       getCargaHorariaPorId(idCargaHoraria);
-      // setTimeout( () =>{
-      //   console.log(cargaHorariaActual)
-      //   establecerLasOpciones()
-      //   setIsLoading(false)
-      // },5)
     },[])
 
     
     useEffect(() =>{
+      
       console.log(cargaHorariaActual)
       if( !cargaHorariaActual.legajo ){
           console.log("sigo estando vacio ")
@@ -61,29 +151,61 @@ export default function ModalEdicion ({setopenModalEdit, idCargaHoraria}:{setope
           console.log("estoy en proceso de cambio")
       }else{
         console.log("ia me complete")
-        establecerLasOpciones()
+        console.log(proyectos)
+        establecerLasOpcionesPorDefecto()
+        establecerLasOpcionesParaCadaSelector()
         setIsLoading(false)
       }
+      
      
-    },[cargaHorariaActual])
+    },[cargaHorariaActual,proyectos])
 
+    useEffect(() =>{
+      if(!opcionProyecto){
+        console.log("aun no seleccione un proyecto")
+      }else{
+        console.log("seleccione el proyecto ")
+        console.log(opcionProyecto)
+        console.log("seteo las opciones de tareas")
+        
+        setopcionesSelectorTareas(opcionesDeTareasParaSelect())
+        
+      }
+      
+    },[opcionProyecto])
+  
+    const verificarEdicionDeCargaHoraria = (cargaHoraria:CargaHoraria) =>{
+      return (cargaHoraria.id !== "" &&
+              cargaHoraria.descripcion !== "" &&
+              cargaHoraria.horas !== 0 &&
+              cargaHoraria.fecha !== "" &&
+              cargaHoraria.tareaId !== "" &&
+              cargaHoraria.proyectoId !== "" &&
+              cargaHoraria.legajo  !== 0
+      )
+    }
 
-    
-    
-
-
-
-    const opcionesDeProyectos = [
-      { value: '1', label: 'Proyectos',color:"#FFFFFF" },
-      { value: '2', label: 'Soporte',color:"#FFFFFF" },
-      { value: '3', label: 'Recurso',color:"#FFFFFF" }
-    ]
-
-    const opcionesDeTareas = [
-      { value: '1', label: 'Creacion',color:"#FFFFFF" },
-      { value: '2', label: 'Filtrado',color:"#FFFFFF" },
-      { value: '3', label: 'Eliminacion',color:"#FFFFFF" }
-    ]
+    const handleEditar = () =>{
+      const cargaHorariaAEditar :CargaHoraria = {
+        id: cargaHorariaActual.id,
+        legajo: Number(opcionLegajo),
+        proyectoId: opcionProyecto,
+        tareaId: opcionTarea,
+        fecha: opcionFecha,
+        horas: Number(opcionHoras),
+        descripcion: "probando la carga horaria con fecha y horas"
+      }
+      if(verificarEdicionDeCargaHoraria(cargaHorariaAEditar)){
+        console.log("campos listos")
+        editCargaHoraria(cargaHorariaAEditar)
+      }else{
+        console.log("algun campo falta completar, pendiente de mostrar alerta")
+        
+      }
+      console.log(cargaHorariaAEditar)
+      setIdCargaHoraria("")
+      setopenModalEdit(false)
+    }
 
 
     return (
@@ -105,9 +227,36 @@ export default function ModalEdicion ({setopenModalEdit, idCargaHoraria}:{setope
                           
                             {( (!isLoading) && (cargaHorariaActual.id === idCargaHoraria) ) && 
                             (<>
-                              <OpcionModal titulo="Legajo y Nombre Completo" opciones={opcionesLegajo} setopcionSeleccionada={setopcionLegajoSeleccionada}/>
-                              {/* <OpcionModal titulo="Proyecto" opciones={opcionesDeProyectos}/>
-                              <OpcionModal titulo="Tarea" opciones={opcionesDeTareas}/> */}
+                              <OpcionModal 
+                                titulo="Legajo y Nombre Completo" 
+                                opciones={opcionesLegajo} 
+                                setopcionSeleccionada={setOpcionLegajo}
+                                opcionDefecto={opcionLegajoDefecto}
+                              />
+                             <OpcionModal 
+                              titulo="Proyecto" 
+                              opciones={opcionesDeProyectosParaSelect} 
+                              setopcionSeleccionada={setOpcionProyecto}
+                              opcionDefecto={opcionProyectoDefecto}
+                              />
+                              <OpcionModal 
+                                titulo="Tarea" 
+                                opciones={opcionesSelectorTareas} 
+                                setopcionSeleccionada={setOpcionTarea}
+                                opcionDefecto={opcionTareaDefecto}
+                                opcionesProyecto={opcionProyecto}
+                                />
+                              <OpcionFecha 
+                                setOpcionFecha={setOpcionFecha}
+                                fechaPorDefecto={opcionFechaDefecto}
+                              />
+                              <OpcionModal
+                                titulo="Horas Trabajadas" 
+                                opciones={opcionesDeHoras}
+                                setopcionSeleccionada={setOpcionHoras}
+                                opcionDefecto={opcionHorasDefecto}
+                              />
+                              
                             </>)}
                             
                             
@@ -116,8 +265,8 @@ export default function ModalEdicion ({setopenModalEdit, idCargaHoraria}:{setope
                       </div>
                     </div>
                     <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                      <button type="button" className="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto">Cargar</button>
-                      <button onClick={ () =>{ setopenModalEdit(false)}} type="button" className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">Cancelar</button>
+                      <button onClick={handleEditar} type="button" className="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto">Cargar</button>
+                      <button onClick={ () =>{ setIdCargaHoraria("");setopenModalEdit(false)}} type="button" className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">Cancelar</button>
                     </div>
                   </div>
                 </div>
