@@ -15,9 +15,10 @@ export interface Project {
   name: string
   description: string
   state: string
-  startDate: number
-  endDate: number
-  estimatedHours: number
-  projectLeader: string 
-  client: string
+  start_date: string
+  end_date: string
+  estimated_hours: number
+  project_leader: string 
+  tasks: object
+  uid: string
 }

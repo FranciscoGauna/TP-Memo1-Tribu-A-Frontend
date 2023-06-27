@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
 export default function ProyectoDetalle() {
-	
+	const router = useRouter();
 	const [id, setId] : [string, Function] = useState("");
 	
 	useEffect(() => {
