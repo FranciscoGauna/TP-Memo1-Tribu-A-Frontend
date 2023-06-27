@@ -28,7 +28,7 @@ export default function Tickets() {
     }, [codigoVersion]);
 
     function handleNuevoTicket() {
-
+        router.push(`/soporte/tickets/creacion`);
     }
 
     return (

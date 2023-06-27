@@ -34,3 +34,27 @@ export interface Cliente {
   razonSocial: string;
   cuit: number;
 }
+
+export interface Task {
+  end_date_est: string;
+  hours_est: string;
+  id: string;
+  name: string;
+  start_date: string;
+  state: string;
+}
+
+export interface Project {
+  uid: string;
+  name: string;
+  client: string;
+  start_date: string;
+  end_date: string;
+  project_leader: string;
+  development_team: string[];
+  tasks: Task[];
+}
+
+export interface Projects {
+  projects: Project[];
+}
