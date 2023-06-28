@@ -14,26 +14,20 @@ const FormPage = () => {
     const [projectOptions, setProjectOptions] = useState<Project[]>([]);
 
     const handleChange = (e) => {
-        const { nombre, value } = e.target;
+        const { name, value } = e.target;
         setFormData((prevData) => ({
           ...prevData,
-          [nombre]: value
+          [name]: value
         }));
       };
     
     const handleSubmit = (e) => {
     e.preventDefault();
-    // Perform form submission logic here
+    // Cambiar a POST request de api soporte
     console.log(formData);
     };
     
-    const handleFetchOptions = async () => {
-    // Fetch cliente options
-    await fetchClienteOptions();
-
-    // Fetch project options
-    await fetchProjectOptions();
-    };
+    
 
     useEffect(() => {
         fetch(`https://tp-memo1-tribu-a-soporte.onrender.com/clientes`)
@@ -58,98 +52,148 @@ const FormPage = () => {
     });
 
   return (
-    <div>
-      <h1>Crear ticket</h1>
-      <br/>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="nombre">nombre:</label>
-        <input
-          type="text"
-          id="nombre"
-          name="nombre"
-          value={formData.nombre}
-          onChange={handleChange}
-        />
+    <div className="container max-w-7xl mx-auto mt-8">
+      <div className="mb-5">
+        <h1 className="text-4xl font-bold decoration-gray-400 mb-10">Soporte</h1>
+        <h2 className="text-2xl font-bold decoration-gray-400 mb-2">Crear ticket</h2>
+      </div>
+      <div className="rounded-lg p-6 shadow-md space-y-4" style={{ backgroundColor: "#F5F5F5" }}>
+        <form onSubmit={handleSubmit}>
+          <div className="flex space-x-4">
+            <label htmlFor="nombre" className="font-bold">Nombre:</label>
+            <input
+              type="text"
+              id="nombre"
+              name="nombre"
+              value={formData.nombre}
+              onChange={handleChange}
+            />
 
-        <br/>
+            <label htmlFor="descripcion" className="font-bold">Descripcion:</label>
+            <textarea
+              id="descripcion"
+              name="descripcion"
+              value={formData.descripcion}
+              onChange={handleChange}
+            />
+          </div>
+          <br/>
+          <div className="flex space-x-4">
+            <label htmlFor="cliente" className="font-bold">Cliente:</label>
+            <select
+              id="cliente"
+              name="cliente"
+              value={formData.cliente}
+              onChange={handleChange}
+            >
+              <option value="">Selecciona un cliente</option>
+              {clienteOptions.map((cliente) => (
+                <option key={cliente.id} value={cliente.id}>
+                  {cliente.razonSocial}
+                </option>
+              ))}
+            </select>
 
-        <label htmlFor="descripcion">Descripcion:</label>
-        <textarea
-          id="descripcion"
-          name="descripcion"
-          value={formData.descripcion}
-          onChange={handleChange}
-        />
 
-        <br/>
-
-        <label htmlFor="cliente">Cliente:</label>
-        <select
-          id="cliente"
-          name="cliente"
-          value={formData.cliente}
-          onChange={handleChange}
-        >
-          <option value="">Selecciona un cliente</option>
-          {clienteOptions.map((cliente) => (
-            <option key={cliente.id} value={cliente.id}>
-              {cliente.razonSocial}
-            </option>
-          ))}
-        </select>
-
-        <br/>
-
-        <label htmlFor="project">Project:</label>
-        <select
-          id="project"
-          name="project"
-          value={formData.project}
-          onChange={handleChange}
-        >
-          <option value="">Selecciona un proyecto</option>
-          {projectOptions.map((project) => (
-            <option key={project.uid} value={project.uid}>
-              {project.name}
-            </option>
-          ))}
-        </select>
-
-        <br/>
-        
-        <label htmlFor="prioridad">prioridad:</label>
-        <select
-          id="prioridad"
-          nombre="prioridad"
-          value={formData.prioridad}
-          onChange={handleChange}
-        >
-          <option value="">Selecciona una prioridad</option>
-          <option value="baja">Baja</option>
-          <option value="media">Media</option>
-          <option value="alta">Alta</option>
-        </select>
-
-        <br/>
-        
-        <label htmlFor="severidad">severidad:</label>
-        <select
-          id="severidad"
-          name="severidad"
-          value={formData.severidad}
-          onChange={handleChange}
-        >
-          <option value="">Selecciona una severidad</option>
-          <option value="s1">S1</option>
-          <option value="s2">S2</option>
-          <option value="s3">S3</option>
-          <option value="s4">S4</option>
-        </select>
-
-        <br/>
-        
-        <button type="submit">Submit</button>
-      </form>
+            <label htmlFor="proyecto" className="font-bold">Proyecto:</label>
+            <select
+              id="proyecto"
+              name="project"
+              value={formData.project}
+              onChange={handleChange}
+            >
+              <option value="">Selecciona un proyecto</option>
+              {projectOptions.map((project) => (
+                <option key={project.uid} value={project.uid}>
+                  {project.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="flex space-x-4">
+            <label htmlFor="prioridad" className="font-bold">Prioridad:</label>
+            
+            <label>
+              <input
+                type="radio"
+                name="prioridad"
+                value="baja"
+                checked={formData.prioridad === 'baja'}
+                onChange={handleChange}
+              />
+              Baja
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="prioridad"
+                value="media"
+                checked={formData.prioridad === 'media'}
+                onChange={handleChange}
+              />
+              Media
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="prioridad"
+                value="alta"
+                checked={formData.prioridad === 'alta'}
+                onChange={handleChange}
+              />
+              Alta
+            </label>
+          </div>
+          <div className="flex space-x-4">
+            <label htmlFor="severidad" className="font-bold">Severidad:</label>
+            
+            <label>
+              <input
+                type="radio"
+                name="severidad"
+                value="s1"
+                checked={formData.severidad === 's1'}
+                onChange={handleChange}
+              />
+              S1
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="severidad"
+                value="s2"
+                checked={formData.severidad === 's2'}
+                onChange={handleChange}
+              />
+              S2
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="severidad"
+                value="s3"
+                checked={formData.severidad === 's3'}
+                onChange={handleChange}
+              />
+              S3
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="severidad"
+                value="s4"
+                checked={formData.severidad === 's4'}
+                onChange={handleChange}
+              />
+              S4
+            </label>
+          </div>
+          <div className="flex space-x-4">
+            <button type="submit" className="mt-2 px-4 py-2 text-white rounded-md"
+                style={{ backgroundColor: "#185FA1" }}>Crear</button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };
