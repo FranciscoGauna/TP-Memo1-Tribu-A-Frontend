@@ -1,5 +1,5 @@
+import { ModalCreateProps } from "../types"
 import { useEffect, useState } from "react";
-import { ModalUpdateProps } from "../types";
 import Select from "react-select";
 
 function parseResource(res: { [x: string]: string; }){
@@ -12,67 +12,65 @@ function parseResources(res: { [x: string]: string; }[]){
 	return res.map(parseResource);
 }
 
+export default function ModalCreate({ modalOpen, setModalOpen}: ModalCreateProps) {
+  const [name, setName] : [string, Function] = useState("");
+  const [projectLeader, setProjectLeader] : [string, Function] = useState("");
+  const [description, setDescription] : [string, Function] = useState("");
+  const [stage, setStage] : [string, Function] = useState("");
+  const [estimatedHours, setEstimatedHours] : [number, Function] = useState(0);
+  const [startDate, setStartDate] : [string, Function] = useState("");
+  const [endDate, setEndDate] : [string, Function] = useState("");
+  const [leaderOptions, setLeaderOptions] : [object[], Function] = useState([]);
+  const customStyles = {
+    option: (defaultStyles: object, state: { isSelected: any; }) => ({
+      ...defaultStyles,
+      color: state.isSelected ? "#212529" : "#000000",
+      backgroundColor: state.isSelected ? "#ffffff" : "#ffffff",
+    }),
 
-
-
-export default function ModalUpdate({ modalOpen, setModalOpen, project, setProject}: ModalUpdateProps) {
-	const [name, setName] : [string, Function] = useState(project.name);
-	const [projectLeader, setProjectLeader] : [string, Function] = useState(project.project_leader);
-	const [description, setDescription] : [string, Function] = useState(project.description);
-	const [stage, setStage] : [string, Function] = useState(project.stage);
-	const [estimatedHours, setEstimatedHours] : [number, Function] = useState(project.estimated_hours);
-	const [startDate, setStartDate] : [string, Function] = useState(project.start_date);
-	const [endDate, setEndDate] : [string, Function] = useState(project.end_date);
-	const [leaderOptions, setLeaderOptions] : [{ value: string, label:string }[], Function] = useState([]);
-	const customStyles = {
-	  option: (defaultStyles: object, state: { isSelected: any; }) => ({
-		...defaultStyles,
-		color: state.isSelected ? "#212529" : "#000000",
-		backgroundColor: state.isSelected ? "#ffffff" : "#ffffff",
-	  }),
-  
-	  control: (defaultStyles: object) => ({
-		...defaultStyles,
-		backgroundColor: "#ffffff",
-	  }),
-	  singleValue: (defaultStyles: object) => ({ ...defaultStyles, color: "#000" }),
-	};
-
-	function findResource(res: { value: string, label:string }[], value: string){
-		for (let index = 0; index < res.length; index++){
-			if (res[index].value == value)
-				return res[index];
-		}
-		return undefined;
-	}
-
-	useEffect(() => {
-		// Se trae los human resources del endpoint
-		fetch(process.env.NEXT_PUBLIC_RESOURCES_URL + "/api/v1/users")
-			.then((res) => {
-				return res.json()
-			})
-			.then((data) => {
-				setLeaderOptions(parseResources(data));
-			}).catch((e) => {
-				console.error(e);
-			});
-	}, []);
+    control: (defaultStyles: object) => ({
+      ...defaultStyles,
+      backgroundColor: "#ffffff",
+    }),
+    singleValue: (defaultStyles: object) => ({ ...defaultStyles, color: "#000" }),
+  };
 
   const clearAttributes = () => {
-    setName(project.name);
-    setDescription(project.description);
-    setProjectLeader(project.project_leader);
-    setStage(project.stage);
-    setEstimatedHours(project.estimated_hours);
-    setStartDate(project.start_date);
-    setEndDate(project.end_date);
+    setName("");
+    setProjectLeader("");
+    setEstimatedHours(0);
+    setDescription("");
+    setStartDate("");
+    setEndDate("");
+    setStage("");
   }
-  
-  const updateProject = () => {
-    let formData = {name: name, project_leader: projectLeader, description: description};
-    fetch(process.env.NEXT_PUBLIC_PROJECTS_URL + '/projects/' + project.uid, {
-	    method: 'PUT',
+
+  useEffect(() => {
+	// Se trae los proyectos del endpoint
+	fetch(process.env.NEXT_PUBLIC_RESOURCES_URL + "/api/v1/users")
+		.then((res) => {
+			return res.json()
+		})
+		.then((data) => {
+			setLeaderOptions(parseResources(data));
+		}).catch((e) => {
+			console.error(e);
+		});
+	}, []);
+
+  const createProject = () => {
+    let formData = {
+		name: name, 
+		description: description,
+		project_leader: projectLeader,
+		stage: stage,
+		estimated_hours: estimatedHours, 
+		start_date: startDate, 
+		end_date: endDate, 
+		tasks: {}
+	};
+    fetch('https://projects-backend-service.onrender.com/projects', {
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
@@ -80,10 +78,13 @@ export default function ModalUpdate({ modalOpen, setModalOpen, project, setProje
     }).then((res) => {
         return res.json();
     }).then((data) => {
-        console.log("UPDATE",data);
-        setProject(data);
+        console.log("CREATE", data);
         setModalOpen(false);
-    });
+		//window.location.reload();
+    }).catch((error) => {
+		console.error(error);
+		alert("Failed to create Project");
+	});
   }
 
   return (
@@ -98,7 +99,7 @@ export default function ModalUpdate({ modalOpen, setModalOpen, project, setProje
         	<div className="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
           		{/* <!-- Modal header --> */}
 				<div className="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
-					<h3 className="text-lg font-semibold text-gray-900 dark:text-white">Editar Proyecto</h3>
+					<h3 className="text-lg font-semibold text-gray-900 dark:text-white">Crear Proyecto</h3>
 					<button
 						type="button"
 						className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
@@ -145,7 +146,7 @@ export default function ModalUpdate({ modalOpen, setModalOpen, project, setProje
 						placeholder="50"
 					/>
 					<div>Líder del proyecto:</div>
-					<Select options={leaderOptions} styles={customStyles} defaultValue={findResource(leaderOptions, projectLeader)}/>
+					<Select options={leaderOptions} styles={customStyles}/>
 					<div>Estado:</div>
 					<input style={{borderColor: "#0F3A61", borderWidth: 2, borderRadius: 5, padding: 5, marginBottom: 15, width: '100%', color: "#000000"}}
 						value={stage}
@@ -177,9 +178,9 @@ export default function ModalUpdate({ modalOpen, setModalOpen, project, setProje
 					<button
 						style={{backgroundColor: "#0F3A61", color: "#FFFFFF", borderRadius: 5, width: 100, height: 40}}
 						onClick={() => {
-							updateProject();
+							createProject();
 						}}
-					>Editar</button>
+					>Crear</button>
 		    	</div>
           	</div>
       	</div>
