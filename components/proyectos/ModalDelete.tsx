@@ -1,4 +1,4 @@
-import { ModalDeleteProps } from "../types"
+import { ModalDeleteProps } from "../../types/components"
 
 export default function ModalDelete({ modalOpen, setModalOpen, project}: ModalDeleteProps) {
   

@@ -1,4 +1,13 @@
-import { Project, Usuario } from "@/pages/types"
+import { Cliente, Project, Usuario } from "./model"
+
+
+export interface ClientGridProps {
+  cliente: Cliente
+}
+
+export interface UserGridProps {
+  usuario: Usuario
+}
 
 export interface ISidebarItem {
   href: string

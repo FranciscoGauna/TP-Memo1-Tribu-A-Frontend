@@ -1,4 +1,4 @@
-import { ModalCreateProps } from "../types"
+import { ModalCreateProps } from "../../types/components"
 import { useEffect, useState } from "react";
 import Select from "react-select";
 

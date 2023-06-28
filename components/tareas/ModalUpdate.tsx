@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ModalUpdateProps } from "../types";
+import { ModalUpdateProps } from "../../types/components";
 import Select from "react-select";
 
 function parseResource(res: { [x: string]: string; }){

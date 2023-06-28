@@ -1,4 +1,4 @@
-import { Project } from "@/pages/types"
+/*import { Project } from "@/pages/types"
 
 export default function ProjectGridRow({ project }) {
 
@@ -35,4 +35,4 @@ export default function ProjectGridRow({ project }) {
             </td>
         </tr>
     )
-}
+}*/

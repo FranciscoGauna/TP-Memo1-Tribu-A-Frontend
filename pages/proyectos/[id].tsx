@@ -2,7 +2,7 @@ import ModalCreate from "@/components/tareas/ModalCreate";
 import ModalDelete from "@/components/tareas/ModalDelete";
 import ModalUpdate from "@/components/tareas/ModalUpdate";
 import { useEffect, useState } from "react";
-import { Task, Project, Resource } from "../types";
+import { Task, Project, Resource } from "../../types/model";
 
 function TaskItem({task, setModalUpdateOpen, setModalDeleteOpen, setTask} : 
 	{task: Task, setModalUpdateOpen: Function, setModalDeleteOpen: Function, setTask: Function }) {

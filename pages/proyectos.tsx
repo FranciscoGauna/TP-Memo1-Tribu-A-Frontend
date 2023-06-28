@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import { Project } from "./types";
+import { Project } from "../types/model";
 import ModalCreate from "../components/proyectos/ModalCreate"; 
 import ModalUpdate from "@/components/proyectos/ModalUpdate";
 import ModalDelete from "@/components/proyectos/ModalDelete";

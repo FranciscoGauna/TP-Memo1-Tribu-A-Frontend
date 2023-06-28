@@ -1,6 +1,6 @@
 import Link from "next/link"
 import { useRouter } from "next/router"
-import { ISidebarItem } from "./types"
+import { ISidebarItem } from "../types/components"
 import { useState } from "react"
 
 const SideBarItem = ({ href, title, children }: ISidebarItem) => {

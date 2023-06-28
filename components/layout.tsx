@@ -1,7 +1,7 @@
 import Link from "next/link"
 import { useRouter } from "next/router"
 import SideBarItem from "./SidebarItem"
-import { ISidebarItem } from "./types"
+import { ISidebarItem } from "../types/components"
 
 export default function Layout({ children }: { children: any }) {
   const menuItems: ISidebarItem[] = [
