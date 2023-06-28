@@ -48,7 +48,7 @@ export default function Proyectos() {
         id: 0,
         name: "",
         description: "",
-        state: "",
+        stage: "",
         start_date: "",
         end_date: "",
         estimated_hours: 0,
@@ -57,9 +57,9 @@ export default function Proyectos() {
         uid: ""
     });
 
-    useEffect(() => {
+	const reloadProjects = () => {
         // Se trae los proyectos del endpoint
-        fetch("https://projects-backend-service.onrender.com/projects")
+        fetch(process.env.NEXT_PUBLIC_PROJECTS_URL + "/projects")
             .then((res) => {
                 return res.json()
             })
@@ -68,7 +68,27 @@ export default function Proyectos() {
             }).catch((e) => {
                 console.error(e);
             });
-    }, []);
+	}
+
+    useEffect(reloadProjects, []);
+
+	const ModalCreateHandle = (flag: boolean) => {
+		if (!flag)
+			reloadProjects();
+		setModalCreateOpen(flag);
+	}
+
+	const ModalUpdateHandle = (flag: boolean) => {
+		if (!flag)
+			reloadProjects();
+		setModalUpdateOpen(flag);
+	}
+
+	const ModalDeleteHandle = (flag: boolean) => {
+		if (!flag)
+			reloadProjects();
+		setModalDeleteOpen(flag);
+	}
 
     return (
         <div style={{backgroundColor: "#DDDDDC", display: "flex", flexDirection: "column", height: "100%", padding: 90}}>
@@ -82,9 +102,9 @@ export default function Proyectos() {
             {list.map((project, index) => (
                 <ProjectItem project={project} setModalUpdateOpen={setModalUpdateOpen} setModalDeleteOpen={setModalDeleteOpen} setProject={setProject} key={index}/>
             ))}
-            <ModalCreate modalOpen={modalCreateOpen} setModalOpen={setModalCreateOpen}/>
-            <ModalUpdate modalOpen={modalUpdateOpen} setModalOpen={setModalUpdateOpen} project={project} setProject={setProject}/>
-            <ModalDelete modalOpen={modalDeleteOpen} setModalOpen={setModalDeleteOpen} project={project}/>
+            <ModalCreate modalOpen={modalCreateOpen} setModalOpen={ModalCreateHandle}/>
+            <ModalUpdate modalOpen={modalUpdateOpen} setModalOpen={ModalUpdateHandle} project={project} setProject={setProject}/>
+            <ModalDelete modalOpen={modalDeleteOpen} setModalOpen={ModalDeleteHandle} project={project}/>
         </div>
     )
 }
