@@ -1,5 +1,5 @@
 import { RecursosContext } from "@/context/recursos/recursoContext"
-import { CargaHoraria, OpcionSelector, Proyecto, Recurso } from "@/interfaces/recursos"
+import { CargaHoraria, OpcionSelector, Proyecto, Recurso, Tarea } from "@/interfaces/recursos"
 import { useContext, useEffect,useState } from "react"
 import { OpcionModal } from "./opcionModal"
 import { OpcionFecha } from "./opcionFecha"
@@ -55,13 +55,22 @@ export default function ModalEdicion ({setopenModalEdit, idCargaHoraria,setIdCar
         }
       })
       console.log(proyectoSeleccionado)
-      return proyectoSeleccionado[0].tasks.map((tarea) =>{
+      
+      return Object.entries(proyectoSeleccionado[0].tasks).map(([key,value]:[string,Tarea]) =>{
         return {
-          value: `${tarea.id}`,
-          label:`${tarea.name}`,
-          color:'#FFFFFF'
-        }
+              value: `${key}`,
+              label:`${value.name}`,
+              color:'#FFFFFF'
+            }
       })
+
+//      return proyectoSeleccionado[0].tasks.map((tarea) =>{
+//        return {
+//          value: `${tarea.puid}`,
+//          label:`${tarea.name}`,
+//          color:'#FFFFFF'
+//        }
+//      })
     }
 
     const opcionesDeHoras = [
@@ -92,8 +101,15 @@ export default function ModalEdicion ({setopenModalEdit, idCargaHoraria,setIdCar
           return o
         }
       })[0] 
-      setopcionProyectoDefecto(oProyecto)
-      setOpcionProyecto(oProyecto.value)
+      if(!!oProyecto){
+        setopcionProyectoDefecto(oProyecto)
+        setOpcionProyecto(oProyecto.value)
+      }else{
+        setopcionProyectoDefecto({label:"Proyecto no encontrado",value:"",color:"#FFFFFF"})
+        setOpcionProyecto("")
+      }
+      
+      
 
       const oHora = opcionesDeHoras.filter(o =>{
         if(o.value === cargaHorariaActual.horas.toString()){
@@ -106,25 +122,40 @@ export default function ModalEdicion ({setopenModalEdit, idCargaHoraria,setIdCar
 
       // // caso tarea por defecto
       // // busco el proyecto
-      const proyecto = proyectos.filter(p =>{
-        if(cargaHorariaActual.proyectoId === p.uid){
-          return p
-        }
-      })[0]
-      // // busco la tarea por id
-      
-      const tarea = proyecto.tasks.filter(t =>{
-        if(cargaHorariaActual.tareaId === t.id){
-          return t
-        }
-      })[0]
-      
-      // // transformo a un OpcionSelector
-      const oTarea:OpcionSelector = {label: tarea.name,value:tarea.id,color:"#FFFFFFF"}
+      if(!!oProyecto && oProyecto.value !=="" ){
+        const proyecto = proyectos.filter(p =>{
+          if(cargaHorariaActual.proyectoId === p.uid){
+            return p
+          }
+        })[0]
+        // // busco la tarea por id
 
-      setopcionTareaDefecto(oTarea)
-      setOpcionTarea(oTarea.value)
+        const tarea:[string,Tarea] = Object.entries(proyecto.tasks).filter(([key,value]:[string,Tarea]) =>{
+          if(cargaHorariaActual.tareaId === key){
+            return [key,value]
+          }
+        })[0]
+        
+      // const tarea = proyecto.tasks.filter(t =>{
+      //   if(cargaHorariaActual.tareaId === t.puid){
+      //     return t
+      //   }
+      // })[0]
+        
+        // // transformo a un OpcionSelector
+        if(!!tarea){
+          const oTarea:OpcionSelector = {label: tarea[1].name,value:tarea[0],color:"#FFFFFFF"}
 
+          setopcionTareaDefecto(oTarea)
+          setOpcionTarea(oTarea.value)
+        }else{
+          setopcionProyectoDefecto({label:"Tarea no encontrada",value:"",color:"#FFFFFF"})
+          setOpcionTarea("")
+        }
+      }else{
+        setopcionTareaDefecto({label:"Tarea no encontrada",value:"",color:"#FFFFFF"})
+        setOpcionTarea("")
+      }
       setopcionFechaDefecto(cargaHorariaActual.fecha)
       setOpcionFecha(cargaHorariaActual.fecha)
     

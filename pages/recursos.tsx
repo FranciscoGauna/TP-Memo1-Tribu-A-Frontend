@@ -15,7 +15,7 @@ function HeaderItem({ title }: { title: string }) {
 export default function Recursos() {
  
 
-  const {recursosState,getCargasHorarias,getRecursos, getCargasHorariasSegun} = useContext(RecursosContext)
+  const {recursosState,getCargasHorarias,getRecursos, getCargasHorariasSegun,getProyectosConTareas} = useContext(RecursosContext)
   const {cargasHorarias,recursos, proyectos} = recursosState
 
   const [openModalEdit, setopenModalEdit] = useState(false)
@@ -28,10 +28,14 @@ export default function Recursos() {
 
   const [cargaHorariaActualId,setCargaHorariaActualId] = useState("")
 
+
   useEffect(() =>{
     getCargasHorarias()
     getRecursos()
+    getProyectosConTareas()
+    
   },[])
+  
   
   const opcionesDeRecursosParaSelect:OpcionSelector[] = recursos.map((elemento:Recurso) =>{
     return { 

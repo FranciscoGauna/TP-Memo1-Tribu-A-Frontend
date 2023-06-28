@@ -1,6 +1,7 @@
 
 import { RecursosContext } from "@/context/recursos/recursoContext";
-import { CargaHoraria, Proyecto, Recurso } from "@/interfaces/recursos";
+import { CargaHoraria, Proyecto, Recurso, Tarea } from "@/interfaces/recursos";
+import { set } from "date-fns";
 import {useContext, useEffect, useState} from "react";
 
 export default function CargaHorariaGridRow( 
@@ -26,13 +27,27 @@ export default function CargaHorariaGridRow(
         
       
         setNombreProyecto(obtenerProyecto.name)
-        const obtenerNombreDeTarea = obtenerProyecto.tasks.filter((t)=>{
-          if(t.id === cargaHoraria.tareaId){
-            return t
-          }
-        })[0].name
-       
-        setNombreTarea(obtenerNombreDeTarea)
+
+        const obtenerTarea:[string,Tarea] = Object.entries(obtenerProyecto.tasks).filter(([key,value]:[string,Tarea]) =>{
+            if(key === cargaHoraria.tareaId){
+              return [key,value]
+            }
+        })[0]
+
+        // const obtenerTarea = obtenerProyecto.tasks.filter((t)=>{
+        //   if(t.puid === cargaHoraria.tareaId){
+        //     return t
+        //   }
+        // })[0]
+        if(!!obtenerTarea){
+          setNombreTarea(obtenerTarea[1].name)
+        }else{
+          setNombreTarea("Tarea no encontrada")
+        }
+        
+      }else{
+        setNombreProyecto("Proyecto no encontrado")
+        setNombreTarea("Tarea no encontrada")
       }
     }
   },[proyectos,cargasHorarias])

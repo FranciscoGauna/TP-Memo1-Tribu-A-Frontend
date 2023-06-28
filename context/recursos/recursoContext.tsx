@@ -10,6 +10,7 @@ export type RecursosContextProps = {
     editCargaHoraria: (cargaHoraria: CargaHoraria) =>{}
     deleteCargaHoraria: (id:string) =>{}
     getCargasHorariasSegun: (parametros : ParametrosDeFiltrado) =>{}
+    getProyectosConTareas: ()=>{}
 }
 
 export const RecursosContext = createContext<RecursosContextProps>({} as RecursosContextProps)

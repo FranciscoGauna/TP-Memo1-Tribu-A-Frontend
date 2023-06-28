@@ -1,7 +1,7 @@
 import Select from "react-select"
 
 import { useEffect, useState,useContext } from "react"
-import { CargaHoraria, OpcionSelector, Proyecto, Recurso } from "@/interfaces/recursos";
+import { CargaHoraria, OpcionSelector, Proyecto, Recurso, Tarea } from "@/interfaces/recursos";
 import { RecursosContext } from "@/context/recursos/recursoContext";
 import { OpcionModal } from "./opcionModal";
 import { OpcionFecha } from "./opcionFecha";
@@ -46,13 +46,21 @@ export default function ModalCreate (
         }
       })
       console.log(proyectoSeleccionado)
-      return proyectoSeleccionado[0].tasks.map((tarea) =>{
+
+      return Object.entries(proyectoSeleccionado[0].tasks).map(([key,value]:[string,Tarea]) =>{
         return {
-          value: `${tarea.id}`,
-          label:`${tarea.name}`,
-          color:'#FFFFFF'
-        }
+              value: `${key}`,
+              label:`${value.name}`,
+              color:'#FFFFFF'
+            }
       })
+      // return proyectoSeleccionado[0].tasks.map((tarea) =>{
+      //   return {
+      //     value: `${tarea.puid}`,
+      //     label:`${tarea.name}`,
+      //     color:'#FFFFFF'
+      //   }
+      // })
     }
     
     const verificarCreacionDeCargaHoraria = (cargaHoraria:CargaHoraria) =>{

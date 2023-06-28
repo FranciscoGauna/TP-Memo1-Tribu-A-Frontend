@@ -1,5 +1,5 @@
 import { RecursosContext } from '@/context/recursos/recursoContext'
-import { Proyecto } from '@/interfaces/recursos'
+import { Proyecto, Tarea } from '@/interfaces/recursos'
 import {useEffect,useContext,useState} from 'react'
 
 export default function ModalDelete ({setopenModalDelete, idCargaHoraria }:{setopenModalDelete:Function,idCargaHoraria:string}){
@@ -33,16 +33,33 @@ export default function ModalDelete ({setopenModalDelete, idCargaHoraria }:{seto
         }
       })[0]
       if(!!obtenerProyecto){
-        
-      
+
+
         setNombreProyecto(obtenerProyecto.name)
-        const obtenerNombreDeTarea = obtenerProyecto.tasks.filter((t)=>{
-          if(t.id === cargaHorariaActual.tareaId){
-            return t
-          }
-        })[0].name
-       
-        setNombreTarea(obtenerNombreDeTarea)
+        const obtenerTarea:[string,Tarea] = Object.entries(obtenerProyecto.tasks).filter(([key,value]:[string,Tarea])=>{
+         if(key === cargaHorariaActual.tareaId){
+           return [key,value]
+         }
+        })[0]
+
+        if(!!obtenerTarea){
+          setNombreTarea(obtenerTarea[1].name)
+        }else{
+          setNombreTarea("Tarea no encontrada")
+        }
+
+        //setNombreProyecto(obtenerProyecto.name)
+        //const obtenerNombreDeTarea = obtenerProyecto.tasks.filter((t)=>{
+        //  if(t.puid === cargaHorariaActual.tareaId){
+        //    return t
+        //  }
+        //})[0].name
+        //
+        //setNombreTarea(obtenerNombreDeTarea)
+      }
+      else{
+        setNombreProyecto("Proyecto no encontrado")
+        setNombreTarea("Tarea no encontrada")
       }
     }
   },[proyectos,cargaHorariaActual])
