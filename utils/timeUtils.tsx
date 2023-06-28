@@ -13,12 +13,12 @@ export function getTimeRemaining(dateString: string) {
     const formattedHours = Math.abs(hours).toString().padStart(2, '0');
     const formattedMinutes = Math.abs(minutes).toString().padStart(2, '0');
     const formattedSeconds = Math.abs(seconds).toString().padStart(2, '0');
-    const formattedTime = `${formattedDays} days, ${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+    const formattedTime = `${formattedDays} días, ${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
 
-    const textColor = timeDiff < 0 ? 'red' : 'inherit';
+    const isExpired = timeDiff < 0 ? true : false;
 
     return {
         formattedTime,
-        textColor,
+        isExpired
     };
 }

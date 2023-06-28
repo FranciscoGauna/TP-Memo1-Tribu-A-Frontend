@@ -12,9 +12,9 @@ function HeaderItem({ title }: { title: string }) {
 export default function Ticket() {
     const [ticket, setTicket] = useState<Ticket | null>();
     const [list, setList] = useState<Cliente[]>([]);
-    const [remainingTime, setTimeRemaining] = useState({
+    const [timeRemaining, setTimeRemaining] = useState({
         formattedTime: "Cargando...",
-        textColor: "inherit",
+        isExpired: false
     });
     const router = useRouter();
     const { idTicket } = router.query;
@@ -43,17 +43,16 @@ export default function Ticket() {
         const intervalId = setInterval(() => {
             if (ticket?.fechaLimite) {
                 const remainingTime = getTimeRemaining(ticket.fechaLimite);
-                setTimeRemaining(remainingTime);;
-                const element = document.getElementById('timeRemaining');
-                if (element) {
-                    element.style.backgroundColor = remainingTime.textColor.includes('red')
-                        ? "lightpink"
-                        : "inherit";
-                }
+                setTimeRemaining(remainingTime);
             }
         }, 1000);
         return () => clearInterval(intervalId);
     }, [ticket]);
+
+    const tiempoRestanteStyle = {
+        backgroundColor: timeRemaining.isExpired ? "#FF6B6B" : "#185FA1",
+        color: timeRemaining.isExpired ? "#FFFFFF" : "#FFFFFF",
+    };
 
     function handleNuevaTarea() {
 
@@ -61,23 +60,27 @@ export default function Ticket() {
 
     return (
         <>
-            <div className="container max-w-7xl mx-auto mt-8">
-                <div className="mb-5">
-                    <h1 className="text-4xl font-bold decoration-gray-400 mb-10">Soporte</h1>
-                    <h2 className="text-2xl font-bold decoration-gray-400 mb-2">{nombreProducto} {descripcionVersion}</h2>
+            <div style={{ backgroundColor: "#DDDDDC", display: "flex", flexDirection: "column", height: "100%", padding: 90 }}>
+                <div>
+                    <h1 className="text-3xl decoration-gray-400 mb-10">Soporte - {nombreProducto} {descripcionVersion}</h1>
                 </div>
-                <div className="rounded-lg p-6 shadow-md space-y-4" style={{ backgroundColor: "#F5F5F5" }}>
+                <div className="p-6 shadow-md space-y-4" style={{ backgroundColor: "#0F3A61", color: "#FFFFFF"}}>
                     <div>
-                        <h3 className="text-xl font-bold decoration-gray-400 mb-5">Ticket {ticket?.codigo} - {ticket?.titulo}</h3>
+                        <div className="flex items-center mb-5">
+                            <h3 className="flex mr-10">
+                                <span className="text-xl font-bold decoration-gray-400">Ticket &quot;{ticket?.titulo}&quot;</span>
+                            </h3>
+                            <span>#{ticket?.codigo}</span>
+                        </div>
                         <div className="flex space-x-4">
                             <div>
-                                <span className="font-bold">Estado:</span> <span className="rounded-full bg-gray-300 px-2 py-1">{ticket?.estado}</span>
+                                <span className="font-bold">Estado:</span> <span className="rounded-full px-2 py-1" style={{ backgroundColor: "#185FA1"}}>{ticket?.estado}</span>
                             </div>
                             <div>
-                                <span className="font-bold">Severidad:</span> <span className="rounded-full bg-gray-300 px-2 py-1">{ticket?.severidad}</span>
+                                <span className="font-bold">Severidad:</span> <span className="rounded-full px-2 py-1" style={{ backgroundColor: "#185FA1"}}>{ticket?.severidad}</span>
                             </div>
                             <div>
-                                <span className="font-bold">Prioridad:</span> <span className="rounded-full bg-gray-300 px-2 py-1">{ticket?.prioridad}</span>
+                                <span className="font-bold">Prioridad:</span> <span className="rounded-full px-2 py-1" style={{ backgroundColor: "#185FA1"}}>{ticket?.prioridad}</span>
                             </div>
                         </div>
                     </div>
@@ -98,44 +101,28 @@ export default function Ticket() {
                         <div className={"flex flex-grow"}>
                             <div>
                                 <div className="text-xl flex items-center justify-center mr-5 border-2 rounded-full px-4 py-4">
-                                    Tiempo restante:&nbsp;
-                                    <span className="rounded-full bg-gray-300 px-4 py-1 font-bold whitespace-nowrap" style={{ color: remainingTime.textColor }}>
-                                    {remainingTime.formattedTime}
+                                    <span className="flex justify-center">Tiempo restante:&nbsp;</span>
+                                    <span className="flex rounded-full px-4 py-1 font-bold whitespace-nowrap" style={tiempoRestanteStyle}>
+                                        {timeRemaining.formattedTime}
                                     </span>
                                 </div>
                             </div>
                             <div className="flex space-x-4 items-center flex-grow">
                                 <span className="font-bold">Descripción: </span>
-                                <div className="border rounded-lg p-5 flex-grow overflow-auto" style={{ backgroundColor: "#FFFFFF", margin: "0 2rem"}}>
+                                <div className="border rounded-lg p-5 flex-grow overflow-auto" style={{ backgroundColor: "#FFFFFF", color: "#000000", margin: "0 2rem"}}>
                                     {ticket?.description}
                                 </div>
                             </div>
                         </div>
-                        <div className="flex justify-end">
-                            <button className="mt-2 px-4 py-2 text-white rounded-md"
-                                    style={{ backgroundColor: "#185FA1" }}
-                                    onClick={() => handleNuevaTarea()}
-                            >
-                                Nueva tarea
-                            </button>
-                        </div>
                     </div>
-                    <div className="flex flex-col">
-                        <div className="overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
-                            <div className="inline-block min-w-full overflow-hidden align-middle border-b border-gray-200 shadow sm:rounded-lg">
-                                <table className="min-w-full">
-                                    <thead>
-                                    <tr>
-                                        <HeaderItem title="Tarea" />
-                                        <HeaderItem title="Estado" />
-                                        <HeaderItem title="Recurso asociado" />
-                                        <HeaderItem title="Ver tarea" />
-                                    </tr>
-                                    </thead>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
+                </div>
+                <h2 className="text-xl decoration-gray-400 mt-5">Tareas asociadas</h2>
+                <div style={{ display: "flex", backgroundColor: "#185FA1", color: "#FFFFFF", justifyContent: "space-between", paddingLeft: 30, paddingRight: 30, height: 100, alignItems: "center", marginBottom: 20 , marginTop : 20}}>
+                    <div style={{ fontSize: 20 }}>Nueva Tarea</div>
+                    <button
+                        className="flex justify-center items-center"
+                        style={{ borderRadius: 35, backgroundColor: "#248CED", height: 70, width: 70, fontSize: 40 }}
+                    ><span className="mb-1.5">+</span></button>
                 </div>
             </div>
         </>

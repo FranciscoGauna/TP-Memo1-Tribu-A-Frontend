@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import VersionGridRow from "@/components/versionGridRow";
+import VersionGridRow from "@/components/soporte/versionGridRow";
 import {useRouter} from "next/router";
 
 import {Version} from "@/components/types";
@@ -27,32 +27,16 @@ export default function Versiones() {
 
     return (
         <>
-            <div className="container max-w-7xl mx-auto mt-8">
-                <div className="mb-5">
-                    <h1 className="text-4xl font-bold decoration-gray-400 mb-10">Soporte</h1>
-                    <h2 className="text-2xl font-bold decoration-gray-400 mb-2">{nombreProducto}</h2>
+            <div style={{backgroundColor: "#DDDDDC", display: "flex", flexDirection: "column", height: "100%", padding: 90}}>
+                <div>
+                    <h1 className="text-3xl decoration-gray-400 mb-10">Soporte - {nombreProducto}</h1>
+                    <h2 className="text-xl decoration-gray-400 mb-5">Versiones</h2>
                 </div>
-                <div className="flex flex-col">
-                    <div className="overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
-                        <div className="inline-block min-w-full overflow-hidden align-middle border-b border-gray-200 shadow sm:rounded-lg">
-                            <table className="min-w-full">
-                                <thead>
-                                <tr>
-                                    <HeaderItem title="Version" />
-                                    <HeaderItem title="Tickets abiertos" />
-                                    <HeaderItem title="Ver tickets" />
-                                </tr>
-                                </thead>
-
-                                <tbody>
-                                {list.map((version) => (
-                                    <VersionGridRow key={version.codigo} version={version} nombreProducto={nombreProducto} />
-                                ))}
-                                </tbody>
-                            </table>
-                        </div>
+                {list.map((version) => (
+                    <div key={version.codigo} style={{backgroundColor: "#0F3A61", color: "#FFFFFF", marginBottom: 30, height: 100, padding: 20}}>
+                        <VersionGridRow key={version.codigo} version={version} nombreProducto={nombreProducto} />
                     </div>
-                </div>
+                ))}
             </div>
         </>
     )

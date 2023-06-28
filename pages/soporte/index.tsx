@@ -22,22 +22,21 @@ export default function Soporte() {
 
     return (
         <>
-            <div className="container max-w-7xl mx-auto mt-8">
+            <div style={{backgroundColor: "#DDDDDC", display: "flex", flexDirection: "column", height: "100%", padding: 90}}>
                 <div className="mb-5">
-                    <h1 className="text-4xl font-bold decoration-gray-400 mb-10">Soporte</h1>
-                    <h2 className="text-2xl font-bold decoration-gray-400 mb-2">Productos</h2>
+                    <h1 className="text-3xl decoration-gray-400 mb-2">Productos</h1>
                 </div>
                 <div className="grid grid-cols-3 gap-10 px-2">
                     {list.map((producto) => (
                         <div
                             key={producto.codigo}
-                            className="rounded-lg p-6 shadow-md flex flex-col items-center justify-center "
-                            style={{ backgroundColor: "#EEEEEE" }}
+                            className="p-6 shadow-md flex flex-col items-center justify-center"
+                            style={{ backgroundColor: "#0F3A61" }}
                         >
-                            <h2 className="text-2xl text-center mt-4 mb-2">{producto.titulo}</h2>
+                            <h2 className="text-2xl text-center mt-4 mb-2 text-white">{producto.titulo}</h2>
                             <button
                                 className="mt-4 mb-2 px-4 py-2 text-white rounded-md"
-                                style={{ backgroundColor: "#185FA1" }}
+                                style={{ backgroundColor: "#248CED" }}
                                 onClick={() => handleVerVersiones(producto.codigo, producto.titulo)}
                             >
                                 Ver tickets

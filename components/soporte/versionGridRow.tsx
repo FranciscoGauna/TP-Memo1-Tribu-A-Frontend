@@ -22,6 +22,10 @@ export default function VersionGridRow({ version , nombreProducto }: {
             .then((data) => {
                 const ticketsCount = data.length;
                 setCantTickets(ticketsCount);
+            })
+            .catch((error) => {
+                console.error("Error fetching tickets:", error);
+                setCantTickets(0); // Set an empty list on error
             });
     }, [version.codigo]);
     const handleVerTickets = (codigoVersion : number, descripcionVersion : string) => {
@@ -29,25 +33,25 @@ export default function VersionGridRow({ version , nombreProducto }: {
     };
 
     return (
-        <tr key={`${version.codigo}`}>
-            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <div className="flex items-center">{version.descripcion}</div>
-            </td>
+        <div key={`${version.codigo}`} className="flex items-center justify-between">
+            <div className="px-6 py-4 whitespace-no-wrap border-gray-200">
+                <div className="flex items-center font-bold">{version.descripcion}</div>
+            </div>
 
-            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <div className="flex items-center">{cantTickets}</div>
-            </td>
+            <div className="px-6 py-4 whitespace-no-wrap border-gray-200">
+                <div className="flex items-center">Cantidad de tickets: {cantTickets}</div>
+            </div>
 
-            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+            <div className="px-6 py-4 whitespace-no-wrap border-gray-200">
                 <div className="text-sm leading-5 text-gray-900">
-                    <button className="mt-2 px-4 py-2 text-white rounded-md"
-                            style={{ backgroundColor: "#185FA1" }}
+                    <button className="px-4 py-2 text-white rounded-md"
+                            style={{ backgroundColor: "#248CED" }}
                             onClick={() => handleVerTickets(version.codigo, version.descripcion)}
                     >
                         Ver tickets
                     </button>
                 </div>
-            </td>
-        </tr>
+            </div>
+        </div>
     )
 }

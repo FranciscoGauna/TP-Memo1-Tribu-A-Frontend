@@ -58,3 +58,19 @@ export interface Project {
 export interface Projects {
   projects: Project[];
 }
+
+export interface ModalCreateTicketProps {
+  modalOpen: boolean
+  setModalOpen: Function
+  idVersion: number
+}export interface ModalUpdateTicketProps {
+  modalOpen: boolean
+  setModalOpen: Function
+  ticket: Ticket
+  setTicket: Function
+}
+export interface ModalDeleteTicketProps {
+  modalOpen: boolean
+  setModalOpen: Function
+  ticket: Ticket
+}
