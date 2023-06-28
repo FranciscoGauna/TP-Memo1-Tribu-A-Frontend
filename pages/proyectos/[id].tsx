@@ -81,6 +81,16 @@ export default function ProyectoDetalle() {
 		const url = window.location.href;
 		let urlSplitted = url.split('/');
 		setId(urlSplitted[urlSplitted.length-1]);
+        // Se trae el proyecto del endpoint
+        fetch(process.env.NEXT_PUBLIC_PROJECTS_URL + "/projects/" + urlSplitted[urlSplitted.length-1])
+            .then((res) => {
+                return res.json()
+            })
+            .then((data) => {
+                setProject(data.project);
+            }).catch((e) => {
+                console.error(e);
+            });
 	}, []);
 
     useEffect(() => {

@@ -72,7 +72,7 @@ export default function ModalUpdate({ modalOpen, setModalOpen, project, setProje
   const updateProject = () => {
     let formData = {name: name, project_leader: projectLeader, description: description};
     fetch(process.env.NEXT_PUBLIC_PROJECTS_URL + '/projects/' + project.uid, {
-	    method: 'PUT',
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
         },
