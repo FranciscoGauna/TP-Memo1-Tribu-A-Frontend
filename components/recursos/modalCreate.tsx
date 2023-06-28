@@ -27,7 +27,7 @@ export default function ModalCreate (
         return { 
           value:`${elemento.legajo}`,
           label:`${elemento.nombre} ${elemento.apellido}`,
-          color:'#FFFFFF'
+          color:'#000000'
         }
     })
 
@@ -35,7 +35,7 @@ export default function ModalCreate (
       return { 
         value:`${elemento.uid}`,
         label:`${elemento.name}`,
-        color:'#FFFFFF'
+        color:'#000000'
       }
     })
 
@@ -95,30 +95,30 @@ export default function ModalCreate (
     }
 
     const opcionesDeProyecto = [
-      { value: '1', label: 'Proyectos',color:"#FFFFFF" },
-      { value: '2', label: 'Soporte',color:"#FFFFFF" },
-      { value: '3', label: 'Recurso',color:"#FFFFFF" }
+      { value: '1', label: 'Proyectos',color:"#000000" },
+      { value: '2', label: 'Soporte',color:"#000000" },
+      { value: '3', label: 'Recurso',color:"#000000" }
     ]
 
     const opcionesDeTareas = [
-      { value: '1', label: 'Creacion',color:"#FFFFFF" },
-      { value: '2', label: 'Edicion',color:"#FFFFFF" },
-      { value: '3', label: 'Eliminacion',color:"#FFFFFF" }
+      { value: '1', label: 'Creacion',color:"#000000" },
+      { value: '2', label: 'Edicion',color:"#000000" },
+      { value: '3', label: 'Eliminacion',color:"#000000" }
     ]
 
     const opcionesDeHoras = [
-      { value: '1', label: '1',color:"#FFFFFF" },
-      { value: '2', label: '2',color:"#FFFFFF" },
-      { value: '3', label: '3',color:"#FFFFFF" },
-      { value: '4', label: '4',color:"#FFFFFF" },
-      { value: '5', label: '5',color:"#FFFFFF" },
-      { value: '6', label: '6',color:"#FFFFFF" },
-      { value: '7', label: '7',color:"#FFFFFF" },
-      { value: '8', label: '8',color:"#FFFFFF" },
+      { value: '1', label: '1',color:"#000000" },
+      { value: '2', label: '2',color:"#000000" },
+      { value: '3', label: '3',color:"#000000" },
+      { value: '4', label: '4',color:"#000000" },
+      { value: '5', label: '5',color:"#000000" },
+      { value: '6', label: '6',color:"#000000" },
+      { value: '7', label: '7',color:"#000000" },
+      { value: '8', label: '8',color:"#000000" },
     ]
 
     const opcionPorDefecto = {
-        value: '', label:'Seleccione una opcion', color:'#FFFFFF'
+        value: '', label:'Seleccione una opcion', color:'#000000'
     }
 
     useEffect(() =>{

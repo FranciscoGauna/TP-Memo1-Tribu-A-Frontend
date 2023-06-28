@@ -36,7 +36,7 @@ export default function ModalEdicion ({setopenModalEdit, idCargaHoraria,setIdCar
       return { 
         value:`${elemento.legajo}`,
         label:`${elemento.nombre} ${elemento.apellido}`,
-        color:'#FFFFFF'
+        color:'#000000'
       }
     })
     
@@ -44,7 +44,7 @@ export default function ModalEdicion ({setopenModalEdit, idCargaHoraria,setIdCar
       return { 
         value:`${elemento.uid}`,
         label:`${elemento.name}`,
-        color:'#FFFFFF'
+        color:'#000000'
       }
     })
 
@@ -60,7 +60,7 @@ export default function ModalEdicion ({setopenModalEdit, idCargaHoraria,setIdCar
         return {
               value: `${key}`,
               label:`${value.name}`,
-              color:'#FFFFFF'
+              color:'#000000'
             }
       })
 
@@ -74,14 +74,14 @@ export default function ModalEdicion ({setopenModalEdit, idCargaHoraria,setIdCar
     }
 
     const opcionesDeHoras = [
-      { value: '1', label: '1',color:"#FFFFFF" },
-      { value: '2', label: '2',color:"#FFFFFF" },
-      { value: '3', label: '3',color:"#FFFFFF" },
-      { value: '4', label: '4',color:"#FFFFFF" },
-      { value: '5', label: '5',color:"#FFFFFF" },
-      { value: '6', label: '6',color:"#FFFFFF" },
-      { value: '7', label: '7',color:"#FFFFFF" },
-      { value: '8', label: '8',color:"#FFFFFF" },
+      { value: '1', label: '1',color:"#000000" },
+      { value: '2', label: '2',color:"#000000" },
+      { value: '3', label: '3',color:"#000000" },
+      { value: '4', label: '4',color:"#000000" },
+      { value: '5', label: '5',color:"#000000" },
+      { value: '6', label: '6',color:"#000000" },
+      { value: '7', label: '7',color:"#000000" },
+      { value: '8', label: '8',color:"#000000" },
     ]
     
     
@@ -105,7 +105,7 @@ export default function ModalEdicion ({setopenModalEdit, idCargaHoraria,setIdCar
         setopcionProyectoDefecto(oProyecto)
         setOpcionProyecto(oProyecto.value)
       }else{
-        setopcionProyectoDefecto({label:"Proyecto no encontrado",value:"",color:"#FFFFFF"})
+        setopcionProyectoDefecto({label:"Proyecto no encontrado",value:"",color:"#000000"})
         setOpcionProyecto("")
       }
       
@@ -144,16 +144,16 @@ export default function ModalEdicion ({setopenModalEdit, idCargaHoraria,setIdCar
         
         // // transformo a un OpcionSelector
         if(!!tarea){
-          const oTarea:OpcionSelector = {label: tarea[1].name,value:tarea[0],color:"#FFFFFFF"}
+          const oTarea:OpcionSelector = {label: tarea[1].name,value:tarea[0],color:"#000000"}
 
           setopcionTareaDefecto(oTarea)
           setOpcionTarea(oTarea.value)
         }else{
-          setopcionProyectoDefecto({label:"Tarea no encontrada",value:"",color:"#FFFFFF"})
+          setopcionProyectoDefecto({label:"Tarea no encontrada",value:"",color:"#000000"})
           setOpcionTarea("")
         }
       }else{
-        setopcionTareaDefecto({label:"Tarea no encontrada",value:"",color:"#FFFFFF"})
+        setopcionTareaDefecto({label:"Tarea no encontrada",value:"",color:"#000000"})
         setOpcionTarea("")
       }
       setopcionFechaDefecto(cargaHorariaActual.fecha)

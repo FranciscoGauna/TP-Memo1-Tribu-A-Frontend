@@ -41,7 +41,7 @@ export default function Recursos() {
     return { 
       value:`${elemento.legajo}`,
       label:`${elemento.nombre} ${elemento.apellido}`,
-      color:'#FFFFFF'
+      color:'#000000'
     }
   })
   
@@ -49,7 +49,7 @@ export default function Recursos() {
     return { 
       value:`${elemento.uid}`,
       label:`${elemento.name}`,
-      color:'#FFFFFF'
+      color:'#000000'
     }
   })
 
