@@ -18,7 +18,7 @@ function ProjectItem({project, setModalUpdateOpen, setModalDeleteOpen, setProjec
             <div style={{display: "flex", fontSize: 18}}>
                 <button 
                     style={{display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "#248CED", borderRadius: 10, height: 42, width: 95}}
-                    onClick={() => window.open(`http://localhost:3000/proyectos/${project.uid}`, "_self")}
+                    onClick={() => window.open(`proyectos/${project.uid}`, "_self")}
                 >Ver</button>
                 <button
                     style={{display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "#7B7B7B", borderRadius: 10, height: 42, width: 95, marginLeft: 12}}
