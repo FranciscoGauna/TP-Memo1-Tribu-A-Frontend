@@ -68,7 +68,7 @@ export const OpcionModal = ({titulo, opciones,setopcionSeleccionada,opcionDefect
                                 }}
                                 options={opciones}
                                 onChange={handleSelectChange}
-                                placeholder="Seleccione una opcion"
+                                placeholder="Seleccione una opción"
                                 //value={{"label": "", "value":"","color":"#FFFFFF"}}
                             />
                              

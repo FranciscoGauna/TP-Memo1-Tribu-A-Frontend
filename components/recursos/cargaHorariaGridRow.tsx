@@ -54,39 +54,38 @@ export default function CargaHorariaGridRow(
 
   return (
     <>
-    <tr key={`${cargaHoraria.legajo}`} className='bg-gray-300'>
+    <tr key={`${cargaHoraria.legajo}`} className='bg-gray-300' style={{ backgroundColor: '#0F3A61'}}>
       <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200 ">
         <div className="flex items-center">{cargaHoraria.legajo}</div>
       </td>
 
-      <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+      <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200" style={{ backgroundColor: '#0F3A61'}}>
         <div className="flex items-center">{recurso.nombre || "cargando"}</div>
       </td>
 
-      <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-        <div className="text-sm leading-5 text-gray-900">{recurso.apellido || "cargando"}</div>
+      <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200" style={{ backgroundColor: '#0F3A61'}}>
+        <div className="text-sm leading-5 text-gray-900" style={{ color: '#FFFFFF'}}> {recurso.apellido || "cargando"}</div>
+      </td>
+
+      <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200" style={{ backgroundColor: '#0F3A61'}}>
+        <div className="text-sm text-center leading-5 text-gray-900" style={{ color: '#FFFFFF'}}>{nombreProyecto}</div>
+      </td>
+
+      <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200" style={{ backgroundColor: '#0F3A61'}}>
+        <div className="text-sm text-center leading-5 text-gray-900" style={{ color: '#FFFFFF'}}>{nombreTarea}</div>
       </td>
       
-      <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-        <div className="w-full h-10 px-1 py-1 text-sm text-center flex items-center leading-5 
-        text-white bg-blue-500 rounded-xl contenido">{ nombreProyecto}</div>
+      <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200" style={{ backgroundColor: '#0F3A61'}}>
+        <div className="text-sm text-center leading-5 text-gray-900" style={{ color: '#FFFFFF'}}>{cargaHoraria.fecha}</div>
       </td>
-      <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-        <div className="w-full h-10 px-1 py-1 text-sm text-center flex items-center justify-center leading-5 
-        text-white bg-blue-500 rounded-xl contenido">{ nombreTarea}</div>
-      </td>
-      
-      <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-        <div className="text-sm text-center leading-5 text-gray-900">{cargaHoraria.fecha}</div>
-      </td>
-      <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-        <div className="text-sm text-center leading-5 text-gray-900">{cargaHoraria.horas} hs</div>
+      <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200" style={{ backgroundColor: '#0F3A61'}}>
+        <div className="text-sm text-center leading-5 text-gray-900" style={{ color: '#FFFFFF'}}>{cargaHoraria.horas} hs</div>
       </td> 
-      <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-        <button onClick={() =>{setopenModalEdit(true); setCargaHorariaActualId(cargaHoraria.id) ;}} className="w-16 h-9 text-sm text-center flex items-center justify-center leading-5 text-white bg-blue-500 hover:bg-blue-400 rounded-2xl">editar</button>
+      <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200" style={{ backgroundColor: '#0F3A61'}}>
+        <button style={{ backgroundColor: '#248CED'}} onClick={() =>{setopenModalEdit(true); setCargaHorariaActualId(cargaHoraria.id) ;}} className="w-16 h-9 text-sm text-center flex items-center justify-center leading-5 text-white bg-blue-500 hover:bg-blue-400 rounded-2xl">Editar</button>
       </td> 
-      <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-        <button onClick={() =>{setopenModalDelete(true); setCargaHorariaActualId(cargaHoraria.id)}}  className="w-16 h-9 text-sm text-center flex items-center justify-center leading-5 text-white bg-red-500 hover:bg-red-400 rounded-2xl">borrar</button>
+      <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200" style={{ backgroundColor: '#0F3A61'}}>
+        <button style={{ backgroundColor: '#D36C6C'}} onClick={() =>{setopenModalDelete(true); setCargaHorariaActualId(cargaHoraria.id)}}  className="w-16 h-9 text-sm text-center flex items-center justify-center leading-5 text-white bg-red-500 hover:bg-red-400 rounded-2xl">Eliminar</button>
       </td> 
     </tr>
     </>
