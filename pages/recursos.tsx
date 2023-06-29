@@ -1,5 +1,4 @@
 import { useEffect, useState,useContext } from "react"
-import UserGridRow from "@/components/userGridRow"
 import { CargaHoraria, OpcionSelector, Proyecto, Recurso } from "@/interfaces/recursos"
 import CargaHorariaGridRow from "@/components/recursos/cargaHorariaGridRow"
 import ModalDelete from "@/components/recursos/modalDelete"
