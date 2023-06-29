@@ -113,7 +113,7 @@ export default function Ticket() {
                     <div className="flex flex-row justify-between">
                         <div className="flex flex-col">
                             <div className="flex flex-col mb-5">
-                                <span className="flex flex-row mb-3 text-sm">#{ticket?.codigo}</span>
+                                <span className="flex flex-row mb-3 text-sm">ID:&nbsp;{ticket?.codigo}</span>
                                 <h3 className="flex flex-row mr-10">
                                     <span className="text-xl font-bold decoration-gray-400">Ticket &quot;{ticket?.titulo}&quot;</span>
                                 </h3>

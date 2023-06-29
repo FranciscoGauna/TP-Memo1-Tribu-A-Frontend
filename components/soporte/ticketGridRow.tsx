@@ -49,7 +49,7 @@ export default function TicketGridRow({ ticket, nombreProducto, descripcionVersi
                 <div className="flex flex-col">
                     <div className="flex flex-col mb-2">
                         <div className="flex px-6 whitespace-no-wrap border-gray-200 mb-2 text-sm">
-                            <label>#&nbsp;</label>
+                            <label>ID:&nbsp;</label>
                             <span>{ticket.codigo}</span>
                         </div>
                         <div className="px-6 whitespace-no-wrap border-gray-200">

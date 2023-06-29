@@ -58,7 +58,7 @@ export default function ModalDeleteTicket({ modalOpen, setModalOpen, ticket, nom
           </div>
           {/* <!-- Modal body --> */}
           <div className="mb-5 mt-2">
-            ¿Desea eliminar el ticket #{ticket.codigo} - &quot;{ticket.titulo}&quot;?
+            ¿Desea eliminar el ticket de ID: {ticket.codigo} - &quot;{ticket.titulo}&quot;?
           </div>
 		  {/* Modal footer */}
 		  <div style={{display: "flex", justifyContent:"flex-end"}}>
