@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import {getTimeRemaining} from "@/utils/timeUtils";
-import {Ticket, Cliente, Task} from "@/components/types";
+import {Ticket, Cliente, Task} from "@/types/model";
 import ModalDeleteTicket from "@/components/soporte/ModalDeleteTicket";
 import ModalUpdateTicket from "@/components/soporte/ModalUpdateTicket";
 import ModalCreateTask from "@/components/soporte/ModalCreateTask";

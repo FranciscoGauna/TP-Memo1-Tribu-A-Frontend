@@ -135,26 +135,26 @@ export default function ModalUpdate({ modalOpen, setModalOpen, project, task, ca
 				</div>
 				{/* <!-- Modal body --> */}
 				<div>
-					<div style={{color: "#FFFFFF"}}>Nombre de la tarea:</div>
+					<div>Nombre de la tarea:</div>
 					<input style={{borderColor: "#0F3A61", borderWidth: 2, borderRadius: 5, padding: 5, marginBottom: 15, width: '100%', color: "#000000"}}
 						value={name}
 						onChange={e => setName(e.target.value)}  
 						placeholder="Nombre de la tarea"
 					/>
-					<div style={{color: "#FFFFFF"}}>Descripción:</div>
+					<div>Descripción:</div>
 					<input style={{borderColor: "#0F3A61", borderWidth: 2, borderRadius: 5, padding: 5, marginBottom: 15, width: '100%', color: "#000000"}}
 						value={description}
 						onChange={e => setDescription(e.target.value)}
 						placeholder="Descripción"
 					/>
-					<div style={{color: "#FFFFFF"}}>Horas Estimadas:</div>
+					<div>Horas Estimadas:</div>
 					<input style={{borderColor: "#0F3A61", borderWidth: 2, borderRadius: 5, padding: 5, marginBottom: 15, width: '100%', color: "#000000"}}
 						value={estimatedHours}
 						type="number"
 						onChange={e => setEstimatedHours(e.target.value)}
 						placeholder="50"
 					/>
-					<div style={{color: "#FFFFFF"}}>Persona asignada:</div>
+					<div>Persona asignada:</div>
 					<Select 
 						key={humanResource}
 						options={resourceOptions} 
@@ -162,19 +162,19 @@ export default function ModalUpdate({ modalOpen, setModalOpen, project, task, ca
 						defaultValue={findResource(resourceOptions, humanResource)}
 						onChange={(option) => {setHumanResource(option)}}
 					/>
-					<div style={{color: "#FFFFFF"}}>Estado:</div>
+					<div>Estado:</div>
 					<input style={{borderColor: "#0F3A61", borderWidth: 2, borderRadius: 5, padding: 5, marginBottom: 15, width: '100%', color: "#000000"}}
 						value={state}
 						onChange={e => setState(e.target.value)}
 						placeholder="Comienzo"
 					/>
-					<div style={{color: "#FFFFFF"}}>Comienzo de tarea:</div>
+					<div>Comienzo de tarea:</div>
 					<input style={{borderColor: "#0F3A61", borderWidth: 2, borderRadius: 5, padding: 5, marginBottom: 15, width: '100%', color: "#000000"}}
 						value={startDate}
 						onChange={e => setStartDate(e.target.value)}
 						placeholder="Comienzo de tarea (formato: AAAA-MM-DD)"
 					/>
-					<div style={{color: "#FFFFFF"}}>Fin de tarea:</div>
+					<div>Fin de tarea:</div>
 					<input style={{borderColor: "#0F3A61", borderWidth: 2, borderRadius: 5, padding: 5, marginBottom: 15, width: '100%', color: "#000000"}}
 						value={endDate}
 						onChange={e => setEndDate(e.target.value)}

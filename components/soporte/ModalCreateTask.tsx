@@ -1,14 +1,15 @@
-import {Cliente, ModalCreateTaskProps, Project, Recurso, Task} from "../types"
+import { ModalCreateTaskProps, ModalCreateTaskTicketProps } from "../../types/components"
+import { Project, Recurso } from "../../types/model"
 import React, { useEffect, useState } from "react";
 import Select from "react-select";
-export default function ModalCreateTicket({ modalOpen, setModalOpen, ticket}: ModalCreateTaskProps) {
+export default function ModalCreateTask({ modalOpen, setModalOpen, ticket}: ModalCreateTaskTicketProps) {
 	const [descripcion, setDescripcion] : [string, Function] = useState("");
 	const [showPopup, setShowPopup] = useState(false);
 	const [hoursEst, setHoursEst] : [number, Function] = useState(0);
 	const [name, setName] : [string, Function] = useState("");
-	const [projectOptions, setProjectOptions] = useState<{ label: string; id: number }[]>([]);
+	const [projectOptions, setProjectOptions] = useState<{ label: string; value: number }[]>([]);
 	const [project, setProject] : [string, Function] = useState("");
-	const [recursosOptions, setRecursosOptions] = useState<{ label: string; id: number }[]>([]);
+	const [recursosOptions, setRecursosOptions] = useState<{ label: string; value: number }[]>([]);
 	const [recurso, setRecurso] : [number, Function] = useState(0);
 
 
@@ -40,7 +41,7 @@ export default function ModalCreateTicket({ modalOpen, setModalOpen, ticket}: Mo
 			.then((data) => {
 				const options = data.projects.map((proyecto: Project) => ({
 					label: proyecto.name,
-					id: proyecto.uid,
+					value: proyecto.uid,
 				}));
 				setProjectOptions(options);
 			})
@@ -205,7 +206,7 @@ export default function ModalCreateTicket({ modalOpen, setModalOpen, ticket}: Mo
 								styles={customStyles}
 								onChange={(selectedOption) => {
 									if (selectedOption) {
-										setProject(selectedOption.id);
+										setProject(selectedOption.value);
 									}
 								}}
 								required
@@ -216,7 +217,7 @@ export default function ModalCreateTicket({ modalOpen, setModalOpen, ticket}: Mo
 								styles={customStyles}
 								onChange={(selectedOption) => {
 									if (selectedOption) {
-										setRecurso(selectedOption.id);
+										setRecurso(selectedOption.value);
 									}
 								}}
 								required

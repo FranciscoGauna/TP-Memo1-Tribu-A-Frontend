@@ -1,4 +1,5 @@
-import {Cliente, ModalCreateTicketProps} from "../types"
+import { ModalCreateTicketProps } from "../../types/components"
+import { Cliente } from "../../types/model"
 import React, { useEffect, useState } from "react";
 import Select from "react-select";
 export default function ModalCreateTicket({ modalOpen, setModalOpen, idVersion}: ModalCreateTicketProps) {

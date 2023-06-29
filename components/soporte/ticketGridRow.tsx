@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import {useRouter} from "next/router";
 import {getTimeRemaining} from "@/utils/timeUtils";
-import {Cliente, Ticket} from "@/components/types";
+import {Cliente, Ticket} from "../../types/model";
 
 function buscarCliente(list : Cliente[], idCliente: number){
     const cliente = list.find((cliente) => cliente.id == idCliente);

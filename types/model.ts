@@ -2,13 +2,44 @@ export interface Usuario {
 	nombre: string
 	apellido: string
 	legajo: number
-  }
+}
   
-  export interface Cliente {
-	id: string
-	razon_social: string
+export interface Cliente {
+	id: number
+	razonSocial: string
 	cuit: number
-  }
+}
+
+export interface Producto {
+	codigo: number;
+	titulo: string;
+}
+  
+export interface Version {
+	codigo: number;
+	descripcion: string;
+	codigoProducto: number;
+}
+  
+export interface Ticket {
+	codigo: string;
+	titulo: string;
+	severidad: "S1" | "S2" | "S3" | "S4";
+	prioridad: "ALTA" | "MEDIA" | "BAJA";
+	estado: "PENDIENTE" | "EMPEZADO" | "RESUELTO";
+	description: string;
+	fechaLimite: string;
+	fechaCreacion: string;
+	cliente: number;
+	versionProducto: number;
+	tareas: { proyecto: string; id: string }[];
+}
+
+export interface Recurso {
+	legajo: number
+	nombre: string
+	apellido: string
+}
 
 export interface Project {
   id: number

@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {useRouter} from "next/router";
-import {Cliente, Recurso, Task} from "../types";
+import {Recurso, Task} from "../../types/model";
 
 function buscarRecurso(list : Recurso[], legajo: number){
     const recurso = list.find((recurso) => recurso.legajo == legajo);

@@ -1,4 +1,4 @@
-import { ModalDeleteTicketProps } from "../types"
+import { ModalDeleteTicketProps } from "../../types/components"
 import {useRouter} from "next/router";
 
 export default function ModalDeleteTicket({ modalOpen, setModalOpen, ticket, nombreProducto, descripcionVersion}: ModalDeleteTicketProps) {

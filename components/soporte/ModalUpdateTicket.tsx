@@ -1,4 +1,5 @@
-import {Cliente, ModalUpdateTicketProps} from "../types"
+import { ModalUpdateTicketProps } from "../../types/components"
+import { Cliente } from "../../types/model"
 import React, { useEffect, useState } from "react";
 import Select from "react-select";
 

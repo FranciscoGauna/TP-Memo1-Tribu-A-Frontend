@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import {useRouter} from "next/router";
 import TicketGridRow from "@/components/soporte/ticketGridRow";
 
-import {Ticket} from "@/components/types";
+import {Ticket} from "@/types/model";
 import VersionGridRow from "@/components/soporte/versionGridRow";
 import ModalCreateTicket from "@/components/soporte/ModalCreateTicket";
 
