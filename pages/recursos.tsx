@@ -41,7 +41,7 @@ export default function Recursos() {
     return { 
       value:`${elemento.legajo}`,
       label:`${elemento.nombre} ${elemento.apellido}`,
-      color:'#FFFFFF'
+      color:'#000000'
     }
   })
   
@@ -49,7 +49,7 @@ export default function Recursos() {
     return { 
       value:`${elemento.uid}`,
       label:`${elemento.name}`,
-      color:'#AAAAAA'
+      color:'#000000'
     }
   })
 
@@ -86,6 +86,20 @@ export default function Recursos() {
                           className="w-3/5"
                           onChange={(e:any) =>{setrecursoAFiltrar(e.value.toString())}}
                           options={opcionesDeRecursosParaSelect}
+                          styles={{
+                            control: (baseStyles, state) => ({
+                            ...baseStyles,
+                            backgroundColor:'#F4F5F7',
+                          
+                            }),
+                            singleValue:(styles)=>({
+                                ...styles,
+                                color:'#666666'
+                            }),
+                            option: (styles,{data,isDisabled,isFocused, isSelected}) =>{
+                                return {...styles,color:data.color}
+                            }
+                        }}
                         />
                     </div>
                     <div className="flex items-center justify-evenly" style={{ backgroundColor: '#0F3A61'}}>
@@ -94,6 +108,20 @@ export default function Recursos() {
                           className="w-3/5"
                           onChange={(e:any) =>{setproyectoAFiltrar(e.value.toString())}}
                           options={opcionesDeProyectosParaSelect}
+                          styles={{
+                            control: (baseStyles, state) => ({
+                            ...baseStyles,
+                            backgroundColor:'#F4F5F7',
+                          
+                            }),
+                            singleValue:(styles)=>({
+                                ...styles,
+                                color:'#666666'
+                            }),
+                            option: (styles,{data,isDisabled,isFocused, isSelected}) =>{
+                                return {...styles,color:data.color}
+                            }
+                        }}
                         />
                     </div>
                     {/* <div className="flex items-center justify-evenly">
