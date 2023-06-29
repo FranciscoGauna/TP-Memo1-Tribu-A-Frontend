@@ -52,7 +52,7 @@ export default function ModalDelete({ modalOpen, setModalOpen, project, task }: 
           </div>
           {/* <!-- Modal body --> */}
           <div style={{color: "#FFFFFF"}}>
-            ¿Desea eliminar el la tarea: {task.name}?
+            ¿Desea eliminar la tarea: {task.name}?
 		      </div>
 		  {/* Modal footer */}
 		  <div style={{display: "flex", justifyContent:"flex-end"}}>

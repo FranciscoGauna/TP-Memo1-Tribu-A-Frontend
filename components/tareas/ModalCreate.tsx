@@ -20,7 +20,7 @@ export default function ModalCreate({ modalOpen, setModalOpen, project }: ModalC
   const [estimatedHours, setEstimatedHours] : [number, Function] = useState(0);
   const [startDate, setStartDate] : [string, Function] = useState("");
   const [endDate, setEndDate] : [string, Function] = useState("");
-  const [resourceOptions, setResourceOptions] : [object[], Function] = useState([]);
+  const [resourceOptions, setResourceOptions] : [{ label:string, value:string }[], Function] = useState([]);
 
   const customStyles = {
     option: (defaultStyles: object, state: { isSelected: any; }) => ({
@@ -147,7 +147,7 @@ export default function ModalCreate({ modalOpen, setModalOpen, project }: ModalC
 					<Select 
 						options={resourceOptions} 
 						styles={customStyles}
-						onChange={(option) => {setHumanResource(option)}}
+						onChange={(option) => {if (option) setHumanResource(option.value)}}
 					/>
 					<div style={{color: "#FFFFFF"}}>Estado:</div>
 					<input style={{borderColor: "#0F3A61", borderWidth: 2, borderRadius: 5, padding: 5, marginBottom: 15, width: '100%', color: "#000000"}}

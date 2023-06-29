@@ -61,8 +61,6 @@ export default function ModalUpdate({ modalOpen, setModalOpen, project, callback
 	}, []);
 
   const clearAttributes = (project: Project) => {
-	console.log("activated");
-	console.log(project);
     setName(project.name);
     setDescription(project.description);
     setProjectLeader(project.project_leader);
@@ -159,10 +157,11 @@ export default function ModalUpdate({ modalOpen, setModalOpen, project, callback
 					/>
 					<div>Líder del proyecto:</div>
 					<Select 
+						key={projectLeader}
 						options={leaderOptions} 
 						styles={customStyles} 
 						defaultValue={findResource(leaderOptions, projectLeader)}
-						onChange={(option) => {setProjectLeader(option)}}
+						onChange={(option) => {if (option) setProjectLeader(option.value)}}
 					/>
 					<div>Estado:</div>
 					<input style={{borderColor: "#0F3A61", borderWidth: 2, borderRadius: 5, padding: 5, marginBottom: 15, width: '100%', color: "#000000"}}

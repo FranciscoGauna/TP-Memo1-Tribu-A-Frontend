@@ -15,7 +15,6 @@ function parseResources(res: { [x: string]: string; }[]){
 
 
 
-
 export default function ModalUpdate({ modalOpen, setModalOpen, project, task, callback }: ModalUpdateTaskProps) {
 	const [name, setName] : [string, Function] = useState("");
 	const [humanResource, setHumanResource] : [string, Function] = useState("");
@@ -24,7 +23,7 @@ export default function ModalUpdate({ modalOpen, setModalOpen, project, task, ca
 	const [estimatedHours, setEstimatedHours] : [number, Function] = useState(0);
 	const [startDate, setStartDate] : [string, Function] = useState("");
 	const [endDate, setEndDate] : [string, Function] = useState("");
-	const [resourceOptions, setResourceOptions] : [object[], Function] = useState([]);
+	const [resourceOptions, setResourceOptions] : [{ value: string, label: string }[], Function] = useState([]);
 
 	const customStyles = {
 	  option: (defaultStyles: object, state: { isSelected: any; }) => ({
@@ -109,7 +108,7 @@ export default function ModalUpdate({ modalOpen, setModalOpen, project, task, ca
         	<div className="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
           		{/* <!-- Modal header --> */}
 				<div className="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
-					<h3 className="text-lg font-semibold text-gray-900 dark:text-white">Crear Tarea</h3>
+					<h3 className="text-lg font-semibold text-gray-900 dark:text-white">Editar Tarea</h3>
 					<button
 						type="button"
 						className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
@@ -157,8 +156,10 @@ export default function ModalUpdate({ modalOpen, setModalOpen, project, task, ca
 					/>
 					<div style={{color: "#FFFFFF"}}>Persona asignada:</div>
 					<Select 
+						key={humanResource}
 						options={resourceOptions} 
 						styles={customStyles}
+						defaultValue={findResource(resourceOptions, humanResource)}
 						onChange={(option) => {setHumanResource(option)}}
 					/>
 					<div style={{color: "#FFFFFF"}}>Estado:</div>

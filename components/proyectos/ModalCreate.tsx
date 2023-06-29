@@ -20,7 +20,7 @@ export default function ModalCreate({ modalOpen, setModalOpen}: ModalCreateProje
   const [estimatedHours, setEstimatedHours] : [number, Function] = useState(0);
   const [startDate, setStartDate] : [string, Function] = useState("");
   const [endDate, setEndDate] : [string, Function] = useState("");
-  const [leaderOptions, setLeaderOptions] : [object[], Function] = useState([]);
+  const [leaderOptions, setLeaderOptions] : [{ value: string, label: string }[], Function] = useState([]);
   const customStyles = {
     option: (defaultStyles: object, state: { isSelected: any; }) => ({
       ...defaultStyles,
@@ -146,7 +146,11 @@ export default function ModalCreate({ modalOpen, setModalOpen}: ModalCreateProje
 						placeholder="50"
 					/>
 					<div>Líder del proyecto:</div>
-					<Select options={leaderOptions} styles={customStyles} onChange={(option) => {setProjectLeader(option)}}/>
+					<Select 
+						options={leaderOptions} 
+						styles={customStyles} 
+						onChange={(option) => {if (option) setProjectLeader(option.value)}}
+					/>
 					<div>Estado:</div>
 					<input style={{borderColor: "#0F3A61", borderWidth: 2, borderRadius: 5, padding: 5, marginBottom: 15, width: '100%', color: "#000000"}}
 						value={stage}
