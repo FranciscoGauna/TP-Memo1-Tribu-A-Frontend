@@ -35,7 +35,7 @@ export const OpcionFecha = ({setOpcionFecha, fechaPorDefecto}: OpcionFechaProps)
   
   return (
     <>
-        <p className="text-sm text-gray-500 py-4">Fecha de creación</p>
+        <p className="text-sm text-gray-500 py-4" style={{color:'#FFFFFF'}}>Fecha de creación</p>
         <DatePicker 
         locale="es"
         selected={startDate}

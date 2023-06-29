@@ -77,11 +77,11 @@ export default function Recursos() {
         {openModalCreate && <ModalCreate setopenModalCreate={setopenModalCreate} />}
         {openModalDelete && <ModalDelete setopenModalDelete={setopenModalDelete} idCargaHoraria={cargaHorariaActualId}/>}
         {(openModalEdit  )  && <ModalEdicion setopenModalEdit={setopenModalEdit} idCargaHoraria={cargaHorariaActualId} setIdCargaHoraria={setCargaHorariaActualId}/>}
-        <button onClick={() =>{ setOpenFiltro(!openFiltro)}} className="w-32 h-10 bg-gray-500 rounded-t-3xl flex items-center justify-center"> Filtros </button>
+        <button onClick={() =>{ setOpenFiltro(!openFiltro)}} className="w-32 h-10 bg-gray-500 rounded-t-3xl flex items-center justify-center" style={{borderRadius: '15px'}}> Filtros </button>
             {openFiltro  && (
-                <div className="w-full h-48 bg-gray-300 grid grid-cols-2" style={{ backgroundColor: '#0F3A61'}}>
-                    <div className="flex items-center justify-evenly" style={{ backgroundColor: '#0F3A61'}}>
-                        <p className="w-1/5" style={{ color: '#FFFFFF'}}>Recurso</p>
+                <div className="w-full h-48 bg-gray-300 grid grid-cols-2" style={{ backgroundColor: '#0F3A61', borderRadius:'15px'}}>
+                    <div className="flex items-center justify-evenly" style={{ backgroundColor: '#0F3A61', borderRadius: '15px'}}>
+                        <p className="w-1/5" style={{ color: '#FFFFFF', borderRadius:'15px'}}>Recurso</p>
                         <Select 
                           className="w-3/5"
                           onChange={(e:any) =>{setrecursoAFiltrar(e.value.toString())}}
@@ -102,8 +102,8 @@ export default function Recursos() {
                         }}
                         />
                     </div>
-                    <div className="flex items-center justify-evenly" style={{ backgroundColor: '#0F3A61'}}>
-                        <p className="w-1/5" style={{ color: '#FFFFFF'}}>Proyecto</p>
+                    <div className="flex items-center justify-evenly" style={{ backgroundColor: '#0F3A61', borderRadius:'15px'}}>
+                        <p className="w-1/5" style={{ color: '#FFFFFF', borderRadius:'15px'}}>Proyecto</p>
                         <Select 
                           className="w-3/5"
                           onChange={(e:any) =>{setproyectoAFiltrar(e.value.toString())}}
@@ -132,9 +132,9 @@ export default function Recursos() {
                         <p className="w-1/5">fecha hasta</p>
                         <Select className="w-3/5"/>
                     </div> */}
-                    <div style={{ backgroundColor: '#0F3A61'}}></div>
+                    <div style={{ backgroundColor: '#0F3A61', borderRadius:'15px'}}></div>
                     <div className="flex items-center justify-end mr-10" style={{ backgroundColor: '#0F3A61'}}>
-                      <button style={{ backgroundColor: '#248CED'}} onClick={handleAplicarFiltro} type="button" className="inline-flex w-full justify-center rounded-md bg-blue-600 mr-4 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto">Aplicar</button>
+                      <button style={{ backgroundColor: '#7B7B7B'}} onClick={handleAplicarFiltro} type="button" className="inline-flex w-full justify-center rounded-md bg-blue-600 mr-4 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto">Aplicar</button>
                       <button onClick={() =>{setOpenFiltro(false); setrecursoAFiltrar(""); setproyectoAFiltrar("")}} type="button" className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">Cancelar</button>
                     </div>
                 </div>
