@@ -51,7 +51,7 @@ export default function ModalCreate (
         return {
               value: `${key}`,
               label:`${value.name}`,
-              color:'#FFFFFF'
+              color:'#000000'
             }
       })
       // return proyectoSeleccionado[0].tasks.map((tarea) =>{
@@ -145,26 +145,26 @@ export default function ModalCreate (
                 <div className="flex min-h-full  items-end justify-center p-4 text-center sm:items-center sm:p-0">
                  
                   <div className="transform  rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-2xl  z-20">
-                    <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4 ">
-                      <div className="">
+                    <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4" style={{backgroundColor: '#1F2937', borderTopRightRadius: '10px', borderTopLeftRadius: '10px'}}>
+                      <div className="" >
                        
-                        <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                          <h3 className="text-base font-semibold leading-6 text-gray-900" id="modal-title">Creación de carga horaria</h3>
+                        <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left" style={{backgroundColor: '#1F2937'}}>
+                          <h3 className="text-base font-semibold leading-6 text-gray-900" id="modal-title" style={{color: '#FFFFFF'}}>Crear Carga Horaria</h3>
                           <div className="mt-2" >
                             <OpcionModal 
-                              titulo="Legajo y nombre completo" 
+                              titulo="Nombre y apellido:" 
                               opciones={opcionesDeRecursosParaSelect} 
                               
                               setopcionSeleccionada={setOpcionLegajo}
                               />
                             <OpcionModal 
-                              titulo="Proyecto" 
+                              titulo="Proyecto:" 
                               opciones={opcionesDeProyectosParaSelect} 
                               
                               setopcionSeleccionada={setOpcionProyecto}
                               />
                             <OpcionModal 
-                              titulo="Tarea" 
+                              titulo="Tarea:" 
                               opciones={opcionesSelectorTareas} 
                               
                               setopcionSeleccionada={setOpcionTarea}
@@ -174,7 +174,7 @@ export default function ModalCreate (
                               setOpcionFecha={setOpcionFecha}
                             />
                             <OpcionModal
-                              titulo="Horas Trabajadas" 
+                              titulo="Horas Trabajadas:" 
                               opciones={opcionesDeHoras} 
                               
                               setopcionSeleccionada={setOpcionHoras}
@@ -185,9 +185,9 @@ export default function ModalCreate (
                         </div>
                       </div>
                     </div>
-                    <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                      <button onClick={handleCargar}  type="button" className="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto">Cargar</button>
-                      <button onClick={ () =>{ setopenModalCreate(false)}} type="button" className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">Cancelar</button>
+                    <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6" style={{backgroundColor: '#1F2937', borderBottomRightRadius: '10px', borderBottomLeftRadius: '10px'}}>
+                      <button style={{fontWeight:'400', backgroundColor: '#0F3A61'}} onClick={handleCargar}  type="button" className="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto">Cargar</button>
+                      <button style={{fontWeight:'400', backgroundColor: '#0F3A61'}} onClick={ () =>{ setopenModalCreate(false)}} type="button" className="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto">Cancelar</button>
                     </div>
                    </div>
                  </div>

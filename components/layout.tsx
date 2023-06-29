@@ -14,10 +14,6 @@ export default function Layout({ children }: { children: any }) {
       title: "Clientes",
     },
     {
-      href: "/usuarios",
-      title: "Usuarios",
-    },
-    {
       href: "/recursos",
       title: "Recursos",
     }

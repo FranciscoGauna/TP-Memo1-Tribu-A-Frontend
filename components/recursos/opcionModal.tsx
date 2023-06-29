@@ -48,7 +48,7 @@ export const OpcionModal = ({titulo, opciones,setopcionSeleccionada,opcionDefect
 
     return(
         <>
-            <p className="text-sm text-gray-500 py-4">{titulo}</p>
+            <p className="text-sm text-gray-500 py-4" style={{color: '#FFFFFF'}}>{titulo}</p>
                             <Select 
                                 ref={selectRef}
                                 className="w-full "
@@ -58,17 +58,21 @@ export const OpcionModal = ({titulo, opciones,setopcionSeleccionada,opcionDefect
                                 styles={{
                                     control: (baseStyles, state) => ({
                                     ...baseStyles,
-                                    backgroundColor:'#F4F5F7',
+                                    backgroundColor:'#FFFFFF',
                                   
                                     }),
                                     singleValue:(styles)=>({
                                         ...styles,
                                         color:'#666666'
-                                    })
+                                    }),
+                                    option: (styles,{data,isDisabled,isFocused, isSelected}) =>{
+                                        return {...styles,color:data.color}
+                                    }
                                 }}
                                 options={opciones}
                                 onChange={handleSelectChange}
-                                placeholder="Seleccione una opcion"
+                                placeholder="Seleccione una opción"
+                                
                                 //value={{"label": "", "value":"","color":"#FFFFFF"}}
                             />
                              
