@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import {getTimeRemaining} from "@/utils/timeUtils";
-import {Ticket, Cliente} from "@/components/types";
+import {Ticket, Cliente, Task, ProyectoTarea} from "@/components/types";
 import ModalDeleteTicket from "@/components/soporte/ModalDeleteTicket";
 import ModalUpdateTicket from "@/components/soporte/ModalUpdateTicket";
 import ModalCreateTask from "@/components/soporte/ModalCreateTask";
+import TareaGridRow from "@/components/soporte/tareaGridRow";
 function buscarCliente(list : Cliente[], idCliente: number){
     const cliente = list.find((cliente) => cliente.id == idCliente);
     return cliente ? cliente.razonSocial : "Desconocido";
@@ -26,6 +27,7 @@ export default function Ticket() {
     const [ModalDeleteTicketOpen, setModalDeleteTicketOpen] : [boolean, Function] = useState(false);
     const [ModalUpdateTicketOpen, setModalUpdateTicketOpen] : [boolean, Function] = useState(false);
     const [ModalCreateTaskOpen, setModalCreateTaskOpen] : [boolean, Function] = useState(false);
+    const [tareas, setTareas] = useState<Task[]>([]);
 
     const reloadTicket = () => {
         fetch('https://tp-memo1-tribu-a-soporte.onrender.com/clientes')
@@ -38,11 +40,40 @@ export default function Ticket() {
                 .then((res) => res.json())
                 .then((data) => {
                     setTicket(data);
+                    
                 });
         }
     };
-
+    
     useEffect(reloadTicket, [idTicket]);
+
+    if (ticket) {
+        for (let i = 0; i < ticket.tareas.length; i++) {
+        const [proyecto, setProyecto] = useState<{ label: string}>([]);
+        const [idTarea, setIdTarea] = useState<{ id: number }>([]);
+
+        const proyectoTarea = ticket.tareas[i].map((proyectoTarea: ProyectoTarea) => ({
+            label: proyectoTarea.proyecto,
+        }));
+        setProyecto(proyectoTarea);
+        const idTareaActual = ticket.tareas[i].map((proyectoTarea: ProyectoTarea) => ({
+            id: proyectoTarea.id
+        }));
+        setIdTarea(idTareaActual);
+
+        fetch(`https://projects-backend-service.onrender.com/projects/${proyecto}/tasks/${idTarea}`)
+			.then((res) => res.json())
+			.then((data) => {
+				setTareas(tareas.push(data));
+			})
+			.catch((error) => {
+				console.error("Error fetching Tareas:", error);
+			});
+        }
+    };
+    
+
+    
 
     useEffect(() => {
         const intervalId = setInterval(() => {
@@ -209,6 +240,11 @@ export default function Ticket() {
                         onClick={() => setModalCreateTaskOpen(true)}
                     ><span className="mb-1.5">+</span></button>
                 </div>
+                {tareas.map((tarea) => (
+                    <div key={tarea.puid} style={{ backgroundColor: "#0F3A61", color: "#FFFFFF", marginBottom: 20 }}>
+                        <TareaGridRow tarea={tarea} />
+                    </div>
+                ))}
             </div>
             {ticket && (
                 <ModalDeleteTicket

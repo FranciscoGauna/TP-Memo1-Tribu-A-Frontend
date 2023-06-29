@@ -27,6 +27,7 @@ export interface Ticket {
   fechaCreacion: string;
   cliente: number;
   versionProducto: number;
+  tareas: ProyectoTarea[];
 }
 
 export interface Cliente {
@@ -44,6 +45,11 @@ export interface Task {
   name: string;
   start_date: string;
   state: string;
+}
+
+export interface ProyectoTarea {
+  proyecto: string;
+  id: string;
 }
 
 export interface Project {
