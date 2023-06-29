@@ -103,7 +103,7 @@ export default function Proyectos() {
                 <ProjectItem project={project} setModalUpdateOpen={setModalUpdateOpen} setModalDeleteOpen={setModalDeleteOpen} setProject={setProject} key={index}/>
             ))}
             <ModalCreate modalOpen={modalCreateOpen} setModalOpen={ModalCreateHandle}/>
-            <ModalUpdate modalOpen={modalUpdateOpen} setModalOpen={ModalUpdateHandle} project={project} setProject={setProject}/>
+            <ModalUpdate modalOpen={modalUpdateOpen} setModalOpen={ModalUpdateHandle} project={project}/>
             <ModalDelete modalOpen={modalDeleteOpen} setModalOpen={ModalDeleteHandle} project={project}/>
         </div>
     )

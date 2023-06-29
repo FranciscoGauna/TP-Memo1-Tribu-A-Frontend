@@ -1,4 +1,4 @@
-import { Cliente, Project, Usuario } from "./model"
+import { Cliente, Project, Task, Usuario } from "./model"
 
 
 export interface ClientGridProps {
@@ -21,20 +21,39 @@ export interface ModalProps {
   list: Usuario[]
 }
 
-export interface ModalCreateProps {
+export interface ModalCreateProjectProps {
   modalOpen: boolean
   setModalOpen: Function
 }
 
-export interface ModalUpdateProps {
+export interface ModalUpdateProjectProps {
   modalOpen: boolean
   setModalOpen: Function
   project: Project
-  setProject: Function
 }
 
-export interface ModalDeleteProps {
+export interface ModalDeleteProjectProps {
   modalOpen: boolean
   setModalOpen: Function
   project: Project
+}
+
+export interface ModalCreateTaskProps {
+  modalOpen: boolean
+  setModalOpen: Function
+  project: Project
+}
+
+export interface ModalUpdateTaskProps {
+  modalOpen: boolean
+  setModalOpen: Function
+  project: Project
+  task: Task
+}
+
+export interface ModalDeleteTaskProps {
+  modalOpen: boolean
+  setModalOpen: Function
+  project: Project
+  task: Task
 }

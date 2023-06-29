@@ -1,9 +1,9 @@
-import { ModalDeleteProps } from "../../types/components"
+import { ModalDeleteTaskProps } from "../../types/components"
 
-export default function ModalDelete({ modalOpen, setModalOpen, project}: ModalDeleteProps) {
+export default function ModalDelete({ modalOpen, setModalOpen, project, task }: ModalDeleteTaskProps) {
   
   const deleteProject = () => {
-    fetch(process.env.NEXT_PUBLIC_PROJECTS_URL + '/projects/' + project.uid, {
+    fetch(process.env.NEXT_PUBLIC_PROJECTS_URL + '/projects/' + project.uid + "/tasks/" + task.puid, {
         method: 'DELETE'
     }).then((res) => {
         return res.json();
@@ -15,7 +15,7 @@ export default function ModalDelete({ modalOpen, setModalOpen, project}: ModalDe
 
   return (
     <div
-      id="loguearHorasModal"
+      id="DeleteTaskModal"
       tabIndex={-1}
       aria-hidden={!modalOpen}
       className={`${modalOpen ? "" : "hidden"} absolute inset-0 h-screen flex justify-center items-center bg-black/25`}
@@ -51,8 +51,8 @@ export default function ModalDelete({ modalOpen, setModalOpen, project}: ModalDe
             </button>
           </div>
           {/* <!-- Modal body --> */}
-          <div>
-            ¿Desea eliminar el proyecto: {project.name}?
+          <div style={{color: "#FFFFFF"}}>
+            ¿Desea eliminar el la tarea: {task.name}?
 		      </div>
 		  {/* Modal footer */}
 		  <div style={{display: "flex", justifyContent:"flex-end"}}>

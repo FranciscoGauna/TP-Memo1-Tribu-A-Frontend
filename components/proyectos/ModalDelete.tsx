@@ -1,6 +1,6 @@
-import { ModalDeleteProps } from "../../types/components"
+import { ModalDeleteProjectProps } from "../../types/components"
 
-export default function ModalDelete({ modalOpen, setModalOpen, project}: ModalDeleteProps) {
+export default function ModalDelete({ modalOpen, setModalOpen, project}: ModalDeleteProjectProps) {
   
   const deleteProject = () => {
     fetch(process.env.NEXT_PUBLIC_PROJECTS_URL + '/projects/' + project.uid, {

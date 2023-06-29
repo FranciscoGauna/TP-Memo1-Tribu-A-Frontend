@@ -4,8 +4,8 @@ import ModalUpdate from "@/components/tareas/ModalUpdate";
 import { useEffect, useState } from "react";
 import { Task, Project, Resource } from "../../types/model";
 
-function TaskItem({task, setModalUpdateOpen, setModalDeleteOpen, setTask} : 
-	{task: Task, setModalUpdateOpen: Function, setModalDeleteOpen: Function, setTask: Function }) {
+function TaskItem({task, setTask, setModalUpdateOpen, setModalDeleteOpen} : 
+{task: Task, setTask: Function, setModalUpdateOpen: Function, setModalDeleteOpen: Function }) {
     return (
         <div style={{backgroundColor: "#0F3A61", color: "#FFFFFF", display: "flex", justifyContent: "space-between", marginBottom: 30, height: 100, alignItems: "center", padding: 20}}>
             <div style={{fontSize: 20}}>
@@ -16,14 +16,14 @@ function TaskItem({task, setModalUpdateOpen, setModalDeleteOpen, setTask} :
                 <button
                     style={{display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "#7B7B7B", borderRadius: 10, height: 42, width: 95, marginLeft: 12}}
                     onClick={() => {
-                        setTask(task);
+						setTask(task);
                         setModalUpdateOpen(true);
                     }}
                 >Editar</button>
                 <button 
                     style={{display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "#D73838", borderRadius: 10, height: 42, width: 95, marginLeft: 12}}
                     onClick={() => {
-                        setTask(task);
+						setTask(task);
                         setModalDeleteOpen(true);
                     }}
                 >Eliminar</button>
@@ -37,15 +37,16 @@ export default function ProyectoDetalle() {
     const [modalCreateOpen, setModalCreateOpen] : [boolean, Function] = useState(false);
     const [modalUpdateOpen, setModalUpdateOpen] : [boolean, Function] = useState(false);
     const [modalDeleteOpen, setModalDeleteOpen] : [boolean, Function] = useState(false);
-	const [task, setTask] : [Task, Function] = useState({
-		puid: "",
+    const [task, setTask] : [Task, Function] = useState({
         name: "",
         description: "",
         state: "",
         start_date: "",
         end_date: "",
         estimated_hours: 0,
-	});
+        human_resource: "", 
+        puid: ""
+    });
     const [project, setProject] : [Project, Function] = useState({
         id: 0,
         name: "",
@@ -63,6 +64,37 @@ export default function ProyectoDetalle() {
         nombre: "",
         apellido: ""
     });
+
+
+	const reloadProject = () => {
+		fetch(process.env.NEXT_PUBLIC_PROJECTS_URL + "/projects/" + project.uid)
+			.then((res) => {
+				return res.json()
+			})
+			.then((data) => {
+				setProject(data.project);
+			}).catch((e) => {
+				console.error(e);
+			});
+	}
+
+	const ModalCreateHandle = (flag: boolean) => {
+		if (!flag)
+			reloadProject();
+		setModalCreateOpen(flag);
+	}
+
+	const ModalUpdateHandle = (flag: boolean) => {
+		if (!flag)
+			reloadProject();
+		setModalUpdateOpen(flag);
+	}
+
+	const ModalDeleteHandle = (flag: boolean) => {
+		if (!flag)
+			reloadProject();
+		setModalDeleteOpen(flag);
+	}
 
     const showAttribute = (attribute: string) => {
         return (attribute) ? attribute : '-';
@@ -127,8 +159,9 @@ export default function ProyectoDetalle() {
     }, [project]);
 
 	return (<>
-    <div style={{backgroundColor: "#DDDDDC", height: 85, display: "flex", alignItems: "center", padding: 23, fontSize: 40, fontWeight: "500"}}>{project.name}</div>
-	<div style={{display: "flex", flexDirection: "column", height: "100%", paddingLeft: 90, paddingRight: 90}}>
+    <div style={{backgroundColor: "#DDDDDC", height: 85, display: "flex", color: "#000000",
+				alignItems: "center", padding: 23, fontSize: 40, fontWeight: "500"}}>{project.name}</div>
+	<div style={{display: "flex", color: "#000000", flexDirection: "column", height: "100%", paddingLeft: 90, paddingRight: 90}}>
         <div>
             <div style={{fontSize: 35, fontWeight: "500", marginTop: 14}}>Información del proyecto</div>
             <div style={{display: "flex"}}>
@@ -170,16 +203,16 @@ export default function ProyectoDetalle() {
             <div style={{fontSize: 20}}>Crear Tarea</div>
             <button 
                 style={{display:"flex", justifyContent: "center", alignItems: "center", borderRadius: 35, backgroundColor: "#248CED", height: 70, width: 70, fontSize: 40}}
-                onClick={() => {}}
+                onClick={() => {ModalCreateHandle(true)}}
             >+</button>
         </div>
 		{/* Aca va la tabla de tareas */}
 		{Object.values(project.tasks).map((task, index) => (
-                <TaskItem task={task} setModalUpdateOpen={setModalUpdateOpen} setModalDeleteOpen={setModalDeleteOpen} setTask={setTask} key={index}/>
+                <TaskItem task={task} setTask={setTask} setModalUpdateOpen={setModalUpdateOpen} setModalDeleteOpen={setModalDeleteOpen} key={index}/>
         ))}
-        {/* <ModalCreate></ModalCreate>
-        <ModalUpdate></ModalUpdate>
-        <ModalDelete></ModalDelete> */}
+		<ModalCreate modalOpen={modalCreateOpen} setModalOpen={ModalCreateHandle} project={project}/>
+        <ModalUpdate modalOpen={modalUpdateOpen} setModalOpen={ModalUpdateHandle} project={project} task={task}/>
+        <ModalDelete modalOpen={modalDeleteOpen} setModalOpen={ModalDeleteHandle} project={project} task={task}/> 
 	</div>
     </>);
 }

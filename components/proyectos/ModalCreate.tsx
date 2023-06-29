@@ -1,4 +1,4 @@
-import { ModalCreateProps } from "../../types/components"
+import { ModalCreateProjectProps } from "../../types/components"
 import { useEffect, useState } from "react";
 import Select from "react-select";
 
@@ -12,7 +12,7 @@ function parseResources(res: { [x: string]: string; }[]){
 	return res.map(parseResource);
 }
 
-export default function ModalCreate({ modalOpen, setModalOpen}: ModalCreateProps) {
+export default function ModalCreate({ modalOpen, setModalOpen}: ModalCreateProjectProps) {
   const [name, setName] : [string, Function] = useState("");
   const [projectLeader, setProjectLeader] : [string, Function] = useState("");
   const [description, setDescription] : [string, Function] = useState("");
@@ -146,7 +146,7 @@ export default function ModalCreate({ modalOpen, setModalOpen}: ModalCreateProps
 						placeholder="50"
 					/>
 					<div>Líder del proyecto:</div>
-					<Select options={leaderOptions} styles={customStyles}/>
+					<Select options={leaderOptions} styles={customStyles} onChange={(option) => {setProjectLeader(option)}}/>
 					<div>Estado:</div>
 					<input style={{borderColor: "#0F3A61", borderWidth: 2, borderRadius: 5, padding: 5, marginBottom: 15, width: '100%', color: "#000000"}}
 						value={stage}

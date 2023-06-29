@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ModalUpdateProps } from "../../types/components";
+import { ModalUpdateProjectProps } from "../../types/components";
 import Select from "react-select";
 
 function parseResource(res: { [x: string]: string; }){
@@ -15,7 +15,7 @@ function parseResources(res: { [x: string]: string; }[]){
 
 
 
-export default function ModalUpdate({ modalOpen, setModalOpen, project, setProject}: ModalUpdateProps) {
+export default function ModalUpdate({ modalOpen, setModalOpen, project }: ModalUpdateProjectProps) {
 	const [name, setName] : [string, Function] = useState(project.name);
 	const [projectLeader, setProjectLeader] : [string, Function] = useState(project.project_leader);
 	const [description, setDescription] : [string, Function] = useState(project.description);
@@ -70,7 +70,16 @@ export default function ModalUpdate({ modalOpen, setModalOpen, project, setProje
   }
   
   const updateProject = () => {
-    let formData = {name: name, project_leader: projectLeader, description: description};
+    let formData = {
+		name: name, 
+		description: description,
+		project_leader: projectLeader,
+		stage: stage,
+		estimated_hours: estimatedHours, 
+		start_date: startDate, 
+		end_date: endDate, 
+		tasks: {}
+	};
     fetch(process.env.NEXT_PUBLIC_PROJECTS_URL + '/projects/' + project.uid, {
         method: 'PUT',
         headers: {
@@ -81,7 +90,6 @@ export default function ModalUpdate({ modalOpen, setModalOpen, project, setProje
         return res.json();
     }).then((data) => {
         console.log("UPDATE",data);
-        setProject(data);
         setModalOpen(false);
     });
   }
@@ -145,7 +153,12 @@ export default function ModalUpdate({ modalOpen, setModalOpen, project, setProje
 						placeholder="50"
 					/>
 					<div>Líder del proyecto:</div>
-					<Select options={leaderOptions} styles={customStyles} defaultValue={findResource(leaderOptions, projectLeader)}/>
+					<Select 
+						options={leaderOptions} 
+						styles={customStyles} 
+						defaultValue={findResource(leaderOptions, projectLeader)}
+						onChange={(option) => {setProjectLeader(option)}}
+					/>
 					<div>Estado:</div>
 					<input style={{borderColor: "#0F3A61", borderWidth: 2, borderRadius: 5, padding: 5, marginBottom: 15, width: '100%', color: "#000000"}}
 						value={stage}

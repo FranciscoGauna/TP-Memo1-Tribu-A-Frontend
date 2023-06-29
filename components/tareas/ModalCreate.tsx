@@ -1,4 +1,4 @@
-import { ModalCreateProps } from "../../types/components"
+import { ModalCreateTaskProps } from "../../types/components"
 import { useEffect, useState } from "react";
 import Select from "react-select";
 
@@ -12,15 +12,16 @@ function parseResources(res: { [x: string]: string; }[]){
 	return res.map(parseResource);
 }
 
-export default function ModalCreate({ modalOpen, setModalOpen}: ModalCreateProps) {
+export default function ModalCreate({ modalOpen, setModalOpen, project }: ModalCreateTaskProps) {
   const [name, setName] : [string, Function] = useState("");
-  const [projectLeader, setProjectLeader] : [string, Function] = useState("");
+  const [humanResource, setHumanResource] : [string, Function] = useState("");
   const [description, setDescription] : [string, Function] = useState("");
-  const [stage, setStage] : [string, Function] = useState("");
+  const [state, setState] : [string, Function] = useState("");
   const [estimatedHours, setEstimatedHours] : [number, Function] = useState(0);
   const [startDate, setStartDate] : [string, Function] = useState("");
   const [endDate, setEndDate] : [string, Function] = useState("");
-  const [leaderOptions, setLeaderOptions] : [object[], Function] = useState([]);
+  const [resourceOptions, setResourceOptions] : [object[], Function] = useState([]);
+
   const customStyles = {
     option: (defaultStyles: object, state: { isSelected: any; }) => ({
       ...defaultStyles,
@@ -37,39 +38,37 @@ export default function ModalCreate({ modalOpen, setModalOpen}: ModalCreateProps
 
   const clearAttributes = () => {
     setName("");
-    setProjectLeader("");
+    setHumanResource("");
     setEstimatedHours(0);
     setDescription("");
     setStartDate("");
     setEndDate("");
-    setStage("");
+    setState("");
   }
 
   useEffect(() => {
-	// Se trae los proyectos del endpoint
 	fetch(process.env.NEXT_PUBLIC_RESOURCES_URL + "/api/v1/users")
 		.then((res) => {
 			return res.json()
 		})
 		.then((data) => {
-			setLeaderOptions(parseResources(data));
+			setResourceOptions(parseResources(data));
 		}).catch((e) => {
 			console.error(e);
 		});
 	}, []);
 
-  const createProject = () => {
+  const createTask = () => {
     let formData = {
 		name: name, 
 		description: description,
-		project_leader: projectLeader,
-		stage: stage,
+		human_resource: humanResource,
+		state: state,
 		estimated_hours: estimatedHours, 
 		start_date: startDate, 
-		end_date: endDate, 
-		tasks: {}
+		end_date: endDate
 	};
-    fetch('https://projects-backend-service.onrender.com/projects', {
+    fetch(process.env.NEXT_PUBLIC_PROJECTS_URL + '/projects/' + project.uid + "/tasks", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -80,16 +79,15 @@ export default function ModalCreate({ modalOpen, setModalOpen}: ModalCreateProps
     }).then((data) => {
         console.log("CREATE", data);
         setModalOpen(false);
-		//window.location.reload();
     }).catch((error) => {
 		console.error(error);
-		alert("Failed to create Project");
+		alert("Failed to create task");
 	});
   }
 
   return (
     <div
-    	id="loguearHorasModal"
+    	id="CreateTaskModal"
     	tabIndex={-1}
       	aria-hidden={!modalOpen}
       	className={`${modalOpen ? "" : "hidden"} absolute inset-0 h-screen flex justify-center items-center bg-black/25`}
@@ -99,7 +97,7 @@ export default function ModalCreate({ modalOpen, setModalOpen}: ModalCreateProps
         	<div className="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
           		{/* <!-- Modal header --> */}
 				<div className="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
-					<h3 className="text-lg font-semibold text-gray-900 dark:text-white">Crear Proyecto</h3>
+					<h3 className="text-lg font-semibold text-gray-900 dark:text-white">Crear Tarea</h3>
 					<button
 						type="button"
 						className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
@@ -126,44 +124,48 @@ export default function ModalCreate({ modalOpen, setModalOpen}: ModalCreateProps
 				</div>
 				{/* <!-- Modal body --> */}
 				<div>
-					<div>Nombre del proyecto:</div>
+					<div style={{color: "#FFFFFF"}}>Nombre de la tarea:</div>
 					<input style={{borderColor: "#0F3A61", borderWidth: 2, borderRadius: 5, padding: 5, marginBottom: 15, width: '100%', color: "#000000"}}
 						value={name}
 						onChange={e => setName(e.target.value)}  
-						placeholder="Nombre de proyecto"
+						placeholder="Nombre de la tarea"
 					/>
-					<div>Descripción:</div>
+					<div style={{color: "#FFFFFF"}}>Descripción:</div>
 					<input style={{borderColor: "#0F3A61", borderWidth: 2, borderRadius: 5, padding: 5, marginBottom: 15, width: '100%', color: "#000000"}}
 						value={description}
 						onChange={e => setDescription(e.target.value)}
 						placeholder="Descripción"
 					/>
-					<div>Horas Estimadas:</div>
+					<div style={{color: "#FFFFFF"}}>Horas Estimadas:</div>
 					<input style={{borderColor: "#0F3A61", borderWidth: 2, borderRadius: 5, padding: 5, marginBottom: 15, width: '100%', color: "#000000"}}
 						value={estimatedHours}
 						type="number"
 						onChange={e => setEstimatedHours(e.target.value)}
 						placeholder="50"
 					/>
-					<div>Líder del proyecto:</div>
-					<Select options={leaderOptions} styles={customStyles}/>
-					<div>Estado:</div>
+					<div style={{color: "#FFFFFF"}}>Persona asignada:</div>
+					<Select 
+						options={resourceOptions} 
+						styles={customStyles}
+						onChange={(option) => {setHumanResource(option)}}
+					/>
+					<div style={{color: "#FFFFFF"}}>Estado:</div>
 					<input style={{borderColor: "#0F3A61", borderWidth: 2, borderRadius: 5, padding: 5, marginBottom: 15, width: '100%', color: "#000000"}}
-						value={stage}
-						onChange={e => setStage(e.target.value)}
+						value={state}
+						onChange={e => setState(e.target.value)}
 						placeholder="Comienzo"
 					/>
-					<div>Comienzo de proyecto:</div>
+					<div style={{color: "#FFFFFF"}}>Comienzo de tarea:</div>
 					<input style={{borderColor: "#0F3A61", borderWidth: 2, borderRadius: 5, padding: 5, marginBottom: 15, width: '100%', color: "#000000"}}
 						value={startDate}
 						onChange={e => setStartDate(e.target.value)}
-						placeholder="Comienzo de proyecto (formato: AAAA-MM-DD)"
+						placeholder="Comienzo de tarea (formato: AAAA-MM-DD)"
 					/>
-					<div>Fin de proyecto:</div>
+					<div style={{color: "#FFFFFF"}}>Fin de tarea:</div>
 					<input style={{borderColor: "#0F3A61", borderWidth: 2, borderRadius: 5, padding: 5, marginBottom: 15, width: '100%', color: "#000000"}}
 						value={endDate}
 						onChange={e => setEndDate(e.target.value)}
-						placeholder="Fin de proyecto (formato: AAAA-MM-DD)"
+						placeholder="Fin de tarea (formato: AAAA-MM-DD)"
 					/>
 				</div>
 				{/* Modal footer */}
@@ -178,7 +180,7 @@ export default function ModalCreate({ modalOpen, setModalOpen}: ModalCreateProps
 					<button
 						style={{backgroundColor: "#0F3A61", color: "#FFFFFF", borderRadius: 5, width: 100, height: 40}}
 						onClick={() => {
-							createProject();
+							createTask();
 						}}
 					>Crear</button>
 		    	</div>

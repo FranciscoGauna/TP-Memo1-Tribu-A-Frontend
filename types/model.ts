@@ -27,6 +27,7 @@ export interface Task {
 	puid: string
 	name: string
 	description: string
+	human_resource: string
 	state: string
 	estimated_hours: number
 	start_date: string
