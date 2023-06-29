@@ -36,9 +36,11 @@ export interface Cliente {
 }
 
 export interface Task {
-  end_date_est: string;
-  hours_est: string;
-  id: string;
+  description: string;
+  end_date: string;
+  hours_est: number;
+  human_resource: string;
+  puid: string;
   name: string;
   start_date: string;
   state: string;
@@ -74,4 +76,16 @@ export interface ModalDeleteTicketProps {
   ticket: Ticket
   nombreProducto : string
   descripcionVersion :string
+}
+
+export interface ModalCreateTaskProps {
+  modalOpen: boolean
+  setModalOpen: Function
+  ticket: Ticket
+}
+
+export interface Recurso {
+  legajo: number
+  nombre: string
+  apellido: string
 }

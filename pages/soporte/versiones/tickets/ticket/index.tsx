@@ -4,6 +4,7 @@ import {getTimeRemaining} from "@/utils/timeUtils";
 import {Ticket, Cliente} from "@/components/types";
 import ModalDeleteTicket from "@/components/soporte/ModalDeleteTicket";
 import ModalUpdateTicket from "@/components/soporte/ModalUpdateTicket";
+import ModalCreateTask from "@/components/soporte/ModalCreateTask";
 function buscarCliente(list : Cliente[], idCliente: number){
     const cliente = list.find((cliente) => cliente.id == idCliente);
     return cliente ? cliente.razonSocial : "Desconocido";
@@ -24,6 +25,7 @@ export default function Ticket() {
     const { descripcionVersion } = router.query as { descripcionVersion: string };
     const [ModalDeleteTicketOpen, setModalDeleteTicketOpen] : [boolean, Function] = useState(false);
     const [ModalUpdateTicketOpen, setModalUpdateTicketOpen] : [boolean, Function] = useState(false);
+    const [ModalCreateTaskOpen, setModalCreateTaskOpen] : [boolean, Function] = useState(false);
 
     const reloadTicket = () => {
         fetch('https://tp-memo1-tribu-a-soporte.onrender.com/clientes')
@@ -67,8 +69,10 @@ export default function Ticket() {
         setModalUpdateTicketOpen(flag);
     }
 
-    function handleNuevaTarea() {
-
+    const ModalCreateTaskHandle = (flag: boolean) => {
+        if (!flag)
+            reloadTicket();
+        setModalCreateTaskOpen(flag);
     }
 
     function handleCerrarTicket() {
@@ -202,6 +206,7 @@ export default function Ticket() {
                     <button
                         className="flex justify-center items-center"
                         style={{ borderRadius: 35, backgroundColor: "#248CED", height: 70, width: 70, fontSize: 40 }}
+                        onClick={() => setModalCreateTaskOpen(true)}
                     ><span className="mb-1.5">+</span></button>
                 </div>
             </div>
@@ -218,6 +223,13 @@ export default function Ticket() {
                 <ModalUpdateTicket
                     modalOpen={ModalUpdateTicketOpen}
                     setModalOpen={ModalUpdateTicketHandle}
+                    ticket={ticket}
+                />
+            )}
+            {ticket && (
+                <ModalCreateTask
+                    modalOpen={ModalCreateTaskOpen}
+                    setModalOpen={ModalCreateTaskHandle}
                     ticket={ticket}
                 />
             )}
