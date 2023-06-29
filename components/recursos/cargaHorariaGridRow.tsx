@@ -56,11 +56,11 @@ export default function CargaHorariaGridRow(
     <>
     <tr key={`${cargaHoraria.legajo}`} className='bg-gray-300' style={{ backgroundColor: '#0F3A61'}}>
       <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200 ">
-        <div className="flex items-center">{cargaHoraria.legajo}</div>
+        <div className="flex items-center"style={{ color: '#FFFFFF'}}>{cargaHoraria.legajo}</div>
       </td>
 
       <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200" style={{ backgroundColor: '#0F3A61'}}>
-        <div className="flex items-center">{recurso.nombre || "cargando"}</div>
+        <div className="flex items-center" style={{ color: '#FFFFFF'}}>{recurso.nombre || "cargando"}</div>
       </td>
 
       <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200" style={{ backgroundColor: '#0F3A61'}}>

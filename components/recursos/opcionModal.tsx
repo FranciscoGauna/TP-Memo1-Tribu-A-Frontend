@@ -64,7 +64,10 @@ export const OpcionModal = ({titulo, opciones,setopcionSeleccionada,opcionDefect
                                     singleValue:(styles)=>({
                                         ...styles,
                                         color:'#666666'
-                                    })
+                                    }),
+                                    option: (styles,{data,isDisabled,isFocused, isSelected}) =>{
+                                        return {...styles,color:data.color}
+                                    }
                                 }}
                                 options={opciones}
                                 onChange={handleSelectChange}

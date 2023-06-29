@@ -70,7 +70,7 @@ export default function Recursos() {
           <h1 className="text-3xl font-bold decoration-gray-400">Recursos</h1>
           <div className="min-w-full flex justify-between py-4">
               <h2 className="text-2xl font-bold decoration-gray-400 ">Carga de horas</h2>
-              <button style={{ backgroundColor: '#0F3A61'}}onClick={ () => setopenModalCreate(true)}className="w-40 h-10 text-sm text-center flex items-center justify-center leading-5 
+              <button style={{ backgroundColor: '#0F3A61', color:'#FFFFFF'}}onClick={ () => setopenModalCreate(true)}className="w-40 h-10 text-sm text-center flex items-center justify-center leading-5 
                 bg-gray-300 rounded-2xl hover:bg-gray-200">Cargar horas</button>
             </div>
         </div>
@@ -81,7 +81,7 @@ export default function Recursos() {
             {openFiltro  && (
                 <div className="w-full h-48 bg-gray-300 grid grid-cols-2" style={{ backgroundColor: '#0F3A61'}}>
                     <div className="flex items-center justify-evenly" style={{ backgroundColor: '#0F3A61'}}>
-                        <p className="w-1/5">Recurso</p>
+                        <p className="w-1/5" style={{ color: '#FFFFFF'}}>Recurso</p>
                         <Select 
                           className="w-3/5"
                           onChange={(e:any) =>{setrecursoAFiltrar(e.value.toString())}}
@@ -89,7 +89,7 @@ export default function Recursos() {
                         />
                     </div>
                     <div className="flex items-center justify-evenly" style={{ backgroundColor: '#0F3A61'}}>
-                        <p className="w-1/5">Proyecto</p>
+                        <p className="w-1/5" style={{ color: '#FFFFFF'}}>Proyecto</p>
                         <Select 
                           className="w-3/5"
                           onChange={(e:any) =>{setproyectoAFiltrar(e.value.toString())}}

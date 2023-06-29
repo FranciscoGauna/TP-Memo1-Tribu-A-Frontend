@@ -51,7 +51,7 @@ export default function ModalCreate (
         return {
               value: `${key}`,
               label:`${value.name}`,
-              color:'#FFFFFF'
+              color:'#000000'
             }
       })
       // return proyectoSeleccionado[0].tasks.map((tarea) =>{
