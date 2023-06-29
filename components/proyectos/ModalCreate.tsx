@@ -89,7 +89,7 @@ export default function ModalCreate({ modalOpen, setModalOpen}: ModalCreateProje
 
   return (
     <div
-    	id="loguearHorasModal"
+    	id="createProjectModal"
     	tabIndex={-1}
       	aria-hidden={!modalOpen}
       	className={`${modalOpen ? "" : "hidden"} absolute inset-0 h-screen flex justify-center items-center bg-black/25`}
