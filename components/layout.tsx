@@ -31,21 +31,17 @@ export default function Layout({ children }: { children: any }) {
     } */
   ]
 
-  return (
-    <div className="min-h-screen flex flex-col bg-white">
-      <div className="flex flex-col md:flex-row flex-1">
-        <aside className="bg-grey-100 w-full md:w-60" style={{backgroundColor: "#0F3A61"}}>
-          <div style={{display: 'flex', fontSize: 40, marginLeft: 30, marginTop: 30, marginBottom: 30, color: "#FFFFFF"}}>PSA</div>
-          <nav>
-            <ul>
-              {menuItems.map((item) => (
-                <SideBarItem {...item} key={item.title} />
-              ))}
-            </ul>
-          </nav>
-        </aside>
-        <main className="flex-1">{children}</main>
-      </div>
-    </div>
-  )
+  	return (
+	   <div className="min-h-screen flex flex-col bg-white">
+	    	<div className="flex flex-col md:flex-row flex-1">
+	      		<aside className="bg-grey-100 w-full md:w-60" style={{backgroundColor: "#0F3A61"}}>
+	        		<div style={{display: 'flex', fontSize: 40, marginLeft: 30, marginTop: 30, marginBottom: 30, color: "#FFFFFF"}}>PSA</div>
+	        		<nav>
+	          			<ul>{menuItems.map((item) => (<SideBarItem {...item} key={item.title} />))}</ul>
+	        		</nav>
+	    		</aside>
+	     	<main className="flex-1">{children}</main>
+	    	</div>
+		</div>
+    )
 }
