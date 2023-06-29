@@ -56,12 +56,12 @@ export default function ModalCreateTask({ modalOpen, setModalOpen, ticket}: Moda
 			.then((data) => {
 				const options = data.map((recurso: Recurso) => ({
 					label: recurso.legajo + " - " + recurso.nombre + " " + recurso.apellido,
-					id: recurso.legajo,
+					value: recurso.legajo,
 				}));
 				setRecursosOptions(options);
 			})
 			.catch((error) => {
-				console.error("Error fetching Usuarios:", error);
+				console.error("Error fetching Recursos:", error);
 			});
 	}, []);
 
@@ -90,7 +90,7 @@ export default function ModalCreateTask({ modalOpen, setModalOpen, ticket}: Moda
 				estimated_hours: hoursEst,
 				human_resource: recurso,
 				name: name,
-				state: "Pending",
+				state: "Pendiente",
 				start_date: currentDate.toISOString()
 			};
 			fetch("https://projects-backend-service.onrender.com/projects/" + project + "/tasks", {
