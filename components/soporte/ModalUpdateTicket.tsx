@@ -49,7 +49,7 @@ export default function ModalUpdateTicket({ modalOpen, setModalOpen, ticket}: Mo
 	}, []);
 
 	const updateTicket = () => {
-		const requiredFields = document.querySelectorAll('input[required]');
+		const requiredFields = document.querySelectorAll('.ticketUpdateFormField[required]');
 		let isValid = true;
 		const radioSections = new Set();
 
@@ -69,7 +69,7 @@ export default function ModalUpdateTicket({ modalOpen, setModalOpen, ticket}: Mo
 		});
 
 		radioSections.forEach((sectionName) => {
-			const radioButtons = document.querySelectorAll(`input[type="radio"][name="${sectionName}"]:checked`);
+			const radioButtons = document.querySelectorAll(`.ticketUpdateFormField[type="radio"][name="${sectionName}"]:checked`);
 			if (radioButtons.length === 0) {
 				isValid = false;
 			}
@@ -148,21 +148,23 @@ export default function ModalUpdateTicket({ modalOpen, setModalOpen, ticket}: Mo
 					{/* <!-- Modal body --> */}
 					<div>
 						<div>Título:</div>
-						<input style={{borderColor: "#0F3A61", borderWidth: 2, borderRadius: 5, padding: 5, marginBottom: 15, width: '100%', color: "#000000"}}
+						<input className="ticketUpdateFormField"
+							   style={{borderColor: "#0F3A61", borderWidth: 2, borderRadius: 5, padding: 5, marginBottom: 15, width: '100%', color: "#000000"}}
 							   value={titulo}
 							   onChange={e => setTitulo(e.target.value)}
 							   placeholder="Título del ticket"
 							   required
 						/>
 						<div>Descripción:</div>
-						<input style={{borderColor: "#0F3A61", borderWidth: 2, borderRadius: 5, padding: 5, marginBottom: 15, width: '100%', color: "#000000"}}
+						<input className="ticketUpdateFormField"
+							   style={{borderColor: "#0F3A61", borderWidth: 2, borderRadius: 5, padding: 5, marginBottom: 15, width: '100%', color: "#000000"}}
 							   value={descripcion}
 							   onChange={e => setDescripcion(e.target.value)}
 							   placeholder="Descripción"
 							   required
 						/>
 						<div>Cliente:</div>
-						<Select
+						<Select className="ticketUpdateFormField"
 							options={clienteOptions}
 							styles={customStyles}
 							onChange={(selectedOption) => {
@@ -185,7 +187,7 @@ export default function ModalUpdateTicket({ modalOpen, setModalOpen, ticket}: Mo
 									value="BAJA"
 									checked={prioridad === 'BAJA'}
 									onChange={(e) => setPrioridad(e.target.value)}
-									className="mr-1"
+									className="ticketUpdateFormField mr-1"
 									required
 								/>
 								<label htmlFor="baja">Baja</label>
@@ -198,7 +200,7 @@ export default function ModalUpdateTicket({ modalOpen, setModalOpen, ticket}: Mo
 									value="MEDIA"
 									checked={prioridad === 'MEDIA'}
 									onChange={(e) => setPrioridad(e.target.value)}
-									className="mr-1"
+									className="ticketUpdateFormField mr-1"
 									required
 								/>
 								<label htmlFor="media">Media</label>
@@ -211,7 +213,7 @@ export default function ModalUpdateTicket({ modalOpen, setModalOpen, ticket}: Mo
 									value="ALTA"
 									checked={prioridad === 'ALTA'}
 									onChange={(e) => setPrioridad(e.target.value)}
-									className="mr-1"
+									className="ticketUpdateFormField mr-1"
 									required
 								/>
 								<label htmlFor="alta">Alta</label>
@@ -230,7 +232,7 @@ export default function ModalUpdateTicket({ modalOpen, setModalOpen, ticket}: Mo
 									value="S1"
 									checked={severidad === 'S1'}
 									onChange={(e) => setSeveridad(e.target.value)}
-									className="mr-1"
+									className="ticketUpdateFormField mr-1"
 									required
 								/>
 								<label htmlFor="s1">S1</label>
@@ -243,7 +245,7 @@ export default function ModalUpdateTicket({ modalOpen, setModalOpen, ticket}: Mo
 									value="S2"
 									checked={severidad === 'S2'}
 									onChange={(e) => setSeveridad(e.target.value)}
-									className="mr-1"
+									className="ticketUpdateFormField mr-1"
 									required
 								/>
 								<label htmlFor="s2">S2</label>
@@ -256,7 +258,7 @@ export default function ModalUpdateTicket({ modalOpen, setModalOpen, ticket}: Mo
 									value="S3"
 									checked={severidad === 'S3'}
 									onChange={(e) => setSeveridad(e.target.value)}
-									className="mr-1"
+									className="ticketUpdateFormField mr-1"
 									required
 								/>
 								<label htmlFor="s3">S3</label>
@@ -269,7 +271,7 @@ export default function ModalUpdateTicket({ modalOpen, setModalOpen, ticket}: Mo
 									value="S4"
 									checked={severidad === 'S4'}
 									onChange={(e) => setSeveridad(e.target.value)}
-									className="mr-1"
+									className="ticketUpdateFormField mr-1"
 									required
 								/>
 								<label htmlFor="s4">S4</label>

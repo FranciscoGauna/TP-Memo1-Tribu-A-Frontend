@@ -1,18 +1,14 @@
-import {ModalCreateTaskProps, Project, Recurso} from "../types"
+import {Cliente, ModalCreateTaskProps, Project, Recurso, Task} from "../types"
 import React, { useEffect, useState } from "react";
 import Select from "react-select";
 export default function ModalCreateTicket({ modalOpen, setModalOpen, ticket}: ModalCreateTaskProps) {
-	const [endDate, setEndDate] : [string, Function] = useState("");
 	const [descripcion, setDescripcion] : [string, Function] = useState("");
 	const [showPopup, setShowPopup] = useState(false);
 	const [hoursEst, setHoursEst] : [number, Function] = useState(0);
-	const [id, setId] : [string, Function] = useState("");
 	const [name, setName] : [string, Function] = useState("");
-	const [startDate, setStartDate] : [string, Function] = useState("");
-	const [state, setState] : [string, Function] = useState("");
-	const [projectOptions, setProjectOptions] : [Project[], Function] = useState<Project[]>([]);
+	const [projectOptions, setProjectOptions] = useState<{ label: string; id: number }[]>([]);
 	const [project, setProject] : [string, Function] = useState("");
-	const [recursosOptions, setRecursosOptions] = useState<Recurso[]>([]);
+	const [recursosOptions, setRecursosOptions] = useState<{ label: string; id: number }[]>([]);
 	const [recurso, setRecurso] : [number, Function] = useState(0);
 
 
@@ -31,14 +27,10 @@ export default function ModalCreateTicket({ modalOpen, setModalOpen, ticket}: Mo
 	};
 
 	const clearAttributes = () => {
-		setEndDate("")
 		setDescripcion("");
 		setHoursEst(0);
 		setRecurso(0);
-		setId("");
 		setName("");
-		setStartDate("");
-		setState("");
 		setProject("");
 	}
 
@@ -46,7 +38,11 @@ export default function ModalCreateTicket({ modalOpen, setModalOpen, ticket}: Mo
 		fetch(`https://projects-backend-service.onrender.com/projects`)
 			.then((res) => res.json())
 			.then((data) => {
-				setProjectOptions(data.projects);
+				const options = data.projects.map((proyecto: Project) => ({
+					label: proyecto.name,
+					id: proyecto.uid,
+				}));
+				setProjectOptions(options);
 			})
 			.catch((error) => {
 				console.error("Error fetching Proyectos:", error);
@@ -57,7 +53,11 @@ export default function ModalCreateTicket({ modalOpen, setModalOpen, ticket}: Mo
 		fetch(`https://fiuba-memo1-recursos-core.azurewebsites.net/api/v1/users`)
 			.then((res) => res.json())
 			.then((data) => {
-				setRecursosOptions(data);
+				const options = data.map((recurso: Recurso) => ({
+					label: recurso.legajo + " - " + recurso.nombre + " " + recurso.apellido,
+					id: recurso.legajo,
+				}));
+				setRecursosOptions(options);
 			})
 			.catch((error) => {
 				console.error("Error fetching Usuarios:", error);
@@ -65,7 +65,7 @@ export default function ModalCreateTicket({ modalOpen, setModalOpen, ticket}: Mo
 	}, []);
 
 	const createTarea = () => {
-		const requiredFields = document.querySelectorAll('input[required]');
+		const requiredFields = document.querySelectorAll('.taskFormField[required]');
 		let isValid = true;
 
 		requiredFields.forEach((field) => {
@@ -79,59 +79,60 @@ export default function ModalCreateTicket({ modalOpen, setModalOpen, ticket}: Mo
 			}
 		});
 
-
 		if (!isValid) {
 			setShowPopup(true);
 		} else {
-			setEndDate(ticket.fechaLimite);
-			setState("Pending");
 			const currentDate = new Date();
-			setStartDate(currentDate.toISOString());
 			let formData = {
 				description: descripcion,
-				end_date: endDate,
-				hours_est: hoursEst,
+				end_date: ticket.fechaLimite,
+				estimated_hours: hoursEst,
 				human_resource: recurso,
 				name: name,
-				start_date: startDate,
-				state: state
+				state: "Pending",
+				start_date: currentDate.toISOString()
 			};
-			fetch("https://projects-backend-service.onrender.com/projects/${project.uid}/tasks", {
+			fetch("https://projects-backend-service.onrender.com/projects/" + project + "/tasks", {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'
 				},
 				body: JSON.stringify(formData)
 			}).then((res) => {
-				res.json();
-			}).then((data) => {
+				return res.json();
+			}).then(data => {
 				console.log("CREATE", data);
-				setId(data.id)
+				if (data) {
+					let newTask = {
+						proyecto: project,
+						id: data.id
+					};
+					let updatedTicket = {
+						...ticket,
+						tareas: [...ticket.tareas, newTask]
+					};
+					fetch("https://tp-memo1-tribu-a-soporte.onrender.com/tickets/" + ticket.codigo + "/tareas", {
+						method: 'PUT',
+						headers: {
+							'Content-Type': 'application/json'
+						},
+						body: JSON.stringify(updatedTicket)
+					}).then((res) => {
+						return res.json();
+					}).then((data) => {
+						console.log("UPDATE", data);
+						setModalOpen(false);
+					}).catch((error) => {
+						console.error(error);
+						alert("Fallo al añadir tarea al Ticket");
+					});
+				}
 				setModalOpen(false);
 			}).catch((error) => {
 				console.error(error);
 				alert("Fallo al crear Tarea");
 			});
 
-			if (id) {
-
-				fetch("https://tp-memo1-tribu-a-soporte.onrender.com/tickets/${ticket.codigo}/tareas", {
-					method: 'PUT',
-					headers: {
-						'Content-Type': 'application/json'
-					},
-					body: JSON.stringify(formData)
-				}).then((res) => {
-					res.json();
-				}).then((data) => {
-					console.log("CREATE", data);
-					setId(data.id)
-					setModalOpen(false);
-				}).catch((error) => {
-					console.error(error);
-					alert("Fallo al crear Ticket");
-				});
-			}
 		}
 	}
 
@@ -175,46 +176,50 @@ export default function ModalCreateTicket({ modalOpen, setModalOpen, ticket}: Mo
 					{/* <!-- Modal body --> */}
 					<div>
 						<div>Nombre:</div>
-						<input style={{borderColor: "#0F3A61", borderWidth: 2, borderRadius: 5, padding: 5, marginBottom: 15, width: '100%', color: "#000000"}}
+						<input className="taskFormField"
+							   style={{borderColor: "#0F3A61", borderWidth: 2, borderRadius: 5, padding: 5, marginBottom: 15, width: '100%', color: "#000000"}}
 							   value={name}
 							   onChange={e => setName(e.target.value)}
-							   placeholder="Nombre del ticket"
+							   placeholder="Nombre de la tarea"
 							   required
 						/>
 						<div>Descripción:</div>
-						<input style={{borderColor: "#0F3A61", borderWidth: 2, borderRadius: 5, padding: 5, marginBottom: 15, width: '100%', color: "#000000"}}
+						<input className="taskFormField"
+							   style={{borderColor: "#0F3A61", borderWidth: 2, borderRadius: 5, padding: 5, marginBottom: 15, width: '100%', color: "#000000"}}
 							   value={descripcion}
 							   onChange={e => setDescripcion(e.target.value)}
 							   placeholder="Descripción"
 							   required
 						/>
-						<div>Proyecto:</div>
-						<Select
-							options={projectOptions}
-							styles={customStyles}
-							onChange={(selectedOption) => {
-								if (selectedOption) {
-									setProject(selectedOption.uid);
-								}
-							}}
-							required
-						/>
 						<div>Horas estimadas:</div>
-						<input style={{borderColor: "#0F3A61", borderWidth: 2, borderRadius: 5, padding: 5, marginBottom: 15, width: '100%', color: "#000000"}}
-							value={hoursEst}
-							onChange={e => setHoursEst(e.target.value)}
-							placeholder="Cantidad de horas estimadas"
-							required
-					/>
+						<input className="taskFormField"
+							   style={{borderColor: "#0F3A61", borderWidth: 2, borderRadius: 5, padding: 5, marginBottom: 15, width: '100%', color: "#000000"}}
+							   value={hoursEst}
+							   onChange={e => setHoursEst(Number(e.target.value))}
+							   placeholder="Cantidad de horas estimadas"
+							   required
+						/>
+						<div>Proyecto:</div>
+						<Select className="taskFormField mb-4"
+								options={projectOptions}
+								styles={customStyles}
+								onChange={(selectedOption) => {
+									if (selectedOption) {
+										setProject(selectedOption.id);
+									}
+								}}
+								required
+						/>
 						<div>Recurso asignado:</div>
-						<Select
-							options={recursosOptions}
-							styles={customStyles}
-							onChange={(selectedOption) => {
-								if (selectedOption) {
-									setRecurso(selectedOption.legajo);
-								}
-							}}
+						<Select className="taskFormField mb-4"
+								options={recursosOptions}
+								styles={customStyles}
+								onChange={(selectedOption) => {
+									if (selectedOption) {
+										setRecurso(selectedOption.id);
+									}
+								}}
+								required
 						/>
 						
 					</div>

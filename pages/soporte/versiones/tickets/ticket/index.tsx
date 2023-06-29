@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import {getTimeRemaining} from "@/utils/timeUtils";
-import {Ticket, Cliente, Task, ProyectoTarea} from "@/components/types";
+import {Ticket, Cliente, Task} from "@/components/types";
 import ModalDeleteTicket from "@/components/soporte/ModalDeleteTicket";
 import ModalUpdateTicket from "@/components/soporte/ModalUpdateTicket";
 import ModalCreateTask from "@/components/soporte/ModalCreateTask";
@@ -35,45 +35,44 @@ export default function Ticket() {
             .then((data) => {
                 setList(data);
             });
-        if(idTicket){
+
+        if (idTicket) {
             fetch(`https://tp-memo1-tribu-a-soporte.onrender.com/tickets/${idTicket}`)
                 .then((res) => res.json())
                 .then((data) => {
                     setTicket(data);
-                    
+                    if (data) {
+                        setTareas([]);
+                        const fetchTasks = data.tareas.map((tarea : { proyecto : string, id: string }) =>
+                            fetch(`https://projects-backend-service.onrender.com/projects/${tarea.proyecto}/tasks/${tarea.id}`)
+                                .then((res) => {
+                                    if (res.status === 400) {
+                                        return null;
+                                    } else {
+                                        return res.json();
+                                    }
+                                })
+                                .then((data) => (data ? data.task : null))
+                                .catch((error) => {
+                                    console.error("Error fetching Tareas:", error);
+                                    return null;
+                                })
+                        );
+
+                        Promise.all(fetchTasks)
+                            .then((tasks) => {
+                                const filteredTasks = tasks.filter((task) => task !== null);
+                                setTareas(filteredTasks);
+                            })
+                            .catch((error) => {
+                                console.error("Error fetching tasks:", error);
+                            });
+                    }
                 });
         }
     };
     
     useEffect(reloadTicket, [idTicket]);
-
-    if (ticket) {
-        for (let i = 0; i < ticket.tareas.length; i++) {
-        const [proyecto, setProyecto] = useState<{ label: string}>([]);
-        const [idTarea, setIdTarea] = useState<{ id: number }>([]);
-
-        const proyectoTarea = ticket.tareas[i].map((proyectoTarea: ProyectoTarea) => ({
-            label: proyectoTarea.proyecto,
-        }));
-        setProyecto(proyectoTarea);
-        const idTareaActual = ticket.tareas[i].map((proyectoTarea: ProyectoTarea) => ({
-            id: proyectoTarea.id
-        }));
-        setIdTarea(idTareaActual);
-
-        fetch(`https://projects-backend-service.onrender.com/projects/${proyecto}/tasks/${idTarea}`)
-			.then((res) => res.json())
-			.then((data) => {
-				setTareas(tareas.push(data));
-			})
-			.catch((error) => {
-				console.error("Error fetching Tareas:", error);
-			});
-        }
-    };
-    
-
-    
 
     useEffect(() => {
         const intervalId = setInterval(() => {
@@ -137,6 +136,13 @@ export default function Ticket() {
             });
         }
     }
+
+    const getProjectId = (id: string): string | undefined => {
+        if(ticket){
+            const tarea = ticket.tareas.find(t => t.id === id);
+            return tarea?.proyecto;
+        }
+    };
 
     return (
         <>
@@ -210,7 +216,7 @@ export default function Ticket() {
                         <div className={"flex flex-grow"}>
                             <div>
                                 <div className="text-xl flex items-center justify-center mr-5 border-2 rounded-full px-4 py-4">
-                                    <span className="flex justify-center">Tiempo restante:&nbsp;</span>
+                                    <span className="flex justify-center px-2">Tiempo restante:&nbsp;</span>
                                     {ticket?.estado === "RESUELTO" ? (
                                         <span className="flex rounded-full px-4 py-1 font-bold whitespace-nowrap" style={tiempoRestanteStyle}>
                                             RESUELTO
@@ -242,7 +248,7 @@ export default function Ticket() {
                 </div>
                 {tareas.map((tarea) => (
                     <div key={tarea.puid} style={{ backgroundColor: "#0F3A61", color: "#FFFFFF", marginBottom: 20 }}>
-                        <TareaGridRow tarea={tarea} />
+                        <TareaGridRow tarea={tarea} proyecto={getProjectId(tarea.puid) || ""} />
                     </div>
                 ))}
             </div>

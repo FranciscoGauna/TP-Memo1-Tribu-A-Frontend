@@ -27,7 +27,7 @@ export interface Ticket {
   fechaCreacion: string;
   cliente: number;
   versionProducto: number;
-  tareas: ProyectoTarea[];
+  tareas: { proyecto: string; id: string }[];
 }
 
 export interface Cliente {
@@ -47,11 +47,6 @@ export interface Task {
   state: string;
 }
 
-export interface ProyectoTarea {
-  proyecto: string;
-  id: string;
-}
-
 export interface Project {
   uid: string;
   name: string;
@@ -61,10 +56,6 @@ export interface Project {
   project_leader: string;
   development_team: string[];
   tasks: Task[];
-}
-
-export interface Projects {
-  projects: Project[];
 }
 
 export interface ModalCreateTicketProps {
