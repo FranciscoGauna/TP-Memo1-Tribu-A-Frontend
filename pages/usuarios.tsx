@@ -40,12 +40,6 @@ export default function Usuarios() {
                     <HeaderItem title="Apellido" />
                   </tr>
                 </thead>
-
-                <tbody>
-                  {list.map((usuario) => (
-                    <UserGridRow usuario={usuario} />
-                  ))}
-                </tbody>
               </table>
             </div>
           </div>

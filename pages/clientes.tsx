@@ -1,4 +1,4 @@
-import {Cliente} from "@/pages/types";
+import {Cliente} from "@/types/model";
 import {useEffect, useState} from "react";
 import ClientGridRow from "@/components/clientGridRow";
 
@@ -45,9 +45,6 @@ export default function Clientes() {
                                 </thead>
 
                                 <tbody>
-                                {list.map((cliente) => (
-                                    <ClientGridRow cliente={cliente} />
-                                ))}
                                 </tbody>
                             </table>
                         </div>
