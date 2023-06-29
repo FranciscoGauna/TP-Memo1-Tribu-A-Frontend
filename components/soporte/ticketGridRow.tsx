@@ -39,7 +39,7 @@ export default function TicketGridRow({ ticket, nombreProducto, descripcionVersi
     };
 
     const tiempoRestanteStyle = {
-        backgroundColor: timeRemaining.isExpired ? "#FF6B6B" : "#185FA1",
+        backgroundColor: (ticket?.estado === "RESUELTO" ? "#1CB72C" : (timeRemaining.isExpired ? "#D73838" : "#185FA1")),
         color: timeRemaining.isExpired ? "#FFFFFF" : "#FFFFFF",
     };
 
@@ -71,9 +71,15 @@ export default function TicketGridRow({ ticket, nombreProducto, descripcionVersi
             <div className="flex flex-row items-center">
                 <div className="flex items-center px-6 py-5 whitespace-no-wrap border-gray-200">
                     <span className="font-bold">Tiempo restante:&nbsp;&nbsp;</span>
-                    <span className="rounded-full px-4 py-1 font-bold whitespace-nowrap" style={tiempoRestanteStyle}>
-                        {timeRemaining.formattedTime}
-                    </span>
+                    {ticket?.estado === "RESUELTO" ? (
+                        <span className="flex rounded-full px-4 py-1 font-bold whitespace-nowrap" style={tiempoRestanteStyle}>
+                            RESUELTO
+                        </span>
+                    ) : (
+                        <span className="flex rounded-full px-4 py-1 font-bold whitespace-nowrap" style={tiempoRestanteStyle}>
+                             {timeRemaining.formattedTime}
+                        </span>
+                    )}
                 </div>
                 <div className="px-6 whitespace-no-wrap border-gray-200">
                     <div className="text-sm leading-5 text-gray-900">

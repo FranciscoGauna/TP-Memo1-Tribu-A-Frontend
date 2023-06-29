@@ -2,13 +2,14 @@ import {Cliente, ModalUpdateTicketProps} from "../types"
 import React, { useEffect, useState } from "react";
 import Select from "react-select";
 
-export default function ModalUpdateTicket({ modalOpen, setModalOpen}: ModalUpdateTicketProps) {
-	const [titulo, setTitulo] : [string, Function] = useState("");
-	const [prioridad, setPrioridad] : [string, Function] = useState("");
-	const [severidad, setSeveridad] : [string, Function] = useState("");
-	const [descripcion, setDescripcion] : [string, Function] = useState("");
-	const [cliente, setCliente] : [number, Function] = useState(0);
+export default function ModalUpdateTicket({ modalOpen, setModalOpen, ticket}: ModalUpdateTicketProps) {
+	const [titulo, setTitulo] : [string, Function] = useState(ticket.titulo);
+	const [prioridad, setPrioridad] : [string, Function] = useState(ticket.prioridad);
+	const [severidad, setSeveridad] : [string, Function] = useState(ticket.severidad);
+	const [descripcion, setDescripcion] : [string, Function] = useState(ticket.description);
+	const [cliente, setCliente] : [number, Function] = useState(ticket.cliente);
 	const [clienteOptions, setClienteOptions] = useState<{ label: string; id: number }[]>([]);
+	const [showPopup, setShowPopup] = useState(false);
 
 	const customStyles = {
 		option: (defaultStyles: object, state: { isSelected: any; }) => ({
@@ -24,12 +25,12 @@ export default function ModalUpdateTicket({ modalOpen, setModalOpen}: ModalUpdat
 		singleValue: (defaultStyles: object) => ({ ...defaultStyles, color: "#000" }),
 	};
 
-	const clearAttributes = () => {
-		setTitulo("");
-		setPrioridad("");
-		setSeveridad("");
-		setDescripcion("");
-		setCliente(0);
+	const restartAttributes = () => {
+		setTitulo(ticket.titulo);
+		setPrioridad(ticket.prioridad);
+		setSeveridad(ticket.severidad);
+		setDescripcion(ticket.description);
+		setCliente(ticket.cliente);
 	}
 
 	useEffect(() => {
@@ -47,34 +48,64 @@ export default function ModalUpdateTicket({ modalOpen, setModalOpen}: ModalUpdat
 			});
 	}, []);
 
-	const createTicket = () => {
-		const currentDate = new Date();
-		const formattedDate = currentDate.toISOString();
-		let formData = {
-			titulo: titulo,
-			severidad: severidad,
-			prioridad: prioridad,
-			estado: "PENDIENTE",
-			fechaLimite: "",
-			fechaCreacion: formattedDate,
-			description: descripcion,
-			cliente: cliente,
-		};
-		fetch('https://tp-memo1-tribu-a-soporte.onrender.com/tickets', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(formData)
-		}).then((res) => {
-			return res.json();
-		}).then((data) => {
-			console.log("CREATE", data);
-			setModalOpen(false);
-		}).catch((error) => {
-			console.error(error);
-			alert("Fallo al crear Ticket");
+	const updateTicket = () => {
+		const requiredFields = document.querySelectorAll('input[required]');
+		let isValid = true;
+		const radioSections = new Set();
+
+		requiredFields.forEach((field) => {
+			if (!(field instanceof HTMLInputElement)) return;
+
+			if (!field.value) {
+				field.classList.add('error');
+				isValid = false;
+			} else {
+				field.classList.remove('error');
+
+				if (field.type === 'radio') {
+					radioSections.add(field.name);
+				}
+			}
 		});
+
+		radioSections.forEach((sectionName) => {
+			const radioButtons = document.querySelectorAll(`input[type="radio"][name="${sectionName}"]:checked`);
+			if (radioButtons.length === 0) {
+				isValid = false;
+			}
+		});
+
+		if (!isValid) {
+			setShowPopup(true);
+		} else {
+			let formData = {
+				codigo: ticket.codigo,
+				titulo: titulo,
+				severidad: severidad,
+				prioridad: prioridad,
+				estado: ticket.estado,
+				description: descripcion,
+				fechaLimite: ticket.fechaLimite,
+				fechaCreacion: ticket.fechaCreacion,
+				cliente: cliente,
+				versionProducto: ticket.versionProducto,
+			};
+			fetch('https://tp-memo1-tribu-a-soporte.onrender.com/tickets/' + ticket.codigo, {
+				method: 'PUT',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(formData)
+			}).then((res) => {
+				return res.json();
+			}).then((data) => {
+				console.log("UPDATE", data);
+				setModalOpen(false);
+			}).catch((error) => {
+				console.error(error);
+				alert("Fallo al editar Ticket");
+			});
+		}
 	}
 
 	return (
@@ -95,7 +126,7 @@ export default function ModalUpdateTicket({ modalOpen, setModalOpen}: ModalUpdat
 							className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
 							data-modal-toggle="defaultModal"
 							onClick={() => {
-								clearAttributes();
+								restartAttributes();
 								setModalOpen(false)
 							}}>
 							<svg
@@ -116,17 +147,19 @@ export default function ModalUpdateTicket({ modalOpen, setModalOpen}: ModalUpdat
 					</div>
 					{/* <!-- Modal body --> */}
 					<div>
-						<div>Titulo:</div>
+						<div>Título:</div>
 						<input style={{borderColor: "#0F3A61", borderWidth: 2, borderRadius: 5, padding: 5, marginBottom: 15, width: '100%', color: "#000000"}}
 							   value={titulo}
 							   onChange={e => setTitulo(e.target.value)}
-							   placeholder="Titulo del ticket"
+							   placeholder="Título del ticket"
+							   required
 						/>
 						<div>Descripción:</div>
 						<input style={{borderColor: "#0F3A61", borderWidth: 2, borderRadius: 5, padding: 5, marginBottom: 15, width: '100%', color: "#000000"}}
 							   value={descripcion}
 							   onChange={e => setDescripcion(e.target.value)}
 							   placeholder="Descripción"
+							   required
 						/>
 						<div>Cliente:</div>
 						<Select
@@ -137,101 +170,135 @@ export default function ModalUpdateTicket({ modalOpen, setModalOpen}: ModalUpdat
 									setCliente(selectedOption.id);
 								}
 							}}
+							required
 						/>
-						<div className="flex space-x-4">
-							<label htmlFor="prioridad" className="font-bold">Prioridad:</label>
+						<div className="flex space-x-5 mt-4 mb-4">
+							<label htmlFor="prioridad" className="font-bold">
+								Prioridad:
+							</label>
 
-							<label>
+							<div className="flex items-center">
 								<input
 									type="radio"
+									id="baja"
 									name="prioridad"
 									value="BAJA"
 									checked={prioridad === 'BAJA'}
-									onChange={e => setPrioridad(e.target.value)}
+									onChange={(e) => setPrioridad(e.target.value)}
+									className="mr-1"
+									required
 								/>
-								Baja
-							</label>
-							<label>
+								<label htmlFor="baja">Baja</label>
+							</div>
+							<div className="flex items-center">
 								<input
 									type="radio"
+									id="media"
 									name="prioridad"
 									value="MEDIA"
 									checked={prioridad === 'MEDIA'}
-									onChange={e => setPrioridad(e.target.value)}
+									onChange={(e) => setPrioridad(e.target.value)}
+									className="mr-1"
+									required
 								/>
-								Media
-							</label>
-							<label>
+								<label htmlFor="media">Media</label>
+							</div>
+							<div className="flex items-center">
 								<input
 									type="radio"
+									id="alta"
 									name="prioridad"
 									value="ALTA"
 									checked={prioridad === 'ALTA'}
-									onChange={e => setPrioridad(e.target.value)}
+									onChange={(e) => setPrioridad(e.target.value)}
+									className="mr-1"
+									required
 								/>
-								Alta
-							</label>
+								<label htmlFor="alta">Alta</label>
+							</div>
 						</div>
-						<div className="flex space-x-4">
-							<label htmlFor="severidad" className="font-bold">Severidad:</label>
+						<div className="flex space-x-5 mt-4 mb-4">
+							<label htmlFor="severidad" className="font-bold">
+								Severidad:
+							</label>
 
-							<label>
+							<div className="flex items-center">
 								<input
 									type="radio"
+									id="s1"
 									name="severidad"
 									value="S1"
 									checked={severidad === 'S1'}
-									onChange={e => setSeveridad(e.target.value)}
+									onChange={(e) => setSeveridad(e.target.value)}
+									className="mr-1"
+									required
 								/>
-								S1
-							</label>
-							<label>
+								<label htmlFor="s1">S1</label>
+							</div>
+							<div className="flex items-center">
 								<input
 									type="radio"
+									id="s2"
 									name="severidad"
 									value="S2"
 									checked={severidad === 'S2'}
-									onChange={e => setSeveridad(e.target.value)}
+									onChange={(e) => setSeveridad(e.target.value)}
+									className="mr-1"
+									required
 								/>
-								S2
-							</label>
-							<label>
+								<label htmlFor="s2">S2</label>
+							</div>
+							<div className="flex items-center">
 								<input
 									type="radio"
+									id="s3"
 									name="severidad"
 									value="S3"
 									checked={severidad === 'S3'}
-									onChange={e => setSeveridad(e.target.value)}
+									onChange={(e) => setSeveridad(e.target.value)}
+									className="mr-1"
+									required
 								/>
-								S3
-							</label>
-							<label>
+								<label htmlFor="s3">S3</label>
+							</div>
+							<div className="flex items-center">
 								<input
 									type="radio"
+									id="s4"
 									name="severidad"
 									value="S4"
 									checked={severidad === 'S4'}
-									onChange={e => setSeveridad(e.target.value)}
+									onChange={(e) => setSeveridad(e.target.value)}
+									className="mr-1"
+									required
 								/>
-								S4
-							</label>
+								<label htmlFor="s4">S4</label>
+							</div>
 						</div>
 					</div>
+					{/* Popup */}
+					{showPopup && (
+						<div className="popup">
+							<div className="popup-content">
+								<h3 className="font-bold text-white mb-2 px-3" style={{ backgroundColor : "lightcoral" }}>Por favor completar todos los campos</h3>
+							</div>
+						</div>
+					)}
 					{/* Modal footer */}
 					<div style={{display: "flex", justifyContent:"flex-end"}}>
 						<button
 							style={{backgroundColor: "#0F3A61", color: "#FFFFFF", borderRadius: 5, marginRight: 10, width: 100, height: 40}}
 							onClick={() => {
-								clearAttributes();
+								restartAttributes();
 								setModalOpen(false);
 							}}
 						>Cancelar</button>
 						<button
 							style={{backgroundColor: "#0F3A61", color: "#FFFFFF", borderRadius: 5, width: 100, height: 40}}
 							onClick={() => {
-								createTicket();
+								updateTicket();
 							}}
-						>Crear</button>
+						>Confirmar</button>
 					</div>
 				</div>
 			</div>

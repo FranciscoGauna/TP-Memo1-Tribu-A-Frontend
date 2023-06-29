@@ -1,17 +1,23 @@
 import { ModalDeleteTicketProps } from "../types"
+import {useRouter} from "next/router";
 
-export default function ModalDeleteTicket({ modalOpen, setModalOpen, ticket}: ModalDeleteTicketProps) {
-  
-  const deleteProject = () => {
-    fetch("https://tp-memo1-tribu-a-soporte.onrender.com/tickets" + ticket.codigo, {
+export default function ModalDeleteTicket({ modalOpen, setModalOpen, ticket, nombreProducto, descripcionVersion}: ModalDeleteTicketProps) {
+  const router = useRouter();
+  const deleteTicket = () => {
+    fetch("https://tp-memo1-tribu-a-soporte.onrender.com/tickets/" + ticket.codigo, {
         method: 'DELETE'
     }).then((res) => {
-        return res.json();
+        return res;
     }).then((data) => {
         console.log("DELETE",data);
         setModalOpen(false);
+        router.push(`/soporte/versiones/tickets?codigoVersion=${ticket.versionProducto}&nombreProducto=${nombreProducto}&descripcionVersion=${descripcionVersion}`);
+    }).catch((error) => {
+        setModalOpen(false);
+        console.error(error);
+        alert("Fallo al borrar Ticket");
     });
-  } 
+  }
 
   return (
     <div
@@ -51,9 +57,9 @@ export default function ModalDeleteTicket({ modalOpen, setModalOpen, ticket}: Mo
             </button>
           </div>
           {/* <!-- Modal body --> */}
-          <div>
-            ¿Desea eliminar el ticket: #{ticket.codigo} - {ticket.titulo}?
-		      </div>
+          <div className="mb-5 mt-2">
+            ¿Desea eliminar el ticket #{ticket.codigo} - &quot;{ticket.titulo}&quot;?
+          </div>
 		  {/* Modal footer */}
 		  <div style={{display: "flex", justifyContent:"flex-end"}}>
 			<button 
@@ -62,7 +68,7 @@ export default function ModalDeleteTicket({ modalOpen, setModalOpen, ticket}: Mo
 			>Cancelar</button>
 			<button
 				style={{backgroundColor: "#0F3A61", color: "#FFFFFF", borderRadius: 5, width: 100, height: 40}}
-        onClick={() => {deleteProject()}}
+        onClick={() => {deleteTicket()}}
 			>Eliminar</button>
 		  </div>
         </div>

@@ -67,10 +67,11 @@ export interface ModalCreateTicketProps {
   modalOpen: boolean
   setModalOpen: Function
   ticket: Ticket
-  setTicket: Function
 }
 export interface ModalDeleteTicketProps {
   modalOpen: boolean
   setModalOpen: Function
   ticket: Ticket
+  nombreProducto : string
+  descripcionVersion :string
 }
