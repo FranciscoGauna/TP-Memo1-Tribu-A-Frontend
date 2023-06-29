@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { ModalUpdateProjectProps, ModalUpdateTaskProps } from "../../types/components";
 import Select from "react-select";
+import { Task } from "@/types/model";
 
 function parseResource(res: { [x: string]: string; }){
 	var label = res["nombre"] + " " + res["apellido"]
@@ -15,7 +16,7 @@ function parseResources(res: { [x: string]: string; }[]){
 
 
 
-export default function ModalUpdate({ modalOpen, setModalOpen, project, task }: ModalUpdateTaskProps) {
+export default function ModalUpdate({ modalOpen, setModalOpen, project, task, callback }: ModalUpdateTaskProps) {
 	const [name, setName] : [string, Function] = useState("");
 	const [humanResource, setHumanResource] : [string, Function] = useState("");
 	const [description, setDescription] : [string, Function] = useState("");
@@ -60,7 +61,7 @@ export default function ModalUpdate({ modalOpen, setModalOpen, project, task }: 
 			});
 	}, []);
 
-  const clearAttributes = () => {
+  const clearAttributes = (task: Task) => {
     setName(task.name);
     setDescription(task.description);
     setHumanResource(task.human_resource);
@@ -69,6 +70,8 @@ export default function ModalUpdate({ modalOpen, setModalOpen, project, task }: 
     setStartDate(task.start_date);
     setEndDate(task.end_date);
   }
+
+  callback.function = clearAttributes
   
   const updateTask = () => {
     let formData = {
@@ -112,7 +115,7 @@ export default function ModalUpdate({ modalOpen, setModalOpen, project, task }: 
 						className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
 						data-modal-toggle="defaultModal"
 						onClick={() => {
-							clearAttributes();
+							clearAttributes(task);
 							setModalOpen(false)
 						}}>
 						<svg
@@ -182,7 +185,7 @@ export default function ModalUpdate({ modalOpen, setModalOpen, project, task }: 
 					<button 
 						style={{backgroundColor: "#0F3A61", color: "#FFFFFF", borderRadius: 5, marginRight: 10, width: 100, height: 40}}
 						onClick={() => {
-							clearAttributes();
+							clearAttributes(task);
 							setModalOpen(false);
 						}}
 					>Cancelar</button>

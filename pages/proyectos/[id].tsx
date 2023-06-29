@@ -4,8 +4,8 @@ import ModalUpdate from "@/components/tareas/ModalUpdate";
 import { useEffect, useState } from "react";
 import { Task, Project, Resource } from "../../types/model";
 
-function TaskItem({task, setTask, setModalUpdateOpen, setModalDeleteOpen} : 
-{task: Task, setTask: Function, setModalUpdateOpen: Function, setModalDeleteOpen: Function }) {
+function TaskItem({task, setTask, setModalUpdateOpen, setModalDeleteOpen, callback} : 
+{task: Task, setTask: Function, setModalUpdateOpen: Function, setModalDeleteOpen: Function, callback: { function: Function} }) {
     return (
         <div style={{backgroundColor: "#0F3A61", color: "#FFFFFF", display: "flex", justifyContent: "space-between", marginBottom: 30, height: 100, alignItems: "center", padding: 20}}>
             <div style={{fontSize: 20}}>
@@ -17,6 +17,7 @@ function TaskItem({task, setTask, setModalUpdateOpen, setModalDeleteOpen} :
                     style={{display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "#7B7B7B", borderRadius: 10, height: 42, width: 95, marginLeft: 12}}
                     onClick={() => {
 						setTask(task);
+						callback.function(task);
                         setModalUpdateOpen(true);
                     }}
                 >Editar</button>
@@ -24,6 +25,7 @@ function TaskItem({task, setTask, setModalUpdateOpen, setModalDeleteOpen} :
                     style={{display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "#D73838", borderRadius: 10, height: 42, width: 95, marginLeft: 12}}
                     onClick={() => {
 						setTask(task);
+						callback.function(task);
                         setModalDeleteOpen(true);
                     }}
                 >Eliminar</button>
@@ -77,6 +79,8 @@ export default function ProyectoDetalle() {
 				console.error(e);
 			});
 	}
+
+	const callback = { function: (task: Task) => {} }
 
 	const ModalCreateHandle = (flag: boolean) => {
 		if (!flag)
@@ -208,10 +212,11 @@ export default function ProyectoDetalle() {
         </div>
 		{/* Aca va la tabla de tareas */}
 		{Object.values(project.tasks).map((task, index) => (
-                <TaskItem task={task} setTask={setTask} setModalUpdateOpen={setModalUpdateOpen} setModalDeleteOpen={setModalDeleteOpen} key={index}/>
+                <TaskItem task={task} setTask={setTask} setModalUpdateOpen={setModalUpdateOpen} 
+				setModalDeleteOpen={setModalDeleteOpen} key={index} callback={callback}/>
         ))}
 		<ModalCreate modalOpen={modalCreateOpen} setModalOpen={ModalCreateHandle} project={project}/>
-        <ModalUpdate modalOpen={modalUpdateOpen} setModalOpen={ModalUpdateHandle} project={project} task={task}/>
+        <ModalUpdate modalOpen={modalUpdateOpen} setModalOpen={ModalUpdateHandle} project={project} task={task} callback={callback}/>
         <ModalDelete modalOpen={modalDeleteOpen} setModalOpen={ModalDeleteHandle} project={project} task={task}/> 
 	</div>
     </>);

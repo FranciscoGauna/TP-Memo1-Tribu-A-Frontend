@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { ModalUpdateProjectProps } from "../../types/components";
 import Select from "react-select";
+import { Project } from "@/types/model";
 
 function parseResource(res: { [x: string]: string; }){
 	var label = res["nombre"] + " " + res["apellido"]
@@ -15,7 +16,7 @@ function parseResources(res: { [x: string]: string; }[]){
 
 
 
-export default function ModalUpdate({ modalOpen, setModalOpen, project }: ModalUpdateProjectProps) {
+export default function ModalUpdate({ modalOpen, setModalOpen, project, callback }: ModalUpdateProjectProps) {
 	const [name, setName] : [string, Function] = useState(project.name);
 	const [projectLeader, setProjectLeader] : [string, Function] = useState(project.project_leader);
 	const [description, setDescription] : [string, Function] = useState(project.description);
@@ -59,7 +60,9 @@ export default function ModalUpdate({ modalOpen, setModalOpen, project }: ModalU
 			});
 	}, []);
 
-  const clearAttributes = () => {
+  const clearAttributes = (project: Project) => {
+	console.log("activated");
+	console.log(project);
     setName(project.name);
     setDescription(project.description);
     setProjectLeader(project.project_leader);
@@ -68,6 +71,8 @@ export default function ModalUpdate({ modalOpen, setModalOpen, project }: ModalU
     setStartDate(project.start_date);
     setEndDate(project.end_date);
   }
+
+  callback.function = clearAttributes;
   
   const updateProject = () => {
     let formData = {
@@ -112,7 +117,7 @@ export default function ModalUpdate({ modalOpen, setModalOpen, project }: ModalU
 						className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
 						data-modal-toggle="defaultModal"
 						onClick={() => {
-							clearAttributes();
+							clearAttributes(project);
 							setModalOpen(false)
 						}}>
 						<svg
@@ -183,7 +188,7 @@ export default function ModalUpdate({ modalOpen, setModalOpen, project }: ModalU
 					<button 
 						style={{backgroundColor: "#0F3A61", color: "#FFFFFF", borderRadius: 5, marginRight: 10, width: 100, height: 40}}
 						onClick={() => {
-							clearAttributes();
+							clearAttributes(project);
 							setModalOpen(false);
 						}}
 					>Cancelar</button>

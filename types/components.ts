@@ -30,6 +30,7 @@ export interface ModalUpdateProjectProps {
   modalOpen: boolean
   setModalOpen: Function
   project: Project
+  callback: { function: Function }
 }
 
 export interface ModalDeleteProjectProps {
@@ -49,6 +50,7 @@ export interface ModalUpdateTaskProps {
   setModalOpen: Function
   project: Project
   task: Task
+  callback: { function: Function }
 }
 
 export interface ModalDeleteTaskProps {
